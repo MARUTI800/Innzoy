@@ -1,243 +1,198 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ArrowDown } from 'lucide-react';
-import gsap from 'gsap';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 import { useBooking } from '@/context/BookingContext';
+import { BRAND } from '@/data/innzoyData';
+import MagneticButton from '@/components/common/MagneticButton';
 
 export default function HeroSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const introOverlayRef = useRef<HTMLDivElement>(null);
-  const introWordmarkRef = useRef<HTMLHeadingElement>(null);
-  const heroImageContainerRef = useRef<HTMLDivElement>(null);
-  const headlineLinesRef = useRef<(HTMLSpanElement | null)[]>([]);
-  const subtextRef = useRef<HTMLParagraphElement>(null);
-  const ctaGroupRef = useRef<HTMLDivElement>(null);
-  const metadataRef = useRef<HTMLDivElement>(null);
-
   const { openBooking } = useBooking();
-  const [introFinished, setIntroFinished] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const textContainerRef = useRef<HTMLDivElement>(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    // Check prefers-reduced-motion
+    // Staggered entrance timing
+    const timer = setTimeout(() => setLoaded(true), 80);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Multi-layer depth and typographic handoff on scroll
+  useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) {
-      if (introOverlayRef.current) introOverlayRef.current.style.display = 'none';
-      setIntroFinished(true);
-      return;
-    }
+    if (prefersReducedMotion) return;
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        defaults: { ease: 'power4.out' },
-        onComplete: () => setIntroFinished(true),
-      });
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const heroHeight = sectionRef.current?.offsetHeight || window.innerHeight;
 
-      // 1. Initial State
-      gsap.set(introWordmarkRef.current, { opacity: 0, letterSpacing: '0.15em', y: 20 });
-      gsap.set(heroImageContainerRef.current, {
-        clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)',
-        scale: 1.08,
-      });
-      gsap.set(headlineLinesRef.current, { yPercent: 120, opacity: 0 });
-      gsap.set(subtextRef.current, { opacity: 0, y: 30 });
-      gsap.set(ctaGroupRef.current, { opacity: 0, y: 30 });
-      gsap.set(metadataRef.current, { opacity: 0 });
+      if (scrollY <= heroHeight * 1.5) {
+        // Midground image parallax
+        if (imageRef.current) {
+          const imgY = scrollY * 0.28;
+          imageRef.current.style.transform = `translate3d(0, ${imgY}px, 0) scale(${Math.max(1, 1.05 - scrollY * 0.00006)})`;
+        }
 
-      // 2. Intro Wordmark Animation
-      tl.to(introWordmarkRef.current, {
-        opacity: 1,
-        y: 0,
-        letterSpacing: '0.35em',
-        duration: 1.2,
-        ease: 'power3.out',
-      })
-        .to(introWordmarkRef.current, {
-          y: -30,
-          opacity: 0,
-          duration: 0.8,
-          ease: 'power3.in',
-        }, '+=0.4')
-        // 3. Intro curtain lifts and Hero image reveals via smooth clip-path
-        .to(introOverlayRef.current, {
-          opacity: 0,
-          duration: 0.8,
-          ease: 'power2.inOut',
-          onComplete: () => {
-            if (introOverlayRef.current) {
-              introOverlayRef.current.style.pointerEvents = 'none';
-            }
-          },
-        }, '-=0.3')
-        .to(heroImageContainerRef.current, {
-          clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
-          scale: 1,
-          duration: 1.8,
-          ease: 'power3.inOut',
-        }, '-=0.8')
-        // 4. Headline reveals line-by-line
-        .to(headlineLinesRef.current, {
-          yPercent: 0,
-          opacity: 1,
-          stagger: 0.15,
-          duration: 1.2,
-          ease: 'power4.out',
-        }, '-=0.8')
-        // 5. Subtext & CTA reveal
-        .to(subtextRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-        }, '-=0.6')
-        .to(ctaGroupRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.9,
-        }, '-=0.7')
-        .to(metadataRef.current, {
-          opacity: 1,
-          duration: 1,
-        }, '-=0.5');
-    }, containerRef);
+        // Foreground text morph / handoff
+        if (textContainerRef.current) {
+          const textY = scrollY * 0.45;
+          const opacity = Math.max(0, 1 - scrollY / (heroHeight * 0.75));
+          textContainerRef.current.style.transform = `translate3d(0, ${textY}px, 0)`;
+          textContainerRef.current.style.opacity = `${opacity}`;
+        }
+      }
+    };
 
-    return () => ctx.revert();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <div ref={containerRef} className="relative h-screen w-full overflow-hidden bg-[#141413]">
-      {/* 01. PRELOADER / INTRO OVERLAY */}
-      <div
-        ref={introOverlayRef}
-        className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#FAF8F5] transition-opacity duration-700 ${
-          introFinished ? 'pointer-events-none opacity-0' : 'opacity-100'
-        }`}
-      >
-        <h1
-          ref={introWordmarkRef}
-          className="font-serif text-4xl sm:text-5xl md:text-6xl tracking-[0.25em] text-[#141413] font-light"
-        >
-          INNZOY
-        </h1>
-        <p className="font-mono text-[9px] uppercase tracking-[0.4em] text-[#B89F7D] mt-3">
-          QUIET LUXURY HOSPITALITY
-        </p>
-      </div>
-
-      {/* 02. HERO BACKGROUND IMAGE WITH CINEMATIC LIGHTING */}
-      <div
-        ref={heroImageContainerRef}
-        className="absolute inset-0 w-full h-full overflow-hidden"
-      >
-        <Image
-          src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=2400&q=85"
-          alt="INNZOY Architectural Sanctuaries"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center filter brightness-[0.82] contrast-[1.05]"
-        />
-
-        {/* Luxury Vignette & Dark Gradients */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#141413]/90 via-[#141413]/30 to-black/40" />
-        <div className="absolute inset-0 bg-radial-gradient from-transparent to-[#141413]/40" />
-      </div>
-
-      {/* 03. HERO CONTENT */}
-      <div className="relative z-10 h-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col justify-end pb-16 md:pb-24 text-[#FAF8F5]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
-          {/* Headline Column */}
-          <div className="lg:col-span-8">
-            <div className="overflow-hidden mb-3">
-              <span className="inline-block font-mono text-[9px] md:text-[10px] uppercase tracking-[0.35em] text-[#B89F7D]">
-                INNZOY HOTELS & RESORTS
-              </span>
-            </div>
-
-            <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-light leading-[1.02] tracking-tight uppercase">
-              <span className="block overflow-hidden">
-                <span
-                  ref={(el) => { headlineLinesRef.current[0] = el; }}
-                  className="inline-block"
-                >
-                  STAY
-                </span>
-              </span>
-              <span className="block overflow-hidden">
-                <span
-                  ref={(el) => { headlineLinesRef.current[1] = el; }}
-                  className="inline-block"
-                >
-                  SOMEWHERE
-                </span>
-              </span>
-              <span className="block overflow-hidden">
-                <span
-                  ref={(el) => { headlineLinesRef.current[2] = el; }}
-                  className="inline-block"
-                >
-                  WORTH
-                </span>
-              </span>
-              <span className="block overflow-hidden">
-                <span
-                  ref={(el) => { headlineLinesRef.current[3] = el; }}
-                  className="inline-block text-[#EDE5DC] italic font-normal"
-                >
-                  REMEMBERING.
-                </span>
-              </span>
-            </h1>
-          </div>
-
-          {/* Subtext and CTA Column */}
-          <div className="lg:col-span-4 flex flex-col justify-end space-y-8">
-            <p
-              ref={subtextRef}
-              className="text-stone-300 text-sm md:text-base font-light leading-relaxed max-w-md border-l border-white/20 pl-5"
-            >
-              Thoughtfully designed places, considered service, and experiences shaped by where you
-              are.
-            </p>
-
-            <div ref={ctaGroupRef} className="flex flex-wrap items-center gap-4 pt-2">
-              <Link
-                href="/stays"
-                data-cursor="EXPLORE"
-                className="group inline-flex items-center space-x-3 px-6 py-3.5 bg-[#FAF8F5] text-[#141413] text-xs font-mono uppercase tracking-[0.24em] font-medium hover:bg-[#B89F7D] hover:text-white transition-all duration-300"
-              >
-                <span>EXPLORE OUR STAYS</span>
-                <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
-
-              <button
-                onClick={() => openBooking()}
-                data-cursor="RESERVE"
-                className="px-6 py-3.5 border border-white/60 text-white text-xs font-mono uppercase tracking-[0.24em] hover:bg-white/10 transition-colors"
-              >
-                BOOK A STAY
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Architectural Metadata Bar */}
+    <section
+      ref={sectionRef}
+      className="relative h-screen min-h-[680px] w-full overflow-hidden bg-[#121412]"
+      aria-label="Hero: Welcome to INNZOY"
+    >
+      {/* Background Architectural Canvas (Multi-layer Depth) */}
+      <div className="absolute inset-0 overflow-hidden">
         <div
-          ref={metadataRef}
-          className="mt-14 pt-6 border-t border-white/15 flex flex-wrap justify-between items-center text-[10px] font-mono uppercase tracking-widest text-stone-400 gap-4"
+          ref={imageRef}
+          className="absolute inset-0 will-change-transform"
+          style={{
+            transform: loaded ? 'scale(1.01)' : 'scale(1.08)',
+            filter: loaded ? 'brightness(0.82) blur(0px)' : 'brightness(0.68) blur(5px)',
+            transition: 'transform 1.8s cubic-bezier(0.16, 1, 0.3, 1), filter 1.6s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
         >
-          <div className="flex items-center space-x-6">
-            <span>HYDERABAD · RAJASTHAN · GOA · HIMALAYAS</span>
-            <span className="hidden sm:inline-block">17.4319° N / 78.4073° E</span>
-          </div>
+          <Image
+            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2400&q=85"
+            alt="INNZOY Architectural Cloister and Light"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </div>
 
-          <div className="flex items-center space-x-2 text-stone-300">
-            <span>SCROLL TO DISCOVER</span>
-            <ArrowDown className="w-3 h-3 animate-bounce" />
+        {/* Cinematic multi-gradient lighting */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/75 pointer-events-none" />
+      </div>
+
+      {/* Foreground Content with Typographic Window Reveal */}
+      <div
+        ref={textContainerRef}
+        className="relative z-10 h-full flex flex-col justify-end max-w-[1500px] mx-auto px-6 md:px-12 lg:px-16 pb-16 md:pb-24 will-change-transform"
+      >
+        {/* Editorial Eyebrow */}
+        <div className="overflow-hidden mb-4">
+          <div
+            className="flex items-center space-x-3 transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]"
+            style={{
+              transform: loaded ? 'translate3d(0, 0, 0)' : 'translate3d(0, 110%, 0)',
+              transitionDelay: '300ms',
+            }}
+          >
+            <span className="font-mono text-[9px] uppercase tracking-[0.38em] text-[#A68A68]">
+              {BRAND.name} · {BRAND.subname}
+            </span>
+            <span className="w-8 h-[1px] bg-white/20" />
           </div>
         </div>
+
+        {/* Master Headline: Physical Window Mask Reveal Line-by-Line */}
+        <div className="max-w-[1000px] mb-6">
+          <h1 className="font-serif text-white uppercase tracking-tight leading-[0.92]">
+            <span className="block overflow-hidden py-1">
+              <span
+                className="block text-[3.2rem] sm:text-[5rem] md:text-[6.5rem] lg:text-[7.8rem] font-light transition-transform duration-1200 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                style={{
+                  transform: loaded ? 'translate3d(0, 0, 0)' : 'translate3d(0, 112%, 0)',
+                  transitionDelay: '420ms',
+                  willChange: 'transform',
+                }}
+              >
+                A PLACE
+              </span>
+            </span>
+
+            <span className="block overflow-hidden py-1">
+              <span
+                className="block text-[3.2rem] sm:text-[5rem] md:text-[6.5rem] lg:text-[7.8rem] font-light italic text-[#E8DFD3] transition-transform duration-1200 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                style={{
+                  transform: loaded ? 'translate3d(0, 0, 0)' : 'translate3d(0, 112%, 0)',
+                  transitionDelay: '560ms',
+                  willChange: 'transform',
+                }}
+              >
+                TO ARRIVE.
+              </span>
+            </span>
+          </h1>
+        </div>
+
+        {/* Supporting Editorial Copy */}
+        <div className="overflow-hidden mb-8 max-w-[480px]">
+          <p
+            className="text-stone-300 text-sm md:text-base font-light leading-relaxed transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]"
+            style={{
+              transform: loaded ? 'translate3d(0, 0, 0)' : 'translate3d(0, 110%, 0)',
+              transitionDelay: '700ms',
+            }}
+          >
+            Thoughtfully designed stays shaped by architecture, vernacular stone, and the quiet art of being present.
+          </p>
+        </div>
+
+        {/* CTAs with Magnetic Attraction */}
+        <div
+          className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 transition-opacity duration-800"
+          style={{
+            opacity: loaded ? 1 : 0,
+            transitionDelay: '850ms',
+          }}
+        >
+          <MagneticButton strength={7}>
+            <Link
+              href="/stays"
+              data-cursor="EXPLORE"
+              className="group inline-flex items-center space-x-3 text-xs font-mono uppercase tracking-[0.26em] text-white border-b border-white/40 pb-1.5 hover:border-[#A68A68] hover:text-[#A68A68] transition-colors duration-300"
+            >
+              <span>EXPLORE THE COLLECTION</span>
+              <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+          </MagneticButton>
+
+          <MagneticButton strength={7}>
+            <button
+              onClick={() => openBooking()}
+              data-cursor="RESERVE"
+              className="px-6 py-3.5 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 font-mono text-xs text-white uppercase tracking-[0.24em] transition-all duration-300"
+            >
+              BOOK A STAY
+            </button>
+          </MagneticButton>
+        </div>
+
+        {/* Bottom-right Architectural Coordinates */}
+        <div
+          className="absolute bottom-16 right-6 md:bottom-24 md:right-12 lg:right-16 text-right hidden md:block transition-opacity duration-1000"
+          style={{
+            opacity: loaded ? 1 : 0,
+            transitionDelay: '1000ms',
+          }}
+        >
+          <p className="font-mono text-[9px] uppercase tracking-[0.35em] text-[#A68A68]">
+            {BRAND.destinationsList}
+          </p>
+          <p className="font-mono text-[10px] text-stone-400 mt-1">
+            {BRAND.coordinates}
+          </p>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

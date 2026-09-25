@@ -2,10 +2,12 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-interface BookingModalOptions {
+export interface BookingModalOptions {
   propertySlug?: string;
   destination?: string;
   roomName?: string;
+  guests?: number;
+  dates?: string;
 }
 
 interface BookingContextType {

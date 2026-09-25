@@ -2,206 +2,164 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowUpRight, Check } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { BRAND, DESTINATIONS } from '@/data/innzoyData';
+import ScrollReveal from '@/components/common/ScrollReveal';
 
 export default function Footer() {
-  const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const [email, setEmail] = useState('');
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
       setSubscribed(true);
+      setEmail('');
     }
   };
 
   return (
-    <footer className="bg-[#141413] text-[#FAF8F5] pt-24 pb-12 px-6 md:px-12 border-t border-white/10 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        {/* Top Editorial Invitation */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-20 border-b border-white/10">
-          <div className="lg:col-span-7">
-            <span className="font-mono text-[9px] uppercase tracking-[0.35em] text-[#B89F7D] block mb-3">
-              THE NEXT CHAPTER
+    <footer
+      className="bg-[#121412] text-[#FAF9F6] pt-28 pb-16 md:pt-44 md:pb-20 border-t border-white/10"
+      role="contentinfo"
+    >
+      <div className="max-w-[1500px] mx-auto px-6 md:px-12 lg:px-16">
+        {/* Giant INNZOY Wordmark with Vertical Mask Reveal */}
+        <ScrollReveal variant="clip-up" duration={1200}>
+          <div className="mb-20 md:mb-28 overflow-hidden">
+            <Link
+              href="/"
+              className="group block font-serif text-[4.5rem] sm:text-[8rem] md:text-[11rem] lg:text-[14rem] font-light leading-none tracking-tight text-[#FAF9F6] hover:text-[#A68A68] transition-colors duration-500 select-none uppercase"
+              aria-label="INNZOY Home"
+            >
+              INNZOY
+            </Link>
+          </div>
+        </ScrollReveal>
+
+        {/* 4-Column Editorial Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20 md:mb-28 pt-12 border-t border-white/10">
+          {/* Column 1: Navigation (3 cols) */}
+          <div className="lg:col-span-3 space-y-4">
+            <span className="font-mono text-[9px] uppercase tracking-[0.35em] text-[#A68A68] block">
+              NAVIGATE
             </span>
-            <h2 className="font-serif text-4xl sm:text-6xl md:text-7xl font-light tracking-tight leading-[1.05]">
-              WHERE WILL
-              <br />
-              YOU GO NEXT?
-            </h2>
-            <p className="mt-6 text-[#99938A] max-w-md text-sm md:text-base leading-relaxed font-light">
-              Thoughtfully curated urban sanctuaries and countryside retreats across Hyderabad,
-              Rajasthan, and emerging destinations.
-            </p>
-          </div>
-
-          <div className="lg:col-span-5 flex flex-col justify-end">
-            <div className="bg-[#1C1B19] p-8 border border-white/10">
-              <span className="font-mono text-[9px] uppercase tracking-[0.35em] text-[#B89F7D] block mb-2">
-                NEWSLETTER
-              </span>
-              <h3 className="font-serif text-2xl font-light mb-2">Notes from the road</h3>
-              <p className="text-xs text-[#99938A] mb-6 leading-relaxed">
-                Seasonal architectural dispatches, quiet retreat openings, and cultural reflections.
-              </p>
-
-              {subscribed ? (
-                <div className="flex items-center space-x-2 text-xs font-mono text-[#B89F7D] py-3">
-                  <Check className="w-4 h-4" />
-                  <span>You are subscribed to INNZOY Dispatches.</span>
-                </div>
-              ) : (
-                <form onSubmit={handleSubscribe} className="flex">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email address"
-                    required
-                    className="flex-1 bg-[#141413] border border-white/20 px-4 py-3 text-xs text-[#FAF8F5] placeholder-[#726E67] focus:outline-none focus:border-[#B89F7D] font-sans"
-                  />
-                  <button
-                    type="submit"
-                    className="px-5 bg-[#FAF8F5] text-[#141413] text-xs font-mono uppercase tracking-widest font-medium hover:bg-[#B89F7D] hover:text-white transition-colors"
-                  >
-                    JOIN
-                  </button>
-                </form>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Middle Navigation Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 py-16 border-b border-white/10 text-xs font-mono">
-          <div>
-            <h4 className="text-[10px] tracking-[0.3em] uppercase text-[#B89F7D] mb-5">PORTFOLIO</h4>
-            <ul className="space-y-3 font-sans text-xs">
-              <li>
-                <Link href="/stays" className="text-stone-400 hover:text-white transition-colors">
-                  All Stays & Sanctuaries
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/stays/jubilee-hills"
-                  className="text-stone-400 hover:text-white transition-colors"
-                >
-                  Jubilee Hills Villa
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/stays/kondapur"
-                  className="text-stone-400 hover:text-white transition-colors"
-                >
-                  Kondapur Penthouse
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/stays/mokila"
-                  className="text-stone-400 hover:text-white transition-colors"
-                >
-                  Mokila Country Retreat
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/stays/dlf-road"
-                  className="text-stone-400 hover:text-white transition-colors"
-                >
-                  DLF Cyber City Hotel
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-[10px] tracking-[0.3em] uppercase text-[#B89F7D] mb-5">
-              DESTINATIONS
-            </h4>
-            <ul className="space-y-3 font-sans text-xs">
-              {DESTINATIONS.map((d) => (
-                <li key={d.id}>
+            <ul className="space-y-3 font-mono text-xs uppercase tracking-widest">
+              {[
+                { href: '/stays', label: 'All Stays' },
+                { href: '/destinations', label: 'Destinations' },
+                { href: '/experiences', label: 'Experiences' },
+                { href: '/journal', label: 'Journal' },
+                { href: '/about', label: 'About & Ethos' },
+                { href: '/contact', label: 'Concierge Desk' },
+              ].map((link) => (
+                <li key={link.href}>
                   <Link
-                    href={`/destinations#${d.id}`}
-                    className="text-stone-400 hover:text-white transition-colors"
+                    href={link.href}
+                    className="text-stone-400 hover:text-white transition-colors duration-200"
                   >
-                    {d.name}
+                    {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div>
-            <h4 className="text-[10px] tracking-[0.3em] uppercase text-[#B89F7D] mb-5">
-              EXPLORATION
-            </h4>
-            <ul className="space-y-3 font-sans text-xs">
-              <li>
-                <Link
-                  href="/experiences"
-                  className="text-stone-400 hover:text-white transition-colors"
-                >
-                  Curated Experiences
-                </Link>
-              </li>
-              <li>
-                <Link href="/journal" className="text-stone-400 hover:text-white transition-colors">
-                  Editorial Journal
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="text-stone-400 hover:text-white transition-colors">
-                  Architectural Philosophy
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-stone-400 hover:text-white transition-colors">
-                  Concierge & Reservations
-                </Link>
-              </li>
+          {/* Column 2: Regional Sanctuaries (3 cols) */}
+          <div className="lg:col-span-3 space-y-4">
+            <span className="font-mono text-[9px] uppercase tracking-[0.35em] text-[#A68A68] block">
+              REGIONS
+            </span>
+            <ul className="space-y-3 font-mono text-xs uppercase tracking-widest">
+              {DESTINATIONS.map((dest) => (
+                <li key={dest.id}>
+                  <Link
+                    href={`/destinations#${dest.id}`}
+                    className="text-stone-400 hover:text-white transition-colors duration-200 flex items-center justify-between pr-8"
+                  >
+                    <span>{dest.name}</span>
+                    <span className="text-[10px] text-stone-500">{dest.country}</span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          <div>
-            <h4 className="text-[10px] tracking-[0.3em] uppercase text-[#B89F7D] mb-5">
-              DIRECT CONCIERGE
-            </h4>
-            <p className="text-stone-400 font-sans text-xs mb-2">24/7 Silent Human Host</p>
-            <p className="font-serif text-lg text-white mb-2">{BRAND.contact.phone}</p>
-            <p className="text-stone-400 font-sans text-xs mb-4">{BRAND.contact.email}</p>
-            <a
-              href={BRAND.contact.whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center space-x-1.5 text-xs text-[#B89F7D] hover:underline"
-            >
-              <span>WhatsApp Concierge</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </a>
+          {/* Column 3: Direct Liaison (3 cols) */}
+          <div className="lg:col-span-3 space-y-4">
+            <span className="font-mono text-[9px] uppercase tracking-[0.35em] text-[#A68A68] block">
+              DIRECT DESK
+            </span>
+            <div className="space-y-3 font-mono text-xs">
+              <div>
+                <span className="text-[9px] text-stone-400 uppercase tracking-widest block">RESERVATIONS</span>
+                <a
+                  href={`tel:${BRAND.contact.reservationsPhone}`}
+                  className="text-stone-200 hover:text-[#A68A68] transition-colors"
+                >
+                  {BRAND.contact.reservationsPhone}
+                </a>
+              </div>
+              <div>
+                <span className="text-[9px] text-stone-400 uppercase tracking-widest block">CONCIERGE</span>
+                <a
+                  href={`mailto:${BRAND.contact.conciergeEmail}`}
+                  className="text-stone-200 hover:text-[#A68A68] transition-colors"
+                >
+                  {BRAND.contact.conciergeEmail}
+                </a>
+              </div>
+              <p className="text-[11px] text-stone-400 font-sans font-light pt-1">
+                {BRAND.contact.office}
+              </p>
+            </div>
+          </div>
+
+          {/* Column 4: Newsletter (3 cols) */}
+          <div className="lg:col-span-3 space-y-4">
+            <span className="font-mono text-[9px] uppercase tracking-[0.35em] text-[#A68A68] block">
+              EDITORIAL DISPATCHES
+            </span>
+            <p className="text-stone-400 text-xs font-light leading-relaxed">
+              Occasional dispatches on vernacular architecture, regional cuisine, and the art of unhurried arrival.
+            </p>
+
+            {subscribed ? (
+              <p className="font-mono text-[10px] text-[#A68A68] uppercase tracking-wider py-3 border-b border-white/20">
+                THANK YOU. YOU WILL RECEIVE OUR NEXT DISPATCH.
+              </p>
+            ) : (
+              <form onSubmit={handleSubscribe} className="space-y-2 pt-2">
+                <div className="flex border-b border-white/20 pb-2">
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className="bg-transparent text-white text-xs flex-1 outline-none placeholder:text-stone-400 font-sans"
+                    aria-label="Email for dispatch subscription"
+                  />
+                  <button
+                    type="submit"
+                    className="font-mono text-[10px] uppercase tracking-widest text-[#A68A68] hover:text-white pl-3 transition-colors cursor-pointer"
+                  >
+                    JOIN
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
 
-        {/* Large Architectural Wordmark */}
-        <div className="py-12 md:py-16 text-center select-none overflow-hidden">
-          <span className="font-serif text-[18vw] leading-none tracking-[0.16em] text-white/[0.04] uppercase font-light inline-block">
-            INNZOY
-          </span>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between text-[10px] font-mono uppercase tracking-widest text-[#726E67] pt-8 border-t border-white/5 space-y-4 sm:space-y-0">
-          <div>
-            © {new Date().getFullYear()} INNZOY HOSPITALITY GROUP. ALL RIGHTS RESERVED.
-          </div>
-          <div className="flex space-x-8">
-            <span className="hover:text-stone-400 cursor-pointer">PRIVACY POLICY</span>
-            <span className="hover:text-stone-400 cursor-pointer">TERMS OF STAY</span>
-            <span className="hover:text-stone-400 cursor-pointer">ARCHITECTURAL ARCHIVE</span>
+        {/* Bottom Rule & Metadata */}
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 font-mono text-[9px] uppercase tracking-[0.24em] text-stone-400">
+          <p>© {new Date().getFullYear()} INNZOY HOTELS & RESORTS · ALL RIGHTS RESERVED</p>
+          <div className="flex items-center gap-6">
+            <span>26.9124° N / 75.7873° E</span>
+            <Link href="/about" className="hover:text-white transition-colors">
+              LEGAL & PRIVACY
+            </Link>
           </div>
         </div>
       </div>

@@ -1,81 +1,95 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 export default function CustomCursor() {
-  const [position, setPosition] = useState({ x: -100, y: -100 });
+  const cursorRef = useRef<HTMLDivElement>(null);
   const [cursorText, setCursorText] = useState('');
-  const [isHovered, setIsHovered] = useState(false);
+  const [isPointer, setIsPointer] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [isTouch, setIsTouch] = useState(true);
+  const pos = useRef({ x: 0, y: 0 });
+  const target = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
-    // Only enable on non-touch devices
-    if (window.matchMedia('(pointer: coarse)').matches) {
-      setIsTouch(true);
-      return;
-    }
-    setIsTouch(false);
+    // Only on desktop with fine pointer
+    const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const onMouseMove = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+    if (!isDesktop || prefersReducedMotion) return;
+
+    const onMove = (e: MouseEvent) => {
+      target.current = { x: e.clientX, y: e.clientY };
       if (!isVisible) setIsVisible(true);
+    };
 
-      const target = e.target as HTMLElement | null;
-      if (!target) return;
+    const handleMouseOver = (e: MouseEvent) => {
+      const targetEl = e.target as HTMLElement | null;
+      if (!targetEl) return;
 
-      const cursorTarget = target.closest('[data-cursor]') as HTMLElement | null;
-      if (cursorTarget) {
-        setCursorText(cursorTarget.getAttribute('data-cursor') || '');
-        setIsHovered(true);
-      } else {
-        const interactive = target.closest('a, button, input, select, textarea');
-        if (interactive) {
-          setIsHovered(true);
-          setCursorText('');
-        } else {
-          setIsHovered(false);
-          setCursorText('');
+      const cursorEl = targetEl.closest('[data-cursor]') as HTMLElement | null;
+      if (cursorEl) {
+        const val = cursorEl.getAttribute('data-cursor');
+        if (val) {
+          setCursorText(val.toUpperCase());
+          setIsPointer(false);
+          return;
         }
+      }
+
+      const interactive = targetEl.closest('a, button, input, select, textarea, [role="button"]');
+      if (interactive) {
+        setIsPointer(true);
+        setCursorText('');
+      } else {
+        setIsPointer(false);
+        setCursorText('');
       }
     };
 
-    const onMouseLeave = () => setIsVisible(false);
-    const onMouseEnter = () => setIsVisible(true);
+    window.addEventListener('mousemove', onMove, { passive: true });
+    document.addEventListener('mouseover', handleMouseOver, { passive: true });
 
-    window.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseleave', onMouseLeave);
-    document.addEventListener('mouseenter', onMouseEnter);
+    // Animate cursor position with lerp for silky smoothness
+    let raf: number;
+    const animate = () => {
+      pos.current.x += (target.current.x - pos.current.x) * 0.18;
+      pos.current.y += (target.current.y - pos.current.y) * 0.18;
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate3d(${pos.current.x}px, ${pos.current.y}px, 0)`;
+      }
+      raf = requestAnimationFrame(animate);
+    };
+    raf = requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseleave', onMouseLeave);
-      document.removeEventListener('mouseenter', onMouseEnter);
+      window.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseover', handleMouseOver);
+      cancelAnimationFrame(raf);
     };
   }, [isVisible]);
 
-  if (isTouch || !isVisible) return null;
-
   return (
     <div
-      className="pointer-events-none fixed z-[9998] transition-transform duration-75 ease-out"
+      ref={cursorRef}
+      className="fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference hidden md:block"
       style={{
-        left: `${position.x}px`,
-        top: `${position.y}px`,
-        transform: 'translate(-50%, -50%)',
+        opacity: isVisible ? 1 : 0,
+        transition: 'opacity 0.3s ease',
+        willChange: 'transform',
       }}
+      aria-hidden="true"
     >
       <div
-        className={`flex items-center justify-center rounded-full transition-all duration-300 ${
+        className={`flex items-center justify-center -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FAF9F6] text-[#171715] transition-all duration-200 ease-out ${
           cursorText
-            ? 'h-16 w-16 bg-[#141413] text-[#FAF8F5] shadow-xl'
-            : isHovered
-            ? 'h-10 w-10 bg-[#141413]/20 border border-[#141413]/40 backdrop-blur-[2px]'
-            : 'h-3.5 w-3.5 bg-[#141413]/70'
+            ? 'w-16 h-16'
+            : isPointer
+            ? 'w-4 h-4 opacity-70'
+            : 'w-2 h-2 opacity-100'
         }`}
       >
         {cursorText && (
-          <span className="font-mono text-[9px] uppercase tracking-widest text-[#FAF8F5] select-none font-medium">
+          <span className="font-mono text-[9px] font-semibold tracking-[0.22em] uppercase select-none text-center px-1">
             {cursorText}
           </span>
         )}

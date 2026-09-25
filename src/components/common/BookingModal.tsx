@@ -1,319 +1,211 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { X, Calendar, Users, MapPin, Building, ArrowRight, MessageCircle } from 'lucide-react';
+import { useState, useRef, FormEvent } from 'react';
 import { useBooking } from '@/context/BookingContext';
-import { PROPERTIES, DESTINATIONS, BRAND } from '@/data/innzoyData';
+import { PROPERTIES } from '@/data/innzoyData';
 
 export default function BookingModal() {
   const { isOpen, options, closeBooking } = useBooking();
-
-  const [destination, setDestination] = useState('hyderabad');
-  const [propertySlug, setPropertySlug] = useState('jubilee-hills');
-  const [checkIn, setCheckIn] = useState('');
-  const [checkOut, setCheckOut] = useState('');
-  const [guests, setGuests] = useState(2);
-  const [nights, setNights] = useState(2);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [formState, setFormState] = useState({
+    property: options.propertySlug || '',
+    checkIn: '',
+    checkOut: '',
+    guests: '2',
+    name: '',
+    email: '',
+    message: '',
+  });
   const [submitted, setSubmitted] = useState(false);
 
-  // Set default dates (today + 3 days, today + 5 days)
-  useEffect(() => {
-    const today = new Date();
-    const d1 = new Date(today);
-    d1.setDate(today.getDate() + 3);
-    const d2 = new Date(today);
-    d2.setDate(today.getDate() + 5);
-
-    const fmt = (d: Date) => d.toISOString().split('T')[0];
-    setCheckIn(fmt(d1));
-    setCheckOut(fmt(d2));
-    setNights(2);
-  }, []);
-
-  // Update selected options when opened with params
-  useEffect(() => {
-    if (options.propertySlug) {
-      setPropertySlug(options.propertySlug);
-      const prop = PROPERTIES.find((p) => p.slug === options.propertySlug);
-      if (prop) {
-        if (prop.location.includes('Jaipur') || prop.location.includes('Rajasthan')) {
-          setDestination('rajasthan');
-        } else {
-          setDestination('hyderabad');
-        }
-      }
-    } else if (options.destination) {
-      setDestination(options.destination);
-    }
-  }, [options]);
-
-  // Recalculate nights when dates change
-  useEffect(() => {
-    if (checkIn && checkOut) {
-      const start = new Date(checkIn).getTime();
-      const end = new Date(checkOut).getTime();
-      const diff = Math.max(1, Math.round((end - start) / (1000 * 60 * 60 * 24)));
-      setNights(diff);
-    }
-  }, [checkIn, checkOut]);
-
-  // Close on ESC key
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) closeBooking();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, closeBooking]);
-
-  if (!isOpen) return null;
-
-  const currentProperty = PROPERTIES.find((p) => p.slug === propertySlug) || PROPERTIES[0];
-  const totalPrice = currentProperty ? currentProperty.startingPrice * nights : 0;
-
-  const filteredProperties = PROPERTIES.filter((p) => {
-    if (destination === 'hyderabad') return p.location.includes('Hyderabad');
-    if (destination === 'rajasthan') return p.location.includes('Rajasthan') || p.location.includes('Jaipur');
-    return true;
-  });
-
-  const handleWhatsAppBooking = () => {
-    const message = `Hello INNZOY Concierge, I would like to inquire about reserving a stay:%0A%0A*Property:* ${currentProperty.name}%0A*Check-in:* ${checkIn}%0A*Check-out:* ${checkOut}%0A*Nights:* ${nights}%0A*Guests:* ${guests}%0A*Estimated Total:* ₹${totalPrice.toLocaleString('en-IN')}%0A%0APlease let me know availability and suite options.`;
-    window.open(`https://wa.me/918520963096?text=${message}`, '_blank');
-  };
-
-  const handleConfirmReservation = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
   };
 
+  const handleClose = () => {
+    setSubmitted(false);
+    setFormState({
+      property: '',
+      checkIn: '',
+      checkOut: '',
+      guests: '2',
+      name: '',
+      email: '',
+      message: '',
+    });
+    closeBooking();
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-end">
-      {/* Backdrop */}
+    <>
+      {/* Overlay */}
       <div
-        className="absolute inset-0 bg-[#141413]/60 backdrop-blur-sm transition-opacity duration-500"
-        onClick={closeBooking}
+        className={`fixed inset-0 z-[60] bg-ink-dark/60 backdrop-blur-sm transition-opacity duration-500 ${
+          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={handleClose}
+        aria-hidden="true"
       />
 
       {/* Drawer */}
-      <div className="relative w-full max-w-xl h-full bg-[#FAF8F5] text-[#141413] shadow-2xl flex flex-col justify-between overflow-y-auto z-10 transition-transform duration-700 ease-luxury">
-        {/* Header */}
-        <div className="p-8 md:p-12 border-b border-[#141413]/8 flex items-center justify-between">
-          <div>
-            <span className="font-mono text-[9px] uppercase tracking-[0.35em] text-[#B89F7D]">
-              RESERVATION SANCTUARY
-            </span>
-            <h2 className="font-serif text-3xl md:text-4xl font-light tracking-tight mt-1">
-              Reserve Your Stay
-            </h2>
+      <div
+        className={`fixed top-0 right-0 h-full w-full max-w-[520px] z-[61] bg-ivory overflow-y-auto transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Booking inquiry"
+      >
+        <div className="p-8 md:p-12 min-h-full flex flex-col">
+          {/* Header */}
+          <div className="flex items-start justify-between mb-12">
+            <div>
+              <p className="font-metadata text-ink-muted mb-2">INNZOY</p>
+              <h2 className="font-serif-display text-3xl text-ink">
+                Reserve a Stay
+              </h2>
+            </div>
+            <button
+              onClick={handleClose}
+              className="text-ink-muted hover:text-ink transition-colors duration-200 mt-1"
+              aria-label="Close booking"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
           </div>
-          <button
-            onClick={closeBooking}
-            className="p-2.5 rounded-full hover:bg-[#141413]/5 transition-colors focus:outline-none"
-            aria-label="Close booking modal"
-          >
-            <X className="w-5 h-5 text-[#141413]" />
-          </button>
-        </div>
 
-        {/* Content */}
-        <div className="p-8 md:p-12 flex-1">
           {submitted ? (
-            <div className="py-12 text-center space-y-6">
-              <div className="w-14 h-14 mx-auto rounded-full bg-[#141413] text-[#FAF8F5] flex items-center justify-center">
-                ✓
-              </div>
-              <h3 className="font-serif text-3xl font-light">Inquiry Dispatched</h3>
-              <p className="text-sm text-[#726E67] max-w-sm mx-auto leading-relaxed">
-                Our silent human concierge has received your stay request for{' '}
-                <strong className="text-[#141413] font-medium">{currentProperty.name}</strong>. We
-                will confirm availability via email or WhatsApp within moments.
+            <div className="flex-1 flex flex-col items-start justify-center">
+              <p className="font-metadata text-earth mb-3">INQUIRY RECEIVED</p>
+              <h3 className="font-serif-display text-2xl text-ink mb-4">
+                Thank you.
+              </h3>
+              <p className="text-ink-secondary text-sm leading-relaxed mb-8">
+                Our concierge team will respond to your inquiry within 24 hours with
+                availability and personalized recommendations.
               </p>
-              <div className="p-5 bg-[#F4EFEA] border border-[#141413]/5 text-left text-xs font-mono space-y-2">
-                <div>
-                  <span className="text-stone-400">STAY:</span> {currentProperty.name}
-                </div>
-                <div>
-                  <span className="text-stone-400">DATES:</span> {checkIn} → {checkOut} ({nights}{' '}
-                  nights)
-                </div>
-                <div>
-                  <span className="text-stone-400">GUESTS:</span> {guests} Adults
-                </div>
-                <div>
-                  <span className="text-stone-400">ESTIMATED:</span> ₹
-                  {totalPrice.toLocaleString('en-IN')}
-                </div>
-              </div>
               <button
-                onClick={() => {
-                  setSubmitted(false);
-                  closeBooking();
-                }}
-                className="w-full py-4 bg-[#141413] text-[#FAF8F5] font-mono text-xs uppercase tracking-[0.22em] hover:bg-[#2C2A29] transition-colors"
+                onClick={handleClose}
+                className="font-metadata text-ink border-b border-ink/20 hover:border-ink pb-1 transition-colors duration-300"
               >
-                RETURN TO WEBSITE
+                CLOSE
               </button>
             </div>
           ) : (
-            <form onSubmit={handleConfirmReservation} className="space-y-8">
-              {/* Destination selector */}
+            <form ref={formRef} onSubmit={handleSubmit} className="flex-1 flex flex-col gap-8">
+              {/* Property */}
               <div>
-                <label className="flex items-center text-[10px] font-mono uppercase tracking-[0.25em] text-[#726E67] mb-2.5">
-                  <MapPin className="w-3.5 h-3.5 mr-2 text-[#B89F7D]" />
-                  01 — Destination
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  {DESTINATIONS.map((d) => (
-                    <button
-                      key={d.id}
-                      type="button"
-                      onClick={() => {
-                        setDestination(d.id);
-                        const match = PROPERTIES.find((p) =>
-                          d.id === 'hyderabad'
-                            ? p.location.includes('Hyderabad')
-                            : p.location.includes('Rajasthan')
-                        );
-                        if (match) setPropertySlug(match.slug);
-                      }}
-                      className={`text-left px-4 py-3 border text-xs font-medium transition-all ${
-                        destination === d.id
-                          ? 'border-[#141413] bg-[#141413] text-[#FAF8F5]'
-                          : 'border-[#141413]/10 bg-white hover:border-[#141413]/30 text-[#141413]'
-                      }`}
-                    >
-                      <span className="block font-serif text-sm">{d.name}</span>
-                      <span className="block font-mono text-[9px] opacity-70 tracking-widest uppercase">
-                        {d.region}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Property selector */}
-              <div>
-                <label className="flex items-center text-[10px] font-mono uppercase tracking-[0.25em] text-[#726E67] mb-2.5">
-                  <Building className="w-3.5 h-3.5 mr-2 text-[#B89F7D]" />
-                  02 — Sanctuary / Property
-                </label>
+                <label className="font-metadata text-ink-muted block mb-3">PROPERTY</label>
                 <select
-                  value={propertySlug}
-                  onChange={(e) => setPropertySlug(e.target.value)}
-                  className="w-full bg-white border border-[#141413]/15 px-4 py-3.5 text-xs font-sans focus:outline-none focus:border-[#141413] transition-colors"
+                  value={formState.property}
+                  onChange={(e) => setFormState({ ...formState, property: e.target.value })}
+                  className="w-full bg-transparent border-b border-ink/10 py-3 text-ink text-sm outline-none focus:border-ink/40 transition-colors appearance-none cursor-pointer"
+                  required
                 >
-                  {filteredProperties.map((p) => (
-                    <option key={p.slug} value={p.slug}>
-                      {p.name} — From {p.formattedPrice}/night
+                  <option value="">Select a property</option>
+                  {PROPERTIES.map((p) => (
+                    <option key={p.id} value={p.slug}>
+                      {p.name}
                     </option>
                   ))}
                 </select>
-                <p className="text-[11px] font-mono text-stone-500 mt-1.5">
-                  Coordinates: {currentProperty.coordinates}
-                </p>
               </div>
 
-              {/* Date pickers */}
-              <div className="grid grid-cols-2 gap-4">
+              {/* Dates */}
+              <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="flex items-center text-[10px] font-mono uppercase tracking-[0.25em] text-[#726E67] mb-2.5">
-                    <Calendar className="w-3.5 h-3.5 mr-1.5 text-[#B89F7D]" />
-                    03 — Check-In
-                  </label>
+                  <label className="font-metadata text-ink-muted block mb-3">CHECK-IN</label>
                   <input
                     type="date"
-                    value={checkIn}
-                    onChange={(e) => setCheckIn(e.target.value)}
+                    value={formState.checkIn}
+                    onChange={(e) => setFormState({ ...formState, checkIn: e.target.value })}
+                    className="w-full bg-transparent border-b border-ink/10 py-3 text-ink text-sm outline-none focus:border-ink/40 transition-colors"
                     required
-                    className="w-full bg-white border border-[#141413]/15 px-3 py-3 text-xs font-mono focus:outline-none focus:border-[#141413]"
                   />
                 </div>
                 <div>
-                  <label className="flex items-center text-[10px] font-mono uppercase tracking-[0.25em] text-[#726E67] mb-2.5">
-                    <Calendar className="w-3.5 h-3.5 mr-1.5 text-[#B89F7D]" />
-                    04 — Check-Out
-                  </label>
+                  <label className="font-metadata text-ink-muted block mb-3">CHECK-OUT</label>
                   <input
                     type="date"
-                    value={checkOut}
-                    onChange={(e) => setCheckOut(e.target.value)}
+                    value={formState.checkOut}
+                    onChange={(e) => setFormState({ ...formState, checkOut: e.target.value })}
+                    className="w-full bg-transparent border-b border-ink/10 py-3 text-ink text-sm outline-none focus:border-ink/40 transition-colors"
                     required
-                    className="w-full bg-white border border-[#141413]/15 px-3 py-3 text-xs font-mono focus:outline-none focus:border-[#141413]"
                   />
                 </div>
               </div>
 
-              {/* Guests selector */}
+              {/* Guests */}
               <div>
-                <label className="flex items-center text-[10px] font-mono uppercase tracking-[0.25em] text-[#726E67] mb-2.5">
-                  <Users className="w-3.5 h-3.5 mr-2 text-[#B89F7D]" />
-                  05 — Guests
-                </label>
-                <div className="flex items-center space-x-3">
-                  {[1, 2, 3, 4, 6].map((num) => (
-                    <button
-                      key={num}
-                      type="button"
-                      onClick={() => setGuests(num)}
-                      className={`flex-1 py-2.5 text-xs font-mono border transition-all ${
-                        guests === num
-                          ? 'border-[#141413] bg-[#141413] text-[#FAF8F5]'
-                          : 'border-[#141413]/10 bg-white hover:border-[#141413]/30'
-                      }`}
-                    >
-                      {num} {num === 1 ? 'Guest' : 'Guests'}
-                    </button>
+                <label className="font-metadata text-ink-muted block mb-3">GUESTS</label>
+                <select
+                  value={formState.guests}
+                  onChange={(e) => setFormState({ ...formState, guests: e.target.value })}
+                  className="w-full bg-transparent border-b border-ink/10 py-3 text-ink text-sm outline-none focus:border-ink/40 transition-colors appearance-none cursor-pointer"
+                >
+                  {[1, 2, 3, 4, 5, 6].map((n) => (
+                    <option key={n} value={n.toString()}>
+                      {n} {n === 1 ? 'Guest' : 'Guests'}
+                    </option>
                   ))}
-                </div>
+                </select>
               </div>
 
-              {/* Price summary */}
-              <div className="p-4 bg-[#F4EFEA] border border-[#141413]/6 space-y-2">
-                <div className="flex justify-between items-center text-xs font-mono">
-                  <span className="text-stone-500">
-                    {currentProperty.formattedPrice} × {nights} {nights === 1 ? 'night' : 'nights'}
-                  </span>
-                  <span className="font-semibold text-stone-900">
-                    ₹{totalPrice.toLocaleString('en-IN')}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center text-[10px] font-mono text-stone-400">
-                  <span>Taxes & Silent Concierge included</span>
-                  <span>Free Cancellation (48h)</span>
-                </div>
+              {/* Name & Email */}
+              <div>
+                <label className="font-metadata text-ink-muted block mb-3">NAME</label>
+                <input
+                  type="text"
+                  value={formState.name}
+                  onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                  className="w-full bg-transparent border-b border-ink/10 py-3 text-ink text-sm outline-none focus:border-ink/40 transition-colors"
+                  placeholder="Full name"
+                  required
+                />
+              </div>
+              <div>
+                <label className="font-metadata text-ink-muted block mb-3">EMAIL</label>
+                <input
+                  type="email"
+                  value={formState.email}
+                  onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                  className="w-full bg-transparent border-b border-ink/10 py-3 text-ink text-sm outline-none focus:border-ink/40 transition-colors"
+                  placeholder="your@email.com"
+                  required
+                />
               </div>
 
-              {/* Action Buttons */}
-              <div className="space-y-3 pt-2">
+              {/* Message */}
+              <div>
+                <label className="font-metadata text-ink-muted block mb-3">MESSAGE (OPTIONAL)</label>
+                <textarea
+                  value={formState.message}
+                  onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                  className="w-full bg-transparent border-b border-ink/10 py-3 text-ink text-sm outline-none focus:border-ink/40 transition-colors resize-none"
+                  rows={3}
+                  placeholder="Special requests or notes"
+                />
+              </div>
+
+              {/* Submit */}
+              <div className="mt-auto pt-8">
                 <button
                   type="submit"
-                  className="w-full py-4 bg-[#141413] text-[#FAF8F5] font-mono text-xs uppercase tracking-[0.24em] font-medium flex items-center justify-center space-x-3 hover:bg-[#2C2A29] transition-colors"
+                  className="w-full bg-ink-dark text-ivory font-metadata py-4 hover:bg-ink transition-colors duration-300"
                 >
-                  <span>REQUEST RESERVATION</span>
-                  <ArrowRight className="w-4 h-4" />
+                  CHECK AVAILABILITY
                 </button>
-
-                <button
-                  type="button"
-                  onClick={handleWhatsAppBooking}
-                  className="w-full py-3.5 bg-white border border-[#141413]/15 text-[#141413] font-mono text-xs uppercase tracking-[0.2em] flex items-center justify-center space-x-2.5 hover:bg-stone-50 transition-colors"
-                >
-                  <MessageCircle className="w-4 h-4 text-emerald-700" />
-                  <span>DIRECT WHATSAPP CONCIERGE</span>
-                </button>
+                <p className="text-ink-muted text-xs mt-4 text-center">
+                  This is a concierge inquiry — no payment required.
+                </p>
               </div>
             </form>
           )}
         </div>
-
-        {/* Footer info */}
-        <div className="p-6 md:p-8 border-t border-[#141413]/8 bg-[#F4EFEA]/50 text-center">
-          <p className="font-mono text-[9px] uppercase tracking-widest text-stone-500">
-            For urgent reservations: {BRAND.contact.phone}
-          </p>
-        </div>
       </div>
-    </div>
+    </>
   );
 }

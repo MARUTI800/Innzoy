@@ -1,99 +1,193 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { EXPERIENCES } from '@/data/innzoyData';
+import ScrollReveal from '@/components/common/ScrollReveal';
 
 export default function ExperiencesSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const horizontalTrackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let ctx: any;
+
+    const setupHorizontalScroll = async () => {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+
+      if (prefersReducedMotion || !isDesktop) return;
+
+      const { gsap } = await import('gsap');
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+      gsap.registerPlugin(ScrollTrigger);
+
+      ctx = gsap.context(() => {
+        const track = horizontalTrackRef.current;
+        if (!track) return;
+
+        // Calculate scroll width: distance needed to move all 4 cards into view
+        const totalCards = EXPERIENCES.length;
+        const scrollDistance = (totalCards - 1) * 75; // percentage
+
+        gsap.to(track, {
+          xPercent: -scrollDistance,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top top',
+            end: () => `+=${window.innerWidth * 1.5}`,
+            pin: true,
+            scrub: 1.1,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+      }, sectionRef);
+    };
+
+    setupHorizontalScroll();
+
+    return () => {
+      if (ctx) ctx.revert();
+    };
+  }, []);
+
   return (
-    <section className="py-28 md:py-36 px-6 md:px-12 bg-[#141413] text-[#FAF8F5] relative">
-      <div className="max-w-7xl mx-auto">
+    <section
+      ref={sectionRef}
+      className="py-28 md:py-36 lg:py-0 px-6 md:px-12 lg:px-16 bg-[#F4F1EA] text-[#171715] border-t border-[#171715]/10 overflow-hidden lg:h-screen lg:flex lg:flex-col lg:justify-center"
+    >
+      <div className="max-w-[1500px] w-full mx-auto">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 border-b border-white/10 pb-10">
-          <div>
-            <span className="font-mono text-[9px] uppercase tracking-[0.35em] text-[#B89F7D] block mb-3">
-              05 / CURATED IMMERSIONS
-            </span>
-            <h2 className="font-serif text-4xl sm:text-6xl md:text-7xl font-light tracking-tight uppercase leading-[1.05]">
-              THE STAY
-              <br />
-              IS MORE THAN
-              <br />
-              <span className="italic font-normal text-stone-300">THE ROOM.</span>
-            </h2>
+        <ScrollReveal variant="fade-up" duration={600}>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 lg:mb-12 pb-6 border-b border-[#171715]/10">
+            <div>
+              <span className="font-mono text-[9px] uppercase tracking-[0.38em] text-[#777168] block mb-2">
+                CURATED IMMERSIONS
+              </span>
+              <h2 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-light tracking-tight text-[#171715] uppercase leading-[0.96]">
+                THE STAY EXTENDS <span className="italic font-normal text-[#777168]">BEYOND THE ROOM.</span>
+              </h2>
+            </div>
+
+            <p className="mt-4 md:mt-0 font-mono text-xs uppercase tracking-[0.2em] text-[#777168] max-w-sm">
+              Rituals and immersions shaped by regional cuisine, silence, and terrain.
+            </p>
           </div>
+        </ScrollReveal>
 
-          <p className="mt-6 md:mt-0 text-stone-400 max-w-sm text-sm font-light leading-relaxed">
-            Crafted experiences shaped by regional geography, indigenous kitchen wisdom, and
-            restorative rituals.
-          </p>
-        </div>
-
-        {/* 2x2 Grid of Rich Immersive Experiences */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-          {EXPERIENCES.map((exp, idx) => (
-            <div
-              key={exp.id}
-              className="group relative aspect-[4/3] w-full overflow-hidden bg-[#1C1B19] cursor-pointer"
-              data-cursor="EXPLORE"
-            >
-              {/* Background Image with Hover Treatment */}
-              <Image
-                src={exp.image}
-                alt={exp.title}
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover transition-all duration-1000 ease-luxury filter brightness-[0.8] group-hover:scale-105 group-hover:brightness-[0.4]"
-              />
-
-              {/* Gradient Scrim */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-
-              {/* Category & Duration Tag */}
-              <div className="absolute top-6 left-6 right-6 flex items-center justify-between text-[10px] font-mono uppercase tracking-widest text-[#B89F7D]">
-                <span>0{idx + 1} — {exp.category}</span>
-                {exp.duration && <span>{exp.duration}</span>}
-              </div>
-
-              {/* Content Panel that shifts on hover */}
-              <div className="absolute bottom-6 left-6 right-6 transition-all duration-500 transform group-hover:-translate-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-stone-300 block mb-1">
-                  {exp.location}
-                </span>
-
-                <div className="flex items-center justify-between">
-                  <h3 className="font-serif text-2xl md:text-3xl font-light text-white tracking-tight">
-                    {exp.title}
-                  </h3>
-                  <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <ArrowUpRight className="w-4 h-4 text-white" />
+        {/* Desktop: Pinned Horizontal Track (smooth scrub) */}
+        <div className="hidden lg:block relative w-full overflow-hidden pt-4 pb-6">
+          <div
+            ref={horizontalTrackRef}
+            className="flex items-center space-x-16 will-change-transform"
+            style={{ width: `${EXPERIENCES.length * 75}%` }}
+          >
+            {EXPERIENCES.map((exp, idx) => (
+              <div
+                key={exp.id}
+                className="w-[68vw] max-w-[1000px] shrink-0 grid grid-cols-12 gap-10 items-center bg-[#EAE6DE] p-8 border border-[#171715]/10 shadow-[0_10px_35px_rgba(0,0,0,0.03)]"
+              >
+                {/* Image Column */}
+                <div className="col-span-7">
+                  <div
+                    className="relative aspect-[16/10] w-full overflow-hidden bg-[#E0DCD3]"
+                    data-cursor="VIEW"
+                  >
+                    <Image
+                      src={exp.image}
+                      alt={exp.title}
+                      fill
+                      sizes="50vw"
+                      className="object-cover filter brightness-[0.92] contrast-[1.02] hover:scale-105 transition-transform duration-1000 ease-luxury"
+                    />
+                    <div className="absolute top-4 left-4 bg-black/40 backdrop-blur-sm px-3 py-1 font-mono text-[9px] text-[#FAF9F6] tracking-widest uppercase border border-white/15">
+                      0{idx + 1} / {exp.category}
+                    </div>
                   </div>
                 </div>
 
-                <p className="font-serif italic text-stone-300 text-xs mt-1">
-                  {exp.subtitle}
-                </p>
-
-                {/* Secondary Description Revealed on Hover */}
-                <div className="max-h-0 overflow-hidden opacity-0 group-hover:max-h-32 group-hover:opacity-100 transition-all duration-500 ease-luxury">
-                  <p className="mt-3 text-xs text-stone-300 leading-relaxed font-light border-t border-white/20 pt-3">
+                {/* Details Column */}
+                <div className="col-span-5 space-y-4">
+                  <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[#A68A68] block">
+                    {exp.category.toUpperCase()} · {exp.location}
+                  </span>
+                  <h3 className="font-serif text-3xl font-light text-[#171715] uppercase tracking-tight leading-[1.05]">
+                    {exp.title}
+                  </h3>
+                  <p className="text-xs text-[#5A554D] font-light leading-relaxed">
                     {exp.description}
                   </p>
+                  <div className="pt-2">
+                    <Link
+                      href="/experiences"
+                      className="inline-flex items-center space-x-2 text-xs font-mono uppercase tracking-[0.24em] text-[#171715] border-b border-[#171715] pb-1 hover:text-[#A68A68] hover:border-[#A68A68] transition-colors"
+                    >
+                      <span>EXPLORE RITUAL</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile: Clean Vertical Storytelling Stack (no horizontal lock) */}
+        <div className="lg:hidden space-y-16">
+          {EXPERIENCES.map((exp, idx) => (
+            <div key={exp.id} className="space-y-4 border-b border-[#171715]/10 pb-12 last:border-b-0">
+              <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#E8E3DC]">
+                <Image
+                  src={exp.image}
+                  alt={exp.title}
+                  fill
+                  sizes="100vw"
+                  className="object-cover"
+                />
+                <div className="absolute top-4 left-4 bg-black/40 backdrop-blur-sm px-2.5 py-1 font-mono text-[9px] text-white tracking-widest uppercase">
+                  0{idx + 1} / {exp.category}
+                </div>
+              </div>
+
+              <div className="space-y-2 pt-2">
+                <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[#A68A68] block">
+                  {exp.category} · {exp.location}
+                </span>
+                <h3 className="font-serif text-2xl font-light text-[#171715] uppercase">
+                  {exp.title}
+                </h3>
+                <p className="text-xs text-[#5A554D] font-light leading-relaxed">
+                  {exp.description}
+                </p>
+                <div className="pt-1">
+                  <Link
+                    href="/experiences"
+                    className="inline-flex items-center space-x-2 text-xs font-mono uppercase tracking-wider text-[#171715] border-b border-[#171715] pb-0.5"
+                  >
+                    <span>EXPLORE →</span>
+                  </Link>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Footer Link */}
-        <div className="mt-16 text-center">
+        {/* View All Experiences Link */}
+        <div className="mt-12 lg:mt-6 pt-6 border-t border-[#171715]/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <p className="font-mono text-[9px] uppercase tracking-widest text-[#777168]">
+            IMMERSIONS ARE COMPLIMENTARY FOR REGISTERED INNZOY GUESTS
+          </p>
           <Link
             href="/experiences"
-            className="inline-flex items-center space-x-3 px-8 py-4 border border-white/30 text-white font-mono text-xs uppercase tracking-[0.24em] hover:bg-white hover:text-[#141413] transition-colors"
+            data-cursor="EXPLORE"
+            className="group inline-flex items-center space-x-2 text-xs font-mono uppercase tracking-[0.24em] text-[#171715] hover:text-[#A68A68] transition-colors"
           >
-            <span>VIEW ALL CURATED EXPERIENCES</span>
-            <ArrowUpRight className="w-4 h-4" />
+            <span>VIEW ALL CURATED IMMERSIONS</span>
+            <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
         </div>
       </div>

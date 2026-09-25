@@ -6,28 +6,31 @@ export interface RoomType {
   guests?: number;
   bed?: string;
   image?: string;
+  amenities?: string[];
 }
 
 export interface Property {
   id: string;
   name: string;
   slug: string;
-  type: 'hotel' | 'guesthouse' | 'villa' | 'penthouse';
-  chapter: string;
-  isMarquee?: boolean;
-  location: string;
-  neighborhood: string;
-  address: string;
+  type: 'sanctuary' | 'villa' | 'pavilion' | 'chalet' | 'estate' | 'hotel' | 'penthouse';
+  destinationId: string;
+  region: string;
+  country: string;
+  coordinates: string;
+  elevation?: string;
+  architect?: string;
+  yearOpened?: string;
   tagline: string;
   editorialSnippet: string;
-  architectureDescription?: string;
+  architectureDescription: string;
+  materialsUsed?: string[];
   startingPrice: number;
   formattedPrice: string;
   heroImage: string;
   gallery: string[];
   features: string[];
   roomTypes: RoomType[];
-  coordinates: string;
   diningSnippet?: string;
   wellnessSnippet?: string;
 }
@@ -36,11 +39,12 @@ export interface Experience {
   id: string;
   title: string;
   subtitle: string;
-  category: 'Dining' | 'Wellness' | 'Culture' | 'Nature' | 'Adventure' | 'Craft';
+  category: 'Dining' | 'Wellness' | 'Culture' | 'Nature';
   description: string;
   image: string;
   location: string;
   duration?: string;
+  highlights?: string[];
 }
 
 export interface JournalArticle {
@@ -51,17 +55,15 @@ export interface JournalArticle {
   date: string;
   readTime: string;
   author: string;
+  authorRole?: string;
   coverImage: string;
+  secondaryImage?: string;
   excerpt: string;
   content: string[];
-}
-
-export interface GuestReview {
-  quote: string;
-  guest: string;
-  rating: string;
-  stay: string;
-  verifiedSource: string;
+  quote?: {
+    text: string;
+    source: string;
+  };
 }
 
 export interface Destination {
@@ -74,4 +76,6 @@ export interface Destination {
   description: string;
   image: string;
   propertyCount: number;
+  climate?: string;
+  highlights?: string[];
 }

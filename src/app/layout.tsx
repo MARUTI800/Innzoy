@@ -2,11 +2,13 @@ import type { Metadata } from 'next';
 import { Cormorant_Garamond, Plus_Jakarta_Sans, Space_Mono } from 'next/font/google';
 import './globals.css';
 import { BookingProvider } from '@/context/BookingContext';
+import { GalleryProvider } from '@/components/common/GalleryLightbox';
 import Navbar from '@/components/common/Navbar';
 import Footer from '@/components/common/Footer';
 import BookingModal from '@/components/common/BookingModal';
 import CustomCursor from '@/components/common/CustomCursor';
 import SmoothScroll from '@/components/common/SmoothScroll';
+import ScrollProgress from '@/components/common/ScrollProgress';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -31,30 +33,31 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'INNZOY — Hotels, Resorts & Places Worth Remembering',
+  title: 'INNZOY — Contemporary Luxury Hospitality Group',
   description:
-    'Discover INNZOY hotels and resorts — thoughtfully designed stays, meaningful experiences and destinations shaped by place across Hyderabad, Rajasthan, and beyond.',
+    'Discover INNZOY hotels, sanctuaries, and residences — architectural calm, tactile materials, and quiet hospitality across Jaipur, Goa, Udaipur, the Himalayas, and Hyderabad.',
   keywords: [
     'INNZOY',
-    'luxury boutique hotel Hyderabad',
-    'Jubilee Hills villa',
-    'HITEC City executive hotel',
-    'Kondapur penthouse suite',
-    'Mokila retreat',
-    'architectural hospitality India',
-    'quiet luxury hotel',
+    'luxury boutique hotel',
+    'quiet luxury hospitality',
+    'architectural sanctuary',
+    'Jaipur heritage stay',
+    'Goa pavilion villa',
+    'Udaipur lake cloister',
+    'Himalayas alpine retreat',
+    'Hyderabad Jubilee Hills',
   ],
   authors: [{ name: 'INNZOY Hospitality Group' }],
   metadataBase: new URL('https://hotel-innzoy.vercel.app'),
   openGraph: {
-    title: 'INNZOY — Hotels, Resorts & Places Worth Remembering',
+    title: 'INNZOY — Contemporary Luxury Hospitality Group',
     description:
-      'Curated boutique hotels, private villas, and penthouses. Experience architectural calm, understated luxury, and 24/7 human concierge.',
+      'Curated boutique sanctuaries, private pavilions, and alpine chalets. Architectural calm, tactile materials, and human warmth.',
     url: 'https://hotel-innzoy.vercel.app',
     siteName: 'INNZOY',
     images: [
       {
-        url: 'https://innzoy.in/wp-content/uploads/2025/10/Hotel-Main-Elevation-e1763746501737-2048x1363.jpg',
+        url: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=2000&q=85',
         width: 1200,
         height: 630,
         alt: 'INNZOY Hotels & Resorts',
@@ -65,11 +68,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'INNZOY — Hotels, Resorts & Places Worth Remembering',
+    title: 'INNZOY — Contemporary Luxury Hospitality Group',
     description:
-      'Curated boutique hotels and residences. Quiet luxury, human warmth, and architectural calm.',
+      'Curated boutique sanctuaries and residences. Quiet luxury, human warmth, and architectural calm.',
     images: [
-      'https://innzoy.in/wp-content/uploads/2025/10/Hotel-Main-Elevation-e1763746501737-2048x1363.jpg',
+      'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=2000&q=85',
     ],
   },
 };
@@ -79,29 +82,60 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HotelGroup',
+    name: 'INNZOY Hotels & Resorts',
+    url: 'https://hotel-innzoy.vercel.app',
+    logo: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=2000&q=85',
+    description:
+      'Curated boutique sanctuaries, private pavilions, and alpine chalets across Jaipur, Goa, Udaipur, the Himalayas, and Hyderabad.',
+    telephone: '+91 85209 63096',
+    email: 'concierge@innzoy.com',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Jubilee Hills',
+      addressLocality: 'Hyderabad',
+      addressRegion: 'Telangana',
+      postalCode: '500033',
+      addressCountry: 'IN',
+    },
+  };
+
   return (
     <html lang="en" className={`${cormorant.variable} ${jakarta.variable} ${spaceMono.variable}`}>
-      <body className="antialiased bg-[#FAF8F5] text-[#141413]">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
+      <body className="antialiased bg-[#F4F1EA] text-[#171715]">
         <BookingProvider>
-          <SmoothScroll>
-            {/* Film grain effect */}
-            <div className="film-grain" aria-hidden="true" />
+          <GalleryProvider>
+            <SmoothScroll>
+              {/* Subtle Scroll Progress Indicator */}
+              <ScrollProgress />
 
-            {/* Custom interactive desktop cursor */}
-            <CustomCursor />
+              {/* Film grain effect */}
+              <div className="film-grain" aria-hidden="true" />
 
-            {/* Global minimal navigation */}
-            <Navbar />
+              {/* Custom interactive desktop cursor */}
+              <CustomCursor />
 
-            {/* Page content */}
-            <main className="min-h-screen">{children}</main>
+              {/* Global minimal navigation */}
+              <Navbar />
 
-            {/* Global slide-over reservation drawer */}
-            <BookingModal />
+              {/* Page content */}
+              <main className="min-h-screen">{children}</main>
 
-            {/* Global editorial footer */}
-            <Footer />
-          </SmoothScroll>
+              {/* Global slide-over reservation drawer */}
+              <BookingModal />
+
+              {/* Global editorial footer */}
+              <Footer />
+            </SmoothScroll>
+          </GalleryProvider>
         </BookingProvider>
       </body>
     </html>

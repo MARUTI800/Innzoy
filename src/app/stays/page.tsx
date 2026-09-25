@@ -1,192 +1,279 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, ArrowUpRight, Check, MapPin } from 'lucide-react';
-import PageHero from '@/components/common/PageHero';
-import { PROPERTIES } from '@/data/innzoyData';
+import { useSearchParams } from 'next/navigation';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { PROPERTIES, DESTINATIONS } from '@/data/innzoyData';
 import { useBooking } from '@/context/BookingContext';
+import ScrollReveal from '@/components/common/ScrollReveal';
 
-export default function StaysPage() {
-  const [filterType, setFilterType] = useState<'all' | 'hotel' | 'villa' | 'penthouse' | 'guesthouse'>('all');
-  const [filterRegion, setFilterRegion] = useState<'all' | 'hyderabad' | 'rajasthan'>('all');
+function StaysContent() {
+  const searchParams = useSearchParams();
+  const destQuery = searchParams.get('destination');
   const { openBooking } = useBooking();
 
-  const filteredProperties = PROPERTIES.filter((p) => {
-    const matchesType =
-      filterType === 'all' ||
-      (filterType === 'hotel' && p.type === 'hotel') ||
-      (filterType === 'villa' && p.type === 'villa') ||
-      (filterType === 'penthouse' && p.type === 'penthouse') ||
-      (filterType === 'guesthouse' && (p.type === 'guesthouse' || p.type === 'villa' || p.type === 'penthouse'));
+  const [selectedDestination, setSelectedDestination] = useState<string>(
+    destQuery || 'all'
+  );
+  const [selectedType, setSelectedType] = useState<string>('all');
 
-    const matchesRegion =
-      filterRegion === 'all' ||
-      (filterRegion === 'hyderabad' && p.location.includes('Hyderabad')) ||
-      (filterRegion === 'rajasthan' && (p.location.includes('Rajasthan') || p.location.includes('Jaipur')));
-
-    return matchesType && matchesRegion;
-  });
+  const filteredProperties = useMemo(() => {
+    return PROPERTIES.filter((property) => {
+      const matchDest =
+        selectedDestination === 'all' ||
+        property.destinationId.toLowerCase() === selectedDestination.toLowerCase();
+      const matchType =
+        selectedType === 'all' || property.type.toLowerCase() === selectedType.toLowerCase();
+      return matchDest && matchType;
+    });
+  }, [selectedDestination, selectedType]);
 
   return (
-    <div className="bg-[#FAF8F5] text-[#141413]">
-      <PageHero
-        eyebrow="INNZOY COLLECTION"
-        title="OUR STAYS & SANCTUARIES"
-        subtitle="Nine curated boutique hotels, private villas, and skyline penthouses designed for quiet architectural rest and deep human comfort."
-        bgImage="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=2000&q=85"
-        coordinates="17.4319° N / 78.4073° E"
-      />
-
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-16">
-        {/* Editorial Filter Bar */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between pb-8 mb-16 border-b border-[#141413]/10 gap-6">
-          {/* Category Tabs */}
-          <div className="flex flex-wrap items-center gap-2">
-            {[
-              { id: 'all', label: 'ALL SANCTUARIES' },
-              { id: 'hotel', label: 'BOUTIQUE HOTELS' },
-              { id: 'villa', label: 'PRIVATE VILLAS & ESTATES' },
-              { id: 'penthouse', label: 'ROOFTOP PENTHOUSES' },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setFilterType(tab.id as any)}
-                className={`px-4 py-2.5 text-xs font-mono uppercase tracking-[0.2em] transition-all border ${
-                  filterType === tab.id
-                    ? 'bg-[#141413] text-[#FAF8F5] border-[#141413]'
-                    : 'bg-white text-[#726E67] border-[#141413]/10 hover:border-[#141413]/30 hover:text-[#141413]'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Region Tabs */}
-          <div className="flex items-center space-x-2 text-xs font-mono">
-            <span className="text-stone-400 uppercase tracking-widest mr-2">REGION:</span>
-            {[
-              { id: 'all', label: 'ALL' },
-              { id: 'hyderabad', label: 'HYDERABAD' },
-              { id: 'rajasthan', label: 'RAJASTHAN' },
-            ].map((reg) => (
-              <button
-                key={reg.id}
-                onClick={() => setFilterRegion(reg.id as any)}
-                className={`px-3 py-1.5 transition-colors uppercase tracking-widest ${
-                  filterRegion === reg.id
-                    ? 'font-bold text-[#141413] border-b border-[#141413]'
-                    : 'text-stone-400 hover:text-stone-900'
-                }`}
-              >
-                {reg.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Properties Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-          {filteredProperties.map((property) => (
-            <div
-              key={property.slug}
-              className="group bg-white border border-[#141413]/8 flex flex-col justify-between overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.02)] hover:border-[#141413]/25 transition-all duration-500"
-            >
-              <div>
-                {/* Image */}
-                <div
-                  className="relative aspect-[16/11] w-full overflow-hidden bg-stone-100"
-                  data-cursor="VIEW"
-                >
-                  <Image
-                    src={property.heroImage}
-                    alt={property.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-1000 ease-luxury group-hover:scale-105"
-                  />
-                  <div className="absolute top-3 left-3 bg-[#141413]/70 backdrop-blur-sm px-2.5 py-1 text-[8px] font-mono text-[#FAF8F5] tracking-widest uppercase">
-                    {property.neighborhood}
-                  </div>
-                  <div className="absolute bottom-3 right-3 bg-[#FAF8F5] px-2.5 py-1 font-mono text-[10px] text-[#141413] font-medium shadow">
-                    From {property.formattedPrice}
-                    <span className="text-[8px] text-stone-400 ml-1">/ night</span>
-                  </div>
-                </div>
-
-                {/* Details */}
-                <div className="p-6 md:p-8">
-                  <div className="flex items-center space-x-2 text-[9px] font-mono uppercase tracking-[0.25em] text-[#B89F7D] mb-1.5">
-                    <MapPin className="w-3 h-3" />
-                    <span>{property.location}</span>
-                  </div>
-
-                  <h3 className="font-serif text-2xl font-light text-[#141413] tracking-tight group-hover:text-[#B89F7D] transition-colors leading-snug">
-                    <Link href={`/stays/${property.slug}`}>{property.name}</Link>
-                  </h3>
-
-                  <p className="mt-3 text-xs text-[#726E67] font-light leading-relaxed line-clamp-3">
-                    {property.editorialSnippet}
-                  </p>
-
-                  {/* Amenities highlights */}
-                  <div className="mt-5 pt-4 border-t border-[#141413]/6 space-y-1.5">
-                    {property.features.slice(0, 3).map((f, i) => (
-                      <div key={i} className="flex items-center space-x-2 text-[11px] text-stone-600">
-                        <Check className="w-3 h-3 text-[#B89F7D] shrink-0" />
-                        <span className="truncate">{f}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Actions Footer */}
-              <div className="p-6 md:p-8 pt-0 flex items-center justify-between border-t border-[#141413]/6 mt-4">
-                <Link
-                  href={`/stays/${property.slug}`}
-                  className="inline-flex items-center space-x-1.5 text-xs font-mono uppercase tracking-widest text-[#141413] group-hover:text-[#B89F7D] transition-colors"
-                >
-                  <span>EXPLORE</span>
-                  <ArrowRight className="w-3 h-3" />
-                </Link>
-
-                <button
-                  onClick={() => openBooking({ propertySlug: property.slug })}
-                  className="px-4 py-2 border border-[#141413] text-[10px] font-mono uppercase tracking-widest hover:bg-[#141413] hover:text-[#FAF8F5] transition-colors"
-                >
-                  RESERVE
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Custom Group & Corporate Inquiry Banner */}
-        <div className="mt-20 p-8 md:p-14 bg-[#F4EFEA] border border-[#141413]/8 flex flex-col md:flex-row md:items-center justify-between gap-8">
-          <div>
-            <span className="font-mono text-[9px] uppercase tracking-[0.35em] text-[#B89F7D] block mb-2">
-              BESPOKE RESERVATIONS
+    <div className="bg-[#F4F1EA] text-[#171715] min-h-screen pt-32 sm:pt-40 pb-36">
+      {/* Editorial Header */}
+      <section className="px-6 md:px-12 lg:px-16 max-w-[1500px] mx-auto mb-16 md:mb-24">
+        <ScrollReveal variant="fade-up" duration={600}>
+          <div className="flex items-center space-x-3 mb-6">
+            <span className="font-mono text-[9px] uppercase tracking-[0.38em] text-[#777168]">
+              ACCOMMODATION ARCHIVE
             </span>
-            <h3 className="font-serif text-3xl font-light text-[#141413]">
-              Planning an Extended Stay or Corporate Offsite?
-            </h3>
-            <p className="text-sm text-[#726E67] font-light max-w-xl mt-2 leading-relaxed">
-              Our direct concierge desk coordinates full villa floor buyouts, dedicated chefs, and
-              streamlined corporate invoicing across HITEC City, Jubilee Hills, and Mokila.
-            </p>
+            <span className="w-8 h-[1px] bg-[#171715]/15" />
+          </div>
+        </ScrollReveal>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-end">
+          <div className="lg:col-span-8">
+            <ScrollReveal variant="clip-up" duration={900} delay={100}>
+              <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-[6.5rem] font-light uppercase tracking-tight text-[#171715] leading-[0.92]">
+                ALL STAYS &
+                <br />
+                <span className="italic font-normal text-[#777168]">SANCTUARIES.</span>
+              </h1>
+            </ScrollReveal>
           </div>
 
-          <Link
-            href="/contact"
-            className="px-8 py-4 bg-[#141413] text-[#FAF8F5] font-mono text-xs uppercase tracking-[0.24em] hover:bg-[#2C2A29] transition-colors shrink-0 text-center"
-          >
-            CONTACT CONCIERGE DESK
-          </Link>
+          <div className="lg:col-span-4 lg:pb-2">
+            <ScrollReveal variant="fade-up" duration={800} delay={200}>
+              <p className="text-sm sm:text-base text-[#5A554D] font-light leading-relaxed">
+                Each INNZOY address is an intentional architectural intervention in dialogue with native stone, filtered light, and contemplative stillness.
+              </p>
+            </ScrollReveal>
+          </div>
         </div>
-      </div>
+
+        {/* Filter Navigation */}
+        <div className="mt-16 pt-8 border-t border-[#171715]/10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          {/* Destination tabs */}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[#777168] mr-2">
+              DESTINATION:
+            </span>
+            <button
+              onClick={() => setSelectedDestination('all')}
+              className={`px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.24em] transition-all ${
+                selectedDestination === 'all'
+                  ? 'bg-[#171715] text-[#FAF9F6]'
+                  : 'bg-transparent text-[#777168] hover:text-[#171715]'
+              }`}
+            >
+              ALL ({PROPERTIES.length})
+            </button>
+            {DESTINATIONS.map((dest) => (
+              <button
+                key={dest.id}
+                onClick={() => setSelectedDestination(dest.id)}
+                className={`px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.24em] transition-all ${
+                  selectedDestination === dest.id
+                    ? 'bg-[#171715] text-[#FAF9F6]'
+                    : 'bg-transparent text-[#777168] hover:text-[#171715]'
+                }`}
+              >
+                {dest.name}
+              </button>
+            ))}
+          </div>
+
+          {/* Results count & status */}
+          <div className="font-mono text-[9px] uppercase tracking-[0.28em] text-[#777168]">
+            SHOWING {filteredProperties.length} OF {PROPERTIES.length} SANCTUARIES
+          </div>
+        </div>
+      </section>
+
+      {/* Property Listing: Asymmetric Magazine Style */}
+      <section className="px-6 md:px-12 lg:px-16 max-w-[1500px] mx-auto space-y-24 md:space-y-36">
+        {filteredProperties.map((property, idx) => {
+          const isEven = idx % 2 === 0;
+
+          return (
+            <article
+              key={property.slug}
+              className="border-t border-[#171715]/10 pt-16 md:pt-24"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+                {/* Image Column */}
+                <div
+                  className={`lg:col-span-7 ${
+                    isEven ? 'lg:order-1' : 'lg:order-2'
+                  }`}
+                >
+                  <ScrollReveal variant="clip-up" duration={1000}>
+                    <Link
+                      href={`/stays/${property.slug}`}
+                      data-cursor="VIEW"
+                      className="group block relative aspect-[16/11] w-full overflow-hidden bg-[#E8E3DC]"
+                    >
+                      <Image
+                        src={property.heroImage}
+                        alt={property.name}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 58vw"
+                        className="object-cover filter brightness-[0.93] contrast-[1.02] transition-transform duration-1200 ease-luxury group-hover:scale-105"
+                      />
+                      <div className="absolute top-6 left-6 font-mono text-[9px] uppercase tracking-[0.3em] text-[#FAF9F6] bg-black/40 backdrop-blur-sm px-3 py-1.5 border border-white/15">
+                        SANCTUARY 0{idx + 1}
+                      </div>
+                      <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between text-[9px] font-mono uppercase tracking-widest text-[#FAF9F6]">
+                        <span>{property.coordinates}</span>
+                        <span>EXPLORE PERSPECTIVES →</span>
+                      </div>
+                    </Link>
+                  </ScrollReveal>
+
+                  {/* Secondary Image Strip for desktop */}
+                  {property.gallery && property.gallery.length > 1 && (
+                    <div className="grid grid-cols-3 gap-3 mt-3">
+                      {property.gallery.slice(1, 4).map((img, imgIdx) => (
+                        <div
+                          key={imgIdx}
+                          className="relative aspect-[16/10] overflow-hidden bg-[#E8E3DC]"
+                        >
+                          <Image
+                            src={img}
+                            alt={`${property.name} detail ${imgIdx + 1}`}
+                            fill
+                            sizes="20vw"
+                            className="object-cover filter brightness-[0.9] hover:scale-105 transition-transform duration-700"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Details Column */}
+                <div
+                  className={`lg:col-span-5 space-y-6 ${
+                    isEven ? 'lg:order-2' : 'lg:order-1'
+                  }`}
+                >
+                  <ScrollReveal variant="fade-up" duration={700}>
+                    <div className="flex items-center space-x-3 text-[10px] font-mono text-[#A68A68] uppercase tracking-[0.28em]">
+                      <span>{property.region}</span>
+                      <span>·</span>
+                      <span className="capitalize">{property.type}</span>
+                    </div>
+
+                    <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light uppercase tracking-tight text-[#171715] mt-2 leading-[1.02]">
+                      <Link
+                        href={`/stays/${property.slug}`}
+                        className="hover:text-[#A68A68] transition-colors"
+                      >
+                        {property.name}
+                      </Link>
+                    </h2>
+                  </ScrollReveal>
+
+                  <ScrollReveal variant="fade-up" duration={800} delay={100}>
+                    <p className="text-sm sm:text-base text-[#5A554D] font-light leading-relaxed">
+                      {property.editorialSnippet}
+                    </p>
+                  </ScrollReveal>
+
+                  {/* Architectural metadata */}
+                  <ScrollReveal variant="fade-up" duration={800} delay={150}>
+                    <div className="py-4 border-y border-[#171715]/10 grid grid-cols-2 gap-4 font-mono text-[9px] uppercase tracking-[0.24em] text-[#777168]">
+                      <div>
+                        <span className="text-[#171715] block mb-1">STARTING AT</span>
+                        <span className="font-serif text-base text-[#171715]">
+                          {property.formattedPrice}
+                        </span>
+                        <span className="lowercase"> / night</span>
+                      </div>
+                      {property.architect && (
+                        <div>
+                          <span className="text-[#171715] block mb-1">ARCHITECT</span>
+                          <span className="line-clamp-1">{property.architect}</span>
+                        </div>
+                      )}
+                    </div>
+                  </ScrollReveal>
+
+                  {/* Signature features */}
+                  <ScrollReveal variant="fade-up" duration={800} delay={200}>
+                    <div className="space-y-2 pt-1">
+                      <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-[#777168] block mb-2">
+                        DISTINCTIVE ATTRIBUTES
+                      </span>
+                      <ul className="space-y-1.5 text-xs text-[#5A554D] font-light">
+                        {property.features.slice(0, 3).map((feat, fIdx) => (
+                          <li key={fIdx} className="flex items-center space-x-2">
+                            <span className="w-1.5 h-1.5 bg-[#A68A68] rounded-none shrink-0" />
+                            <span>{feat}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </ScrollReveal>
+
+                  {/* Actions */}
+                  <ScrollReveal variant="fade-up" duration={800} delay={250}>
+                    <div className="pt-4 flex flex-wrap items-center gap-4">
+                      <Link
+                        href={`/stays/${property.slug}`}
+                        data-cursor="EXPLORE"
+                        className="px-6 py-3.5 bg-[#171715] text-[#FAF9F6] font-mono text-xs uppercase tracking-[0.24em] hover:bg-[#A68A68] transition-colors inline-flex items-center space-x-2"
+                      >
+                        <span>VIEW SANCTUARY</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+
+                      <button
+                        onClick={() =>
+                          openBooking({
+                            propertySlug: property.slug,
+                            destination: property.destinationId,
+                          })
+                        }
+                        data-cursor="RESERVE"
+                        className="px-6 py-3.5 border border-[#171715]/30 text-[#171715] font-mono text-xs uppercase tracking-[0.24em] hover:border-[#171715] transition-colors"
+                      >
+                        INQUIRE
+                      </button>
+                    </div>
+                  </ScrollReveal>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </section>
     </div>
+  );
+}
+
+export default function StaysPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#F4F1EA] flex items-center justify-center font-mono text-xs tracking-widest text-[#777168]">
+          LOADING SANCTUARIES...
+        </div>
+      }
+    >
+      <StaysContent />
+    </Suspense>
   );
 }
