@@ -1,3 +1,0 @@
-module.exports=[33354,(a,b,c)=>{"use strict";c._=function(a){return a&&a.__esModule?a:{default:a}}},48222,a=>{"use strict";var b=a.i(87924),c=a.i(91121);a.s(["default",0,function({propertySlug:a,roomName:d,buttonLabel:e="RESERVE SANCTUARY"}){let{openBooking:f}=(0,c.useBooking)();return(0,b.jsx)("button",{onClick:()=>f({propertySlug:a,roomName:d}),className:"px-6 py-3.5 bg-[#141413] text-[#FAF8F5] font-mono text-xs uppercase tracking-[0.24em] font-medium hover:bg-[#2C2A29] transition-colors",children:e})}])}];
-
-//# sourceMappingURL=_057ckcb._.js.map
