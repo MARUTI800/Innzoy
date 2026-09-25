@@ -1,0 +1,577 @@
+import { Property, Experience, JournalArticle, GuestReview, Destination } from '../types';
+
+export const BRAND = {
+  name: "INNZOY",
+  subname: "HOTELS & RESORTS",
+  tagline: "Stay somewhere worth remembering.",
+  philosophy: "We create places to feel something.",
+  intro: "Thoughtfully designed places, considered service, and experiences shaped by where you are.",
+  manifesto: [
+    "We believe a stay should never feel transactional, sterile, or detached from its environment.",
+    "Founded on the principle of understated luxury, INNZOY creates spaces where contemporary architecture converses with quiet comfort, local materiality, and deeply human warmth.",
+    "From intimate urban sanctuararies in Hyderabad’s tech corridors to open countryside estates and heritage retreats, every property is curated to slow the pulse and leave an enduring impression."
+  ],
+  stats: [
+    { value: "09", label: "Curated Sanctuaries" },
+    { value: "04", label: "Regional Destinations" },
+    { value: "4.9", label: "Average Guest Rating" },
+    { value: "24/7", label: "Silent Concierge Service" }
+  ],
+  contact: {
+    phone: "+91 85209 63096",
+    displayPhone: "+91 85209 63096",
+    email: "concierge@innzoy.in",
+    whatsappUrl: "https://wa.me/918520963096?text=Hello%20INNZOY%20Concierge%2C%20I%20would%20like%20to%20inquire%20about%20a%20stay.",
+    headOffice: "INNZOY Hotels & Private Residences, Kondapur, Hyderabad, Telangana 500084, India"
+  }
+};
+
+export const PROPERTIES: Property[] = [
+  {
+    id: "jubilee-hills",
+    name: "The Innzoy Villa Jubilee Hills",
+    slug: "jubilee-hills",
+    type: "villa",
+    chapter: "Spaces That Feel Like Home",
+    isMarquee: true,
+    location: "Jubilee Hills, Hyderabad",
+    neighborhood: "MP & MLAs Colony",
+    address: "MP and MLAs Colony, Jubilee Hills, Hyderabad, Telangana 500033",
+    tagline: "Exclusive Posh Sanctuary Amidst Hyderabad’s Premier Enclave",
+    editorialSnippet: "Tucked inside an exclusive residential cul-de-sac, this boutique estate offers discerning travelers an intimate sanctuary surrounded by verdant trees, high-ceilinged lounges, and immediate access to Jubilee Hills’ finest culinary avenues.",
+    architectureDescription: "Conceived as an urban cloister, the Jubilee Hills villa draws upon warm teak millwork, hand-cut stone masonry, and shaded courtyards that filter Hyderabad’s golden daylight into a serene play of shadow.",
+    startingPrice: 6999,
+    formattedPrice: "₹6,999",
+    heroImage: "https://innzoy.in/wp-content/uploads/2025/10/jublie-hill-bedroom-2.jpg",
+    gallery: [
+      "https://innzoy.in/wp-content/uploads/2025/10/jublie-hill-bedroom-2.jpg",
+      "https://innzoy.in/wp-content/uploads/2025/10/jublie-hills-room-view-768x1024.jpg",
+      "https://innzoy.in/wp-content/uploads/2025/10/jublie-hills-outdoor-768x1024.jpg",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=85"
+    ],
+    features: [
+      "Ultra-Private Boutique Estate",
+      "Landscaped Balconies with Verdant Canopies",
+      "Bespoke Solid Teak Interiors",
+      "24/7 Dedicated Butler & Concierge",
+      "Minutes to Road 36 & 45 Fine Dining"
+    ],
+    roomTypes: [
+      {
+        name: "01 — Boutique Private Suite",
+        price: "₹6,999",
+        note: "Ensuite bath, private balcony, designer dressing lounge",
+        size: "54 m²",
+        guests: 2,
+        bed: "Custom King",
+        image: "https://innzoy.in/wp-content/uploads/2025/10/jublie-hill-bedroom-2.jpg"
+      },
+      {
+        name: "02 — Grand Villa Floor Residence",
+        price: "₹9,999",
+        note: "Complete floor with expansive private lounge & prep kitchen",
+        size: "112 m²",
+        guests: 4,
+        bed: "Two King Bedrooms",
+        image: "https://innzoy.in/wp-content/uploads/2025/10/jublie-hills-room-view-768x1024.jpg"
+      }
+    ],
+    coordinates: "17.4319° N / 78.4073° E",
+    diningSnippet: "Private chef dinners featuring cold-pressed regional oils and Deccan heritage breakfast spreads served on the shaded morning terrace.",
+    wellnessSnippet: "In-suite aromatherapy rituals utilizing locally sourced botanical essences and herbal poultices."
+  },
+  {
+    id: "kondapur",
+    name: "The Innzoy Penthouse & Suites Kondapur",
+    slug: "kondapur",
+    type: "penthouse",
+    chapter: "Spaces That Feel Like Home",
+    isMarquee: true,
+    location: "Kondapur, Hyderabad",
+    neighborhood: "JV Hills Skyline",
+    address: "Plot 1902, Kondapur, JV Hills, Hyderabad, Telangana 500084",
+    tagline: "Private Skyline Rooftop Living Above JV Hills",
+    editorialSnippet: "Perched high above the city, the Kondapur Penthouse boasts an expansive private open-sky terrace, sweeping evening sunsets, and a secluded open-air atmosphere designed for quiet reflections or celebratory family retreats.",
+    architectureDescription: "Floor-to-ceiling glass pavilions open onto a 1,200 sq ft wrap-around sky deck, framing sunsets over the Western horizon with clean architectural lines and tactile micro-cement finishes.",
+    startingPrice: 2499,
+    formattedPrice: "₹2,499",
+    heroImage: "https://innzoy.in/wp-content/uploads/2025/11/9-scaled.jpg",
+    gallery: [
+      "https://innzoy.in/wp-content/uploads/2025/11/9-scaled.jpg",
+      "https://innzoy.in/wp-content/uploads/2025/11/2-6-scaled.jpg",
+      "https://innzoy.in/wp-content/uploads/2025/11/5-5-scaled.jpg",
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=85"
+    ],
+    features: [
+      "Exclusive Open-Air Sky Terrace",
+      "Pet-Friendly Living Quarters",
+      "Panoramic Skyline Horizon Views",
+      "Designer Kitchenette & Wine Chiller",
+      "Whisper-Quiet Soundproofing"
+    ],
+    roomTypes: [
+      {
+        name: "01 — Panoramic Skyline Suite",
+        price: "₹2,499",
+        note: "Direct terrace access, custom king bed, lounge corner",
+        size: "46 m²",
+        guests: 2,
+        bed: "Custom King",
+        image: "https://innzoy.in/wp-content/uploads/2025/11/9-scaled.jpg"
+      },
+      {
+        name: "02 — Entire Penthouse Residence",
+        price: "₹2,999",
+        note: "Exclusive access to the full rooftop floor & outdoor terrace",
+        size: "98 m²",
+        guests: 4,
+        bed: "Two King Beds",
+        image: "https://innzoy.in/wp-content/uploads/2025/11/2-6-scaled.jpg"
+      }
+    ],
+    coordinates: "17.4699° N / 78.3578° E",
+    diningSnippet: "Starlit terrace dining under open skies with seasonal wood-fired delicacies prepared on the terrace grill.",
+    wellnessSnippet: "Sunrise yoga mats and guided breathing sessions perched above the morning city mist."
+  },
+  {
+    id: "khajaguda",
+    name: "The Innzoy Khajaguda Sanctuary",
+    slug: "khajaguda",
+    type: "hotel",
+    chapter: "Hotels for the City",
+    location: "Khajaguda, Hyderabad",
+    neighborhood: "Chitrapuri Colony",
+    address: "Plot 36, Chitrapuri Colony High Tower Rd, opp. Klay school, Khajaguda, Hyderabad, Telangana 500104",
+    tagline: "Serene Urban Calm Minutes from Financial District",
+    editorialSnippet: "Nestled against the tranquil rock formations of Khajaguda, this address provides an oasis of stillness right on the threshold of Hyderabad’s buzzing financial and IT nerve center.",
+    architectureDescription: "Built with honest basalt accents and textured plaster, the building embraces Hyderabad's billion-year-old rock formations with floor-to-ceiling acoustic glass that insulates from city sounds.",
+    startingPrice: 1499,
+    formattedPrice: "₹1,499",
+    heroImage: "https://innzoy.in/wp-content/uploads/2025/10/Hotel-Main-Elevation-e1763746501737-2048x1363.jpg",
+    gallery: [
+      "https://innzoy.in/wp-content/uploads/2025/10/Hotel-Main-Elevation-e1763746501737-2048x1363.jpg",
+      "https://innzoy.in/wp-content/uploads/2025/10/khajaguda1-2048x1365.webp",
+      "https://innzoy.in/wp-content/uploads/2025/10/401A0458-1365x2048.jpg"
+    ],
+    features: [
+      "Ultra-Fast Fiber Optic Connectivity",
+      "24/7 Silent Human Concierge",
+      "Handcrafted Orthopedic Comfort Bedding",
+      "Raindance Walk-in Showers",
+      "Minutes to US Consulate & Financial District"
+    ],
+    roomTypes: [
+      {
+        name: "01 — Deluxe King Room",
+        price: "₹1,499",
+        note: "King bed, crafted writing desk, stone rain shower",
+        size: "38 m²",
+        guests: 2,
+        bed: "Orthopedic King",
+        image: "https://innzoy.in/wp-content/uploads/2025/10/khajaguda1-2048x1365.webp"
+      },
+      {
+        name: "02 — Executive Sanctuary Suite",
+        price: "₹1,999",
+        note: "Spacious layout, seating lounge, city view",
+        size: "52 m²",
+        guests: 2,
+        bed: "Orthopedic King",
+        image: "https://innzoy.in/wp-content/uploads/2025/10/401A0458-1365x2048.jpg"
+      }
+    ],
+    coordinates: "17.4194° N / 78.3685° E"
+  },
+  {
+    id: "dlf-road",
+    name: "The Innzoy DLF Cyber City",
+    slug: "dlf-road",
+    type: "hotel",
+    chapter: "Hotels for the City",
+    location: "Gachibowli, Hyderabad",
+    neighborhood: "DLF Cyber City Corridor",
+    address: "RK Square, House 155, Hig A, Survey 132, Phase 4, AP Housing Board Colony, Gachibowli, Hyderabad 500032",
+    tagline: "The Business Traveler’s Haven Along Gachibowli Corridor",
+    editorialSnippet: "Designed specifically for modern executives and corporate consultants, our DLF Road location blends sleek ergonomics with plush silence just steps away from major tech campuses.",
+    architectureDescription: "Sleek architectural lines, warm ash wood cabinetry, and ambient circadian lighting offer business guests a peaceful restorative cocoon after demanding working hours.",
+    startingPrice: 1799,
+    formattedPrice: "₹1,799",
+    heroImage: "https://innzoy.in/wp-content/uploads/2025/10/Premium-Room-4-2048x1536.webp",
+    gallery: [
+      "https://innzoy.in/wp-content/uploads/2025/10/Premium-Room-4-2048x1536.webp",
+      "https://innzoy.in/wp-content/uploads/2025/10/Premium-Room-4-1536x1152.webp"
+    ],
+    features: [
+      "Immediate Walk to DLF Tech Park",
+      "Ergonomic Aeron-Style Work Desks",
+      "Acoustic Triple-Glazed Soundproofing",
+      "Seamless Corporate Billing Concierge",
+      "24-Hour Express In-Room Dining"
+    ],
+    roomTypes: [
+      {
+        name: "01 — Executive Business Room",
+        price: "₹1,799",
+        note: "Ergonomic chair, fiber internet, plush king bed",
+        size: "36 m²",
+        guests: 2,
+        bed: "Plush King",
+        image: "https://innzoy.in/wp-content/uploads/2025/10/Premium-Room-4-2048x1536.webp"
+      },
+      {
+        name: "02 — Premium Executive Suite",
+        price: "₹2,199",
+        note: "Extended work lounge, rain shower, balcony",
+        size: "48 m²",
+        guests: 2,
+        bed: "Plush King",
+        image: "https://innzoy.in/wp-content/uploads/2025/10/Premium-Room-4-1536x1152.webp"
+      }
+    ],
+    coordinates: "17.4474° N / 78.3582° E"
+  },
+  {
+    id: "hitec-city",
+    name: "The Innzoy HITEC City",
+    slug: "hitec-city",
+    type: "hotel",
+    chapter: "Hotels for the City",
+    location: "HITEC City, Hyderabad",
+    neighborhood: "Patrika Nagar",
+    address: "Street Number 5, behind Medicover Hospitals Road, Patrika Nagar, HITEC City, Hyderabad 500081",
+    tagline: "At the Pulse of Hyderabad’s Global Tech Capital",
+    editorialSnippet: "Moments from Cyber Towers and Medicover, this property offers unmatched urban connectivity paired with thoughtful insulation and peaceful modern room design.",
+    startingPrice: 1899,
+    formattedPrice: "₹1,899",
+    heroImage: "https://innzoy.in/wp-content/uploads/2026/02/1-1.png",
+    gallery: [
+      "https://innzoy.in/wp-content/uploads/2026/02/1-1.png",
+      "https://innzoy.in/wp-content/uploads/2026/02/3-1.png"
+    ],
+    features: [
+      "Walking Distance to Cyber Towers",
+      "Dedicated High-Speed Workspaces",
+      "Circadian Ambient Illumination",
+      "Full Power Backup & Climate Control",
+      "Late Check-In Priority"
+    ],
+    roomTypes: [
+      {
+        name: "01 — Urban Deluxe Room",
+        price: "₹1,899",
+        note: "Smart 50-inch 4K TV, orthopedic bed, workspace",
+        size: "34 m²",
+        guests: 2,
+        bed: "King Bed",
+        image: "https://innzoy.in/wp-content/uploads/2026/02/1-1.png"
+      },
+      {
+        name: "02 — Tech Corridor Suite",
+        price: "₹2,199",
+        note: "Larger footprint, dual desks, mini fridge",
+        size: "44 m²",
+        guests: 2,
+        bed: "King Bed",
+        image: "https://innzoy.in/wp-content/uploads/2026/02/3-1.png"
+      }
+    ],
+    coordinates: "17.4483° N / 78.3794° E"
+  },
+  {
+    id: "mokila",
+    name: "The Innzoy Luxury Retreat Mokila",
+    slug: "mokila",
+    type: "villa",
+    chapter: "Spaces That Feel Like Home",
+    isMarquee: true,
+    location: "Mokila, Hyderabad",
+    neighborhood: "Mokila Greens",
+    address: "Mokila Greens, Shankarpalli Road, Hyderabad, Telangana 501203",
+    tagline: "Quiet Escape into Nature Just Outside the City’s Pulse",
+    editorialSnippet: "Escape the city rhythm into open green horizons. The Mokila estate offers expansive private gardens, fresh countryside air, and intimate luxury for weekend escapes and celebratory gatherings.",
+    architectureDescription: "Low-slung pavilion architecture sits gracefully among native tamarind trees and manicured lawns, blurring inside and outside through 4-meter glass sliders and stone pergolas.",
+    startingPrice: 6999,
+    formattedPrice: "₹6,999",
+    heroImage: "https://innzoy.in/wp-content/uploads/2025/11/Frame-38-2.png",
+    gallery: [
+      "https://innzoy.in/wp-content/uploads/2025/11/Frame-38-2.png",
+      "https://innzoy.in/wp-content/uploads/2025/11/Frame-38-2-1024x561.png",
+      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1800&q=85"
+    ],
+    features: [
+      "Expansive Private Lawns & Groves",
+      "Star-Gazing Outdoor Patio & Hearth",
+      "Absolute Silence & Country Air",
+      "Private Estate Host & Butler",
+      "Full Modern Kitchen & Barbecue Deck"
+    ],
+    roomTypes: [
+      {
+        name: "01 — Private Country Villa",
+        price: "₹6,999",
+        note: "Full private villa with garden terrace and outdoor deck",
+        size: "140 m²",
+        guests: 6,
+        bed: "3 King Bedrooms",
+        image: "https://innzoy.in/wp-content/uploads/2025/11/Frame-38-2.png"
+      },
+      {
+        name: "02 — Grand Celebration Estate",
+        price: "₹9,999",
+        note: "Extended estate booking for retreats and family reunions",
+        size: "220 m²",
+        guests: 10,
+        bed: "4 King Bedrooms",
+        image: "https://innzoy.in/wp-content/uploads/2025/11/Frame-38-2-1024x561.png"
+      }
+    ],
+    coordinates: "17.4087° N / 78.2045° E",
+    diningSnippet: "Wood-fired garden dining and organic farm-to-table breakfast served under shaded bougainvillea.",
+    wellnessSnippet: "Open-lawn sunset sound baths and morning meditation accompanied by countryside bird song."
+  },
+  {
+    id: "jaipur-heritage",
+    name: "The Innzoy Heritage Pavilion Jaipur",
+    slug: "jaipur-heritage",
+    type: "villa",
+    chapter: "Flagship Architectural Retreats",
+    isMarquee: true,
+    location: "Jaipur, Rajasthan",
+    neighborhood: "Amber Foothills",
+    address: "Kukas Valley, Amber Ridge, Jaipur, Rajasthan 302028",
+    tagline: "A Contemporary Interpretation of Rajasthan Shaped by Craft & Light",
+    editorialSnippet: "A quiet sanctuary at the foot of the Aravalli hills, carved from local pink sandstone and lime plaster, where Mughal court traditions merge with restrained contemporary minimalism.",
+    architectureDescription: "Designed with fluted sandstone colonnades, cooling jali screens, and central reflecting pools that naturally cool desert breezes without visual ornament.",
+    startingPrice: 14500,
+    formattedPrice: "₹14,500",
+    heroImage: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=1800&q=85",
+    gallery: [
+      "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=1800&q=85",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1800&q=85",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1800&q=85"
+    ],
+    features: [
+      "Private Plunge Pool Courtyards",
+      "Sandstone Jali Passive Cooling",
+      "Heritage Thali Dining Pavilion",
+      "Ayurvedic Herbal Baths",
+      "Curated Indigo Block-Printing Workshops"
+    ],
+    roomTypes: [
+      {
+        name: "01 — Sandstone Courtyard Suite",
+        price: "₹14,500",
+        note: "Private courtyard, stone soaking tub, carved daybed",
+        size: "68 m²",
+        guests: 2,
+        bed: "Emperor King",
+        image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=1800&q=85"
+      },
+      {
+        name: "02 — Royal Aravalli Pavilion",
+        price: "₹22,000",
+        note: "Private plunge pool, panoramic hill view, butler salon",
+        size: "125 m²",
+        guests: 2,
+        bed: "Emperor King",
+        image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1800&q=85"
+      }
+    ],
+    coordinates: "26.9855° N / 75.8513° E",
+    diningSnippet: "Slow-simmered Rajasthani heritage recipes cooked over charcoal in unglazed terracotta.",
+    wellnessSnippet: "Kansa wand massage and thermal sandstone soak rituals under desert starscape."
+  }
+];
+
+export const DESTINATIONS: Destination[] = [
+  {
+    id: "hyderabad",
+    name: "Hyderabad",
+    region: "Telangana",
+    country: "India",
+    coordinates: "17.3850° N / 78.4867° E",
+    tagline: "Deccan Heritage & Modern High-Tech Corridors",
+    description: "From the quiet tree-lined avenues of Jubilee Hills to the architectural skyline of HITEC City and the rolling hills of Mokila, our Hyderabad collection represents understated living in India's most dynamic capital.",
+    image: "https://innzoy.in/wp-content/uploads/2025/10/Hotel-Main-Elevation-e1763746501737-2048x1363.jpg",
+    propertyCount: 7
+  },
+  {
+    id: "rajasthan",
+    name: "Jaipur & Rajasthan",
+    region: "Rajasthan",
+    country: "India",
+    coordinates: "26.9124° N / 75.7873° E",
+    tagline: "Pink Sandstone, Passive Shading & Desert Stillness",
+    description: "A contemporary dialogue with royal heritage. Hand-hewn stone pavilions, reflecting courtyards, and silent desert evenings designed to slow the senses.",
+    image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=1800&q=85",
+    propertyCount: 1
+  },
+  {
+    id: "goa",
+    name: "Goa Coastal",
+    region: "Goa",
+    country: "India",
+    coordinates: "15.2993° N / 73.9787° E",
+    tagline: "Laterite Stone & Ocean Salt Horizons",
+    description: "Tucked inside coconut groves away from the crowd, where Indo-Portuguese verandahs meet saline breezes and tidal rhythms.",
+    image: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1800&q=85",
+    propertyCount: 1
+  },
+  {
+    id: "himalayas",
+    name: "The Western Himalayas",
+    region: "Himachal Pradesh",
+    country: "India",
+    coordinates: "32.2190° N / 76.3234° E",
+    tagline: "Cedar Scent, Glacial Streams & Cloud Shelters",
+    description: "High-altitude sanctuaries built with dry-stacked slate and aromatic deodar cedar, framing snowline horizons and pine-scented silence.",
+    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1800&q=85",
+    propertyCount: 1
+  }
+];
+
+export const EXPERIENCES: Experience[] = [
+  {
+    id: "dining-heritage",
+    title: "Deccan Culinary Alchemy",
+    subtitle: "Slow fire, earthen pots, heirloom grains",
+    category: "Dining",
+    description: "Experience the profound subtlety of traditional Nizami and Andhra kitchen wisdom—stone-ground spices, clay-pot slow cooking, and delicate saffron infusions served in candlelit courtyards.",
+    image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80",
+    location: "Available across all INNZOY Sanctuaries",
+    duration: "2.5 Hours"
+  },
+  {
+    id: "wellness-rituals",
+    title: "The Stillness Ritual",
+    subtitle: "Aromatherapy, Tibetan singing bowls, sound resonance",
+    category: "Wellness",
+    description: "An intentional sensory reset using wild-harvested Himalayan cedar oil, warm volcanic stones, and harmonic bronze sound bowls that restore biological calm.",
+    image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80",
+    location: "Jubilee Hills & Mokila Retreat",
+    duration: "90 Minutes"
+  },
+  {
+    id: "craft-architecture",
+    title: "Master Stonemasonry Walk",
+    subtitle: "Tactile material journeys with local master artisans",
+    category: "Craft",
+    description: "Walk alongside traditional master carvers to understand the geology of granite, lime-plaster burnishing, and how ancient thermal mass designs regulate space.",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+    location: "Khajaguda & Jaipur Pavilion",
+    duration: "3 Hours"
+  },
+  {
+    id: "nature-trails",
+    title: "Dawn Countryside Walks",
+    subtitle: "Early mist, bird colonies, botanical exploration",
+    category: "Nature",
+    description: "A guided morning walking contemplation through Deccan scrub grasslands and ancient boulder ridges before the heat of the day awakens.",
+    image: "https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?auto=format&fit=crop&w=1200&q=80",
+    location: "Mokila Greens Sanctuary",
+    duration: "2 Hours"
+  }
+];
+
+export const JOURNAL_ARTICLES: JournalArticle[] = [
+  {
+    slug: "inside-the-architecture-of-innzoy",
+    title: "Inside the Architecture of INNZOY",
+    subtitle: "On why restraint, natural light, and quiet materials make spaces unforgettable.",
+    category: "Architecture",
+    date: "March 2026",
+    readTime: "6 min read",
+    author: "Editorial Bureau",
+    coverImage: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=85",
+    excerpt: "True luxury is not defined by excess, ornamentation, or technological novelty. It resides in the proportional balance between volume, silence, and shadow.",
+    content: [
+      "When we began conceptualizing the spaces that would become INNZOY, we sought to strip away the theatrical apparatus of conventional five-star hotels. The gilded chandeliers, the synthetic perfumes, the over-designed interfaces that demand attention.",
+      "Instead, we looked to the timeless vernacular architecture of the Deccan plateau and Northern India: thick lime-washed walls that hold coolness through sweltering afternoons, deep overhangs that shield the harsh noon sun while inviting gentle ambient daylight, and unpolished stone beneath bare feet.",
+      "Every material choice in an INNZOY property—from the solid teak headboards to the hand-applied lime plaster—is selected to age with dignity rather than perish with trend."
+    ]
+  },
+  {
+    slug: "the-art-of-slow-travel",
+    title: "The Art of Slow Travel",
+    subtitle: "Rediscovering the restorative power of staying in one place.",
+    category: "Philosophy",
+    date: "February 2026",
+    readTime: "5 min read",
+    author: "Kavya Menon",
+    coverImage: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=85",
+    excerpt: "Why the finest journeys are not measured by the checkmarks on an itinerary, but by the mornings where you had nowhere urgent to be.",
+    content: [
+      "Modern travel has increasingly mirrored modern commerce: optimized, hurried, checklist-driven, and relentlessly documented on screens.",
+      "At INNZOY, we invite guests to practice unhurried presence. Wake up without alarms. Watch the morning light shift across textured limestone walls. Read an entire chapter of a book without a notification chime.",
+      "The stay is not merely a staging ground for external sightseeing. The stay itself is the destination."
+    ]
+  },
+  {
+    slug: "48-hours-in-hyderabad",
+    title: "48 Hours in Hyderabad: Behind the Stone",
+    subtitle: "An insider's architectural guide to Deccan secrets.",
+    category: "City Guide",
+    date: "January 2026",
+    readTime: "7 min read",
+    author: "Siddharth Rao",
+    coverImage: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=1400&q=85",
+    excerpt: "Beyond the tech corridors lies a city of ancient granitic boulders, hidden courtyards, and perfumed chai stalls.",
+    content: [
+      "Hyderabad is a city of layers. Beneath the glass towers of Gachibowli and HITEC City lies one of the oldest geologic formations on Earth—granitic formations dating back 2.5 billion years.",
+      "Begin at dawn among the Khajaguda rocks before the urban heat rises. Journey into the old city for Irani chai brewed slowly in copper urns with Osmania biscuits, and conclude your evening on the quiet terrace of our Jubilee Hills sanctuary."
+    ]
+  },
+  {
+    slug: "craft-culture-and-place",
+    title: "Craft, Culture & Place",
+    subtitle: "Honoring the hands that shape our living spaces.",
+    category: "Culture",
+    date: "December 2025",
+    readTime: "4 min read",
+    author: "Design Studio",
+    coverImage: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1400&q=85",
+    excerpt: "How partnering with multigenerational craftspeople imbues every room with authenticity and human soul.",
+    content: [
+      "Mass production can duplicate precision, but it can never replicate intention. The subtle irregularities in hand-loomed cottons, the soft chisel marks on river-smoothed sandstone, the warmth of beeswax-rubbed wood.",
+      "Each INNZOY sanctuary is co-authored with local carpenters, stone dressers, and weavers whose families have practiced their art for generations."
+    ]
+  }
+];
+
+export const REVIEWS: GuestReview[] = [
+  {
+    quote: "Very good service, the staff were so supportive, caring and always available. I stayed for 12 days in Innzoy and it was such a good experience. Thank you Innzoy and staff.",
+    guest: "Muskan Shaikh",
+    rating: "5.0",
+    stay: "DLF Cyber City · 12-Night Stay",
+    verifiedSource: "MakeMyTrip Verified Guest"
+  },
+  {
+    quote: "My stay at Innzoy Hotels at TNGO Colony was truly comfortable. The rooms were spotless, well-maintained, and thoughtfully designed for a relaxing stay. The staff was quick to respond and always helpful.",
+    guest: "Pavan Kumar",
+    rating: "5.0",
+    stay: "TNGO Colony · Business Stay",
+    verifiedSource: "Verified Guest"
+  },
+  {
+    quote: "Fantastic stay! The host was incredibly responsive, the amenities were top-notch, and the spacious home is in a peaceful, posh neighborhood. Would definitely consider staying here again.",
+    guest: "Durga",
+    rating: "4.9",
+    stay: "Jubilee Hills Boutique Villa",
+    verifiedSource: "Verified Guest Review"
+  },
+  {
+    quote: "A good stay which matches the description. You can have the entire penthouse and terrace to yourself which is peaceful and private. Loved the sunset views.",
+    guest: "Dinesh",
+    rating: "4.8",
+    stay: "Kondapur Penthouse & Skyline Terrace",
+    verifiedSource: "Verified Guest Review"
+  },
+  {
+    quote: "Innzoy Hotels delivers great service with warm and comfortable staff. The rooms are spotless, neat, and well maintained, making the stay truly pleasant.",
+    guest: "Verified Guest",
+    rating: "4.9",
+    stay: "HITEC City Sanctuary",
+    verifiedSource: "Google Verified"
+  }
+];

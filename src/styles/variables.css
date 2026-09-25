@@ -1,0 +1,74 @@
+:root {
+  /* ==========================================================================
+     INNZOY EDITORIAL LUXURY COLOR PALETTE
+     Warm Ivory · Travertine · Obsidian · Muted Architectural Brass
+     ========================================================================== */
+  --c-obsidian: #0D0C0A;
+  --c-charcoal: #161513;
+  --c-slate-deep: #1E1C19;
+  --c-travertine: #F5F2EB;
+  --c-alabaster: #ECE8DE;
+  --c-sand: #DFD9CE;
+  --c-surface-white: #FFFFFF;
+
+  --c-brass: #C3A06B;
+  --c-brass-hover: #D8B784;
+  --c-bronze: #8E7047;
+  --c-terracotta: #A6644B;
+
+  --c-text-light: #F7F5F0;
+  --c-text-light-muted: #A39E93;
+  --c-text-dark: #141311;
+  --c-text-dark-muted: #6B665E;
+
+  --hairline-light: rgba(20, 19, 17, 0.08);
+  --hairline-light-hover: rgba(20, 19, 17, 0.22);
+  --hairline-dark: rgba(247, 245, 240, 0.12);
+  --hairline-dark-hover: rgba(247, 245, 240, 0.3);
+
+  /* Legacy variable mappings for safety */
+  --bg-primary: var(--c-travertine);
+  --bg-secondary: var(--c-alabaster);
+  --bg-dark: var(--c-obsidian);
+  --text-primary: var(--c-text-dark);
+  --text-secondary: var(--c-text-dark-muted);
+  --text-light: var(--c-text-light);
+  --accent-brass: var(--c-brass);
+  --accent-bronze: var(--c-bronze);
+  --border-light: var(--hairline-light);
+  --border-dark: var(--hairline-dark);
+
+  /* ==========================================================================
+     TYPOGRAPHY STACK
+     ========================================================================== */
+  --font-serif: 'Cormorant Garamond', Garamond, 'Didot', 'Playfair Display', serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Space Mono', 'SF Mono', Consolas, monospace;
+
+  /* Fluid Editorial Scale */
+  --size-display-hero: clamp(3.4rem, 8.5vw, 10.5rem);
+  --size-display-section: clamp(2.4rem, 5.2vw, 5.8rem);
+  --size-display-quote: clamp(1.6rem, 3.2vw, 3.4rem);
+  --size-body-editorial: clamp(1.05rem, 1.25vw, 1.35rem);
+  --size-mono-meta: clamp(0.68rem, 0.8vw, 0.78rem);
+
+  /* Fluid Spacing Scale */
+  --gutter: clamp(24px, 4.5vw, 72px);
+  --container-max: 1680px;
+  --space-scene: clamp(120px, 14vw, 220px);
+
+  /* Transitions & Motion */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-cinematic: cubic-bezier(0.25, 1, 0.5, 1);
+
+  /* Layering Index */
+  --z-base: 1;
+  --z-sticky: 10;
+  --z-overlay: 50;
+  --z-nav: 100;
+  --z-drawer: 200;
+  --z-modal: 300;
+  --z-curtain: 400;
+  --z-cursor: 500;
+}

@@ -1,0 +1,1542 @@
+/* ==========================================================================
+   INNZOY — AWARD-GRADE EDITORIAL EXPERIENCE
+   Pure Architecture · Minimalist Motion · Zero Generic UI
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   00. PRELOADER CURTAIN (Physical Hotel Entrance Sequence)
+   -------------------------------------------------------------------------- */
+#preloader {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-curtain);
+  background-color: var(--c-obsidian);
+  color: var(--c-text-light);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--gutter);
+  pointer-events: all;
+  will-change: transform, clip-path;
+}
+
+.preloader-header,
+.preloader-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--size-mono-meta);
+  letter-spacing: 0.22em;
+  color: var(--c-text-light-muted);
+  text-transform: uppercase;
+}
+
+.preloader-core {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.preloader-wordmark {
+  font-family: var(--font-serif);
+  font-size: clamp(2.8rem, 7vw, 6rem);
+  font-weight: 300;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--c-text-light);
+  line-height: 1;
+}
+
+.preloader-counter-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.preloader-counter {
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 1.6vw, 1.8rem);
+  letter-spacing: 0.18em;
+  color: var(--c-brass);
+}
+
+.preloader-bar-track {
+  width: 160px;
+  height: 1px;
+  background-color: rgba(247, 245, 240, 0.15);
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.preloader-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background-color: var(--c-brass);
+  transition: width 0.1s linear;
+}
+
+/* --------------------------------------------------------------------------
+   01. CUSTOM TRAILING INERTIA CURSOR
+   -------------------------------------------------------------------------- */
+.editorial-cursor {
+  position: fixed;
+  top: -50px;
+  left: -50px;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  margin-top: -5px;
+  background-color: var(--c-brass);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: var(--z-cursor);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.35s var(--ease-expo), height 0.35s var(--ease-expo), margin 0.35s var(--ease-expo), background-color 0.3s ease;
+}
+
+.editorial-cursor.cursor-active {
+  width: 76px;
+  height: 76px;
+  margin-left: -38px;
+  margin-top: -38px;
+  background-color: var(--c-brass);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.cursor-label {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-obsidian);
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.editorial-cursor.cursor-active .cursor-label {
+  opacity: 1;
+}
+
+@media (pointer: coarse) {
+  .editorial-cursor {
+    display: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   02. MINIMALIST OVERLAY NAVIGATION
+   -------------------------------------------------------------------------- */
+.editorial-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-nav);
+  padding: clamp(22px, 3.2vw, 36px) var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  mix-blend-mode: difference;
+  color: #FFFFFF;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editorial-nav.nav-hidden {
+  transform: translateY(-100%);
+}
+
+.editorial-nav.nav-scrolled {
+  mix-blend-mode: normal;
+  background-color: rgba(13, 12, 10, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--hairline-dark);
+  padding-top: clamp(16px, 2.4vw, 24px);
+  padding-bottom: clamp(16px, 2.4vw, 24px);
+}
+
+.nav-logo {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 1.8vw, 1.8rem);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 300;
+  line-height: 1;
+  color: #FFFFFF;
+}
+
+.nav-links-cluster {
+  display: flex;
+  align-items: center;
+  gap: clamp(28px, 4vw, 56px);
+  list-style: none;
+}
+
+.nav-anchor {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  position: relative;
+  padding: 4px 0;
+  opacity: 0.82;
+  color: #FFFFFF;
+  transition: opacity 0.3s;
+}
+
+.nav-anchor:hover {
+  opacity: 1;
+}
+
+.nav-anchor::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: currentColor;
+  transition: width 0.35s var(--ease-expo);
+}
+
+.nav-anchor:hover::after {
+  width: 100%;
+}
+
+.nav-reserve-trigger {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 3px;
+  cursor: pointer;
+  transition: opacity 0.3s, gap 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #FFFFFF;
+}
+
+.nav-reserve-trigger:hover {
+  gap: 12px;
+}
+
+.nav-mobile-burger {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 0;
+}
+
+.nav-mobile-burger span {
+  width: 24px;
+  height: 1px;
+  background-color: #FFFFFF;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+/* --------------------------------------------------------------------------
+   SCENE 00: THE MORPHING LENS HERO (240vh Pinned GSAP Scrub)
+   -------------------------------------------------------------------------- */
+.hero-stage {
+  position: relative;
+  width: 100%;
+  height: 240vh;
+  background-color: var(--c-obsidian);
+}
+
+.hero-pinned-viewport {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-dark-base {
+  position: absolute;
+  inset: 0;
+  background-color: var(--c-obsidian);
+  z-index: 1;
+}
+
+/* Monumental Typography: Pure, Minimal & Perfectly Aligned */
+.hero-monumental-type {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 92%;
+  max-width: 1200px;
+  text-align: center;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  will-change: transform, opacity;
+}
+
+.hero-title-row {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.hero-title-row-1 {
+  gap: clamp(24px, 4vw, 56px);
+}
+
+.hero-split-word {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 7.5vw, 7.8rem);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  text-transform: uppercase;
+  color: var(--c-text-light);
+  white-space: nowrap;
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.hero-word-right em {
+  font-style: italic;
+  color: var(--c-brass);
+  font-family: var(--font-serif);
+}
+
+.hero-title-row-2 {
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.hero-word-center {
+  letter-spacing: -0.02em;
+}
+
+/* Photo Aperture: Positioned below text at z-index 4, rises up OVER text & zooms */
+.hero-aperture-frame {
+  position: absolute;
+  top: 66%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 38vw;
+  height: 46vh;
+  z-index: 4;
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(195, 160, 107, 0.2);
+  will-change: width, height, transform, top, border-radius;
+}
+
+.hero-aperture-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.05);
+  will-change: transform;
+}
+
+.hero-lens-tint {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(13, 12, 10, 0.15) 0%, rgba(13, 12, 10, 0.6) 100%);
+  pointer-events: none;
+}
+
+.hero-meta-strip {
+  position: absolute;
+  bottom: clamp(24px, 4vw, 48px);
+  left: var(--gutter);
+  right: var(--gutter);
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.hero-meta-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hero-meta-subtitle {
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 1.5vw, 1.6rem);
+  font-weight: 300;
+  color: rgba(247, 245, 240, 0.85);
+  max-width: 480px;
+  line-height: 1.25;
+}
+
+.hero-scroll-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--c-brass);
+  font-family: var(--font-mono);
+  font-size: var(--size-mono-meta);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   SCENE 01: THE BREATHING MANIFESTO (Extreme Whitespace & Stone Spread)
+   -------------------------------------------------------------------------- */
+.manifesto-scene {
+  background-color: var(--c-travertine);
+  color: var(--c-text-dark);
+  padding: clamp(140px, 18vw, 260px) 0;
+  position: relative;
+  z-index: 5;
+}
+
+.manifesto-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: clamp(48px, 8vw, 140px);
+  align-items: flex-start;
+}
+
+.manifesto-statement {
+  font-size: var(--size-display-section);
+  font-weight: 300;
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+  color: var(--c-text-dark);
+  margin-bottom: clamp(32px, 4vw, 56px);
+}
+
+.manifesto-statement em {
+  font-style: italic;
+  color: var(--c-brass);
+}
+
+.manifesto-prose {
+  font-size: var(--size-body-editorial);
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--c-text-dark-muted);
+  max-width: 620px;
+}
+
+.manifesto-metrics-strip {
+  display: flex;
+  gap: clamp(32px, 5vw, 64px);
+  margin-top: clamp(48px, 6vw, 80px);
+  padding-top: 32px;
+  border-top: 1px solid var(--hairline-light);
+}
+
+.metric-digit {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 3.5vw, 3.4rem);
+  font-weight: 300;
+  line-height: 1;
+  color: var(--c-text-dark);
+  margin-bottom: 6px;
+}
+
+.manifesto-photo-box {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--c-alabaster);
+}
+
+.manifesto-photo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+/* --------------------------------------------------------------------------
+   SCENE 02: SIGNATURE MOMENT 1 — THE HYDERABAD APERTURE MASK (Pinned 220vh)
+   -------------------------------------------------------------------------- */
+.aperture-stage {
+  position: relative;
+  width: 100%;
+  height: 220vh;
+  background-color: var(--c-obsidian);
+  overflow: clip;
+}
+
+.aperture-pinned-viewport {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: clip;
+}
+
+.aperture-mask-word {
+  font-family: var(--font-serif);
+  font-size: clamp(6.5rem, 18vw, 24rem);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 0.85;
+  text-transform: uppercase;
+  text-align: center;
+  background-image: url('https://innzoy.in/wp-content/uploads/2025/10/Hotel-Main-Elevation-e1763746501737-2048x1363.jpg');
+  background-size: 200vw auto;
+  background-position: center 35%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  will-change: transform;
+  user-select: none;
+  transform-origin: center center;
+}
+
+.aperture-tagline-fade {
+  position: absolute;
+  bottom: clamp(32px, 5vw, 64px);
+  text-align: center;
+  color: var(--c-brass);
+  opacity: 0;
+  letter-spacing: 0.28em;
+  font-family: var(--font-mono);
+  font-size: var(--size-mono-meta);
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   SCENE 03: SIGNATURE MOMENT 2 — PINNED MONOLITH PROPERTY TAKEOVER (420vh)
+   -------------------------------------------------------------------------- */
+.monoliths-stage {
+  position: relative;
+  width: 100%;
+  height: 420vh;
+  background-color: var(--c-obsidian);
+  color: var(--c-text-light);
+}
+
+.monoliths-pinned-viewport {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.monolith-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  clip-path: inset(0% 0% 0% 0%);
+  will-change: clip-path;
+}
+
+.monolith-bg-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.72) contrast(1.06);
+}
+
+.monolith-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(13, 12, 10, 0.2) 0%, rgba(13, 12, 10, 0.8) 100%);
+  pointer-events: none;
+}
+
+.monolith-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  padding: clamp(32px, 5vw, 64px) var(--gutter);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.monolith-top-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: var(--size-mono-meta);
+  letter-spacing: 0.22em;
+  color: var(--c-brass);
+}
+
+.monolith-center-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 960px;
+}
+
+.monolith-location-name {
+  font-family: var(--font-serif);
+  font-size: clamp(3.2rem, 7.5vw, 8.5rem);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+.monolith-narrative-line {
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 1.3vw, 1.3rem);
+  font-weight: 300;
+  color: rgba(247, 245, 240, 0.85);
+  line-height: 1.65;
+  max-width: 640px;
+}
+
+.monolith-bottom-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: 24px;
+  border-top: 1px solid var(--hairline-dark);
+}
+
+.monolith-rate-display {
+  display: flex;
+  flex-direction: column;
+}
+
+.monolith-rate-num {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 2.8vw, 3.2rem);
+  font-weight: 300;
+  line-height: 1;
+  color: #FFFFFF;
+}
+
+.monolith-explore-action {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-brass);
+  border-bottom: 1px solid var(--c-brass);
+  padding-bottom: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: gap 0.3s;
+}
+
+.monolith-explore-action:hover {
+  gap: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   SCENE 04: TWO VISUAL CHAPTERS (Hotels vs Guesthouses)
+   -------------------------------------------------------------------------- */
+.chapters-scene {
+  background-color: var(--c-obsidian);
+  color: var(--c-text-light);
+  padding: clamp(120px, 14vw, 200px) 0;
+  border-top: 1px solid var(--hairline-dark);
+}
+
+.chapters-intro-header {
+  margin-bottom: clamp(56px, 8vw, 100px);
+  max-width: 800px;
+}
+
+.chapters-split-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 5vw, 80px);
+}
+
+.chapter-monolith-block {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.chapter-visual-wrapper {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--c-charcoal);
+  margin-bottom: 24px;
+}
+
+.chapter-visual-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease-editorial);
+}
+
+.chapter-monolith-block:hover .chapter-visual-wrapper img {
+  transform: scale(1.04);
+}
+
+.chapter-caption-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: var(--size-mono-meta);
+  letter-spacing: 0.2em;
+  color: var(--c-brass);
+  margin-bottom: 10px;
+}
+
+.chapter-block-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 3.2vw, 3.6rem);
+  font-weight: 300;
+  line-height: 1.05;
+  margin-bottom: 12px;
+  color: #FFFFFF;
+}
+
+.chapter-block-desc {
+  font-size: 0.95rem;
+  color: var(--c-text-light-muted);
+  line-height: 1.65;
+  max-width: 480px;
+  margin-bottom: 20px;
+}
+
+.chapter-action-cta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-brass);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--c-brass);
+  padding-bottom: 3px;
+  align-self: flex-start;
+}
+
+/* --------------------------------------------------------------------------
+   SCENE 05: SIGNATURE MOMENT 3 — HORIZONTAL ARCHITECTURAL EXHIBITION (Pinned)
+   -------------------------------------------------------------------------- */
+.horizontal-stage {
+  position: relative;
+  width: 100%;
+  height: 380vh;
+  background-color: var(--c-charcoal);
+  color: var(--c-text-light);
+}
+
+.horizontal-pinned-viewport {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(32px, 4vw, 56px) 0;
+}
+
+.horizontal-track-header {
+  padding: 0 var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.horizontal-track {
+  display: flex;
+  height: 64vh;
+  padding: 0 var(--gutter);
+  gap: clamp(32px, 4vw, 64px);
+  will-change: transform;
+}
+
+.horizontal-panel {
+  flex: 0 0 clamp(320px, 38vw, 540px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.horizontal-panel-media {
+  width: 100%;
+  height: 78%;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--c-slate-deep);
+}
+
+.horizontal-panel-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-editorial);
+}
+
+.horizontal-panel:hover .horizontal-panel-media img {
+  transform: scale(1.05);
+}
+
+.horizontal-panel-info {
+  padding-top: 16px;
+  border-top: 1px solid var(--hairline-dark);
+}
+
+.horizontal-panel-label {
+  font-family: var(--font-mono);
+  font-size: var(--size-mono-meta);
+  letter-spacing: 0.2em;
+  color: var(--c-brass);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.horizontal-panel-name {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 2vw, 2.2rem);
+  font-weight: 300;
+  color: #FFFFFF;
+}
+
+.horizontal-panel-price {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--c-text-light-muted);
+}
+
+.horizontal-track-footer {
+  padding: 0 var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--size-mono-meta);
+  letter-spacing: 0.22em;
+  color: var(--c-text-light-muted);
+}
+
+/* --------------------------------------------------------------------------
+   SCENE 06: THE COMPLETE ARCHITECTURAL DIRECTORY (9 Locations)
+   -------------------------------------------------------------------------- */
+.directory-scene {
+  background-color: var(--c-obsidian);
+  color: var(--c-text-light);
+  padding: clamp(100px, 12vw, 180px) 0;
+  border-top: 1px solid var(--hairline-dark);
+}
+
+.directory-header {
+  margin-bottom: clamp(48px, 6vw, 96px);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.directory-row {
+  display: grid;
+  grid-template-columns: 0.4fr 1.6fr 1fr 0.6fr;
+  align-items: baseline;
+  padding: clamp(24px, 3vw, 40px) 0;
+  border-bottom: 1px solid var(--hairline-dark);
+  cursor: pointer;
+  transition: padding-left 0.35s var(--ease-expo);
+}
+
+.directory-row:hover {
+  padding-left: 24px;
+}
+
+.directory-row-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 2.4vw, 2.6rem);
+  font-weight: 300;
+  line-height: 1.1;
+  color: #FFFFFF;
+}
+
+.directory-row-addr {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--c-text-light-muted);
+  line-height: 1.5;
+}
+
+.directory-row-rate {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  color: var(--c-brass);
+  text-align: right;
+}
+
+/* --------------------------------------------------------------------------
+   SCENE 07: TACTILE MATERIALITY & AMENITIES
+   -------------------------------------------------------------------------- */
+.materiality-scene {
+  background-color: var(--c-travertine);
+  color: var(--c-text-dark);
+  padding: clamp(140px, 16vw, 240px) 0;
+  position: relative;
+}
+
+.materiality-title {
+  font-size: var(--size-display-section);
+  font-weight: 300;
+  line-height: 0.96;
+  margin-bottom: clamp(64px, 8vw, 120px);
+}
+
+.materiality-interactive-item {
+  padding: clamp(36px, 4.5vw, 60px) 0;
+  border-bottom: 1px solid var(--hairline-light);
+  display: grid;
+  grid-template-columns: 0.3fr 1.7fr 1fr;
+  align-items: baseline;
+  cursor: pointer;
+  transition: padding-left 0.3s var(--ease-expo);
+}
+
+.materiality-interactive-item:hover {
+  padding-left: 20px;
+}
+
+.materiality-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 2.8vw, 3.2rem);
+  font-weight: 300;
+  color: var(--c-text-dark);
+}
+
+.materiality-desc {
+  font-size: 0.95rem;
+  color: var(--c-text-dark-muted);
+  line-height: 1.6;
+}
+
+.floating-tactile-preview {
+  position: fixed;
+  width: 320px;
+  height: 420px;
+  pointer-events: none;
+  z-index: 100;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.9);
+  transition: opacity 0.3s ease, transform 0.3s var(--ease-expo);
+}
+
+.floating-tactile-preview.visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.floating-tactile-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --------------------------------------------------------------------------
+   SCENE 08: HYDERABAD DESTINATION DOSSIER (Coordinates & Distances)
+   -------------------------------------------------------------------------- */
+.destination-scene {
+  background-color: var(--c-charcoal);
+  color: var(--c-text-light);
+  padding: clamp(140px, 16vw, 220px) 0;
+  border-top: 1px solid var(--hairline-dark);
+}
+
+.destination-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(48px, 8vw, 120px);
+  align-items: center;
+}
+
+.destination-nodes-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.destination-node-item {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--hairline-dark);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.destination-node-name {
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 1.8vw, 1.8rem);
+  font-weight: 300;
+  color: #FFFFFF;
+}
+
+.destination-node-dist {
+  font-family: var(--font-mono);
+  font-size: var(--size-mono-meta);
+  letter-spacing: 0.18em;
+  color: var(--c-brass);
+}
+
+.destination-map-frame {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: var(--c-slate-deep);
+  border: 1px solid var(--hairline-dark);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.destination-map-svg {
+  width: 100%;
+  height: 80%;
+}
+
+/* --------------------------------------------------------------------------
+   SCENE 09: MONUMENTAL GUEST VOICES & MONOCHROMATIC TRUST
+   -------------------------------------------------------------------------- */
+.voices-scene {
+  background-color: var(--c-obsidian);
+  color: var(--c-text-light);
+  padding: clamp(160px, 20vw, 280px) 0;
+  overflow: hidden;
+  position: relative;
+  border-top: 1px solid var(--hairline-dark);
+}
+
+.voice-monument-unit {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.voice-giant-quote {
+  font-family: var(--font-serif);
+  font-size: var(--size-display-quote);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.25;
+  color: #FFFFFF;
+  margin-bottom: clamp(32px, 4vw, 56px);
+}
+
+.voice-source-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: 24px;
+  border-top: 1px solid var(--hairline-dark);
+}
+
+.voice-guest-identity {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-brass);
+}
+
+.voice-stay-detail {
+  font-family: var(--font-mono);
+  font-size: var(--size-mono-meta);
+  color: var(--c-text-light-muted);
+}
+
+.trust-badges-strip {
+  margin-top: clamp(64px, 8vw, 120px);
+  padding-top: 40px;
+  border-top: 1px solid var(--hairline-dark);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  font-family: var(--font-mono);
+  font-size: var(--size-mono-meta);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-text-light-muted);
+}
+
+/* --------------------------------------------------------------------------
+   SCENE 10: THE CINEMATIC DEPARTURE, CONCIERGE DRAWER & FOOTER
+   -------------------------------------------------------------------------- */
+.departure-scene {
+  background-color: var(--c-charcoal);
+  color: var(--c-text-light);
+  padding: clamp(160px, 20vw, 260px) 0;
+  text-align: center;
+  position: relative;
+  border-top: 1px solid var(--hairline-dark);
+}
+
+.departure-title {
+  font-size: var(--size-display-hero);
+  font-weight: 300;
+  line-height: 0.92;
+  margin-bottom: 24px;
+}
+
+.departure-title em {
+  font-style: italic;
+  color: var(--c-brass);
+}
+
+.departure-action-wrap {
+  display: flex;
+  justify-content: center;
+  gap: clamp(24px, 4vw, 48px);
+  margin-top: 48px;
+  flex-wrap: wrap;
+}
+
+.departure-link-action {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  border-bottom: 2px solid var(--c-brass);
+  padding-bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: gap 0.3s;
+}
+
+.departure-link-action:hover {
+  gap: 20px;
+}
+
+/* Colophon Footer */
+.colophon-stage {
+  background-color: var(--c-obsidian);
+  color: var(--c-text-light);
+  padding: clamp(80px, 10vw, 140px) 0 40px;
+  border-top: 1px solid var(--hairline-dark);
+}
+
+.colophon-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: clamp(40px, 5vw, 80px);
+  margin-bottom: clamp(60px, 8vw, 100px);
+}
+
+.colophon-h {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--c-brass);
+  margin-bottom: 24px;
+}
+
+.colophon-nav {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--c-text-light-muted);
+}
+
+.colophon-nav a:hover {
+  color: #FFFFFF;
+}
+
+.colophon-giant-logo {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 10vw, 12rem);
+  font-weight: 300;
+  letter-spacing: 0.22em;
+  line-height: 0.85;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  color: rgba(247, 245, 240, 0.9);
+}
+
+.colophon-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 32px;
+  border-top: 1px solid var(--hairline-dark);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--c-text-light-muted);
+  letter-spacing: 0.16em;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   SLIDE-OUT ARCHITECTURAL CONCIERGE DRAWER
+   -------------------------------------------------------------------------- */
+.concierge-drawer-mask {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(13, 12, 10, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  z-index: var(--z-drawer);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.concierge-drawer-mask.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.concierge-drawer-box {
+  width: 100%;
+  max-width: 680px;
+  height: 100%;
+  background-color: var(--c-charcoal);
+  color: var(--c-text-light);
+  padding: clamp(32px, 5vw, 64px);
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 1px solid var(--hairline-dark);
+}
+
+.concierge-drawer-mask.open .concierge-drawer-box {
+  transform: translateX(0);
+}
+
+.drawer-dismiss {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--c-text-light-muted);
+  cursor: pointer;
+  margin-bottom: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.drawer-dismiss:hover {
+  color: #FFFFFF;
+}
+
+.drawer-field-group {
+  margin-bottom: 28px;
+}
+
+.drawer-field-label {
+  font-family: var(--font-mono);
+  font-size: var(--size-mono-meta);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-brass);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.drawer-select,
+.drawer-input {
+  width: 100%;
+  background-color: var(--c-slate-deep);
+  border: 1px solid var(--hairline-dark);
+  color: #FFFFFF;
+  padding: 16px 20px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.drawer-select:focus,
+.drawer-input:focus {
+  border-color: var(--c-brass);
+}
+
+.drawer-submit-btn {
+  width: 100%;
+  background-color: var(--c-brass);
+  color: var(--c-obsidian);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 16px;
+}
+
+.drawer-submit-btn:hover {
+  background-color: var(--c-brass-hover);
+}
+
+/* --------------------------------------------------------------------------
+   FULLSCREEN EDITORIAL PROPERTY DOSSIER MODAL
+   -------------------------------------------------------------------------- */
+.dossier-modal-mask {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(13, 12, 10, 0.92);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  z-index: var(--z-modal);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+}
+
+.dossier-modal-mask.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.dossier-modal-container {
+  max-width: 1240px;
+  margin: 60px auto;
+  padding: clamp(32px, 5vw, 64px);
+  background-color: var(--c-charcoal);
+  color: var(--c-text-light);
+  border: 1px solid var(--hairline-dark);
+  position: relative;
+}
+
+.dossier-close-btn {
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-brass);
+  cursor: pointer;
+  border-bottom: 1px solid var(--c-brass);
+  padding-bottom: 2px;
+}
+
+.dossier-gallery-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 36px 0;
+}
+
+.dossier-gallery-item {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background-color: var(--c-slate-deep);
+}
+
+.dossier-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dossier-rooms-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 32px 0;
+}
+
+.dossier-rooms-table td {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--hairline-dark);
+}
+
+.dossier-narrative-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 48px;
+  margin: 40px 0;
+  align-items: flex-start;
+}
+
+.dossier-rooms-table tr {
+  display: table-row;
+}
+
+@media (max-width: 768px) {
+  .dossier-narrative-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .dossier-rooms-table,
+  .dossier-rooms-table tbody,
+  .dossier-rooms-table tr,
+  .dossier-rooms-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .dossier-rooms-table td {
+    padding: 8px 0;
+    border-bottom: none;
+    text-align: left !important;
+  }
+
+  .dossier-rooms-table tr {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--hairline-dark);
+  }
+
+  .dossier-modal-container {
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  .dossier-close-btn {
+    top: 20px;
+    right: 20px;
+  }
+
+  .nav-reserve-trigger {
+    display: none;
+  }
+
+  .colophon-strip {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE DESIGN (Respecting Mobile Art Direction)
+   -------------------------------------------------------------------------- */
+@media (max-width: 992px) {
+
+  .manifesto-grid,
+  .chapters-split-grid,
+  .destination-grid,
+  .colophon-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .nav-links-cluster {
+    display: none;
+  }
+
+  .nav-links-cluster.mobile-open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: rgba(13, 12, 10, 0.98);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    padding: 32px var(--gutter);
+    gap: 20px;
+    border-bottom: 1px solid var(--hairline-dark);
+    z-index: 99;
+  }
+
+  .nav-mobile-burger {
+    display: flex;
+  }
+
+  .nav-mobile-burger.active span:first-child {
+    transform: translateY(3.5px) rotate(45deg);
+  }
+
+  .nav-mobile-burger.active span:last-child {
+    transform: translateY(-3.5px) rotate(-45deg);
+  }
+
+  .hero-aperture-frame {
+    width: 78vw;
+    height: 52vh;
+  }
+
+  .directory-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .directory-row-rate {
+    text-align: left;
+    margin-top: 8px;
+  }
+
+  .materiality-interactive-item {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .horizontal-track {
+    height: 54vh;
+  }
+
+  .horizontal-panel {
+    flex: 0 0 80vw;
+  }
+
+  .horizontal-stage {
+    height: 280vh;
+  }
+}
