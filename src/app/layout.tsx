@@ -1,14 +1,12 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, Plus_Jakarta_Sans, Space_Mono } from 'next/font/google';
 import './globals.css';
-import { BookingProvider } from '@/context/BookingContext';
 import { GalleryProvider } from '@/components/common/GalleryLightbox';
 import Navbar from '@/components/common/Navbar';
 import Footer from '@/components/common/Footer';
-import BookingModal from '@/components/common/BookingModal';
-import CustomCursor from '@/components/common/CustomCursor';
 import SmoothScroll from '@/components/common/SmoothScroll';
 import ScrollProgress from '@/components/common/ScrollProgress';
+import { BRAND } from '@/data/innzoyData';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -32,48 +30,39 @@ const spaceMono = Space_Mono({
   display: 'swap',
 });
 
+const SITE_URL = 'https://hotel-innzoy.vercel.app';
+const DESCRIPTION =
+  'Innzoy Hotels and Guest Houses — affordable, well-kept stays across Khajaguda, DLF Road, TNGO Colony, HITEC City, Jubilee Hills, Manikonda, Kondapur and Gopanpally in Hyderabad.';
+
 export const metadata: Metadata = {
-  title: 'INNZOY — Contemporary Luxury Hospitality Group',
-  description:
-    'Discover INNZOY hotels, sanctuaries, and residences — architectural calm, tactile materials, and quiet hospitality across Jaipur, Goa, Udaipur, the Himalayas, and Hyderabad.',
+  title: 'Innzoy — Hotels & Guest Houses in Hyderabad',
+  description: DESCRIPTION,
   keywords: [
-    'INNZOY',
-    'luxury boutique hotel',
-    'quiet luxury hospitality',
-    'architectural sanctuary',
-    'Jaipur heritage stay',
-    'Goa pavilion villa',
-    'Udaipur lake cloister',
-    'Himalayas alpine retreat',
-    'Hyderabad Jubilee Hills',
+    'Innzoy',
+    'hotels in Hyderabad',
+    'budget hotels Gachibowli',
+    'guest house Hyderabad',
+    'Khajaguda hotel',
+    'HITEC City hotel',
+    'Manikonda guest house',
+    'corporate stays Hyderabad',
   ],
-  authors: [{ name: 'INNZOY Hospitality Group' }],
-  metadataBase: new URL('https://hotel-innzoy.vercel.app'),
+  authors: [{ name: 'Innzoy Hotels and Guesthouses' }],
+  metadataBase: new URL(SITE_URL),
   openGraph: {
-    title: 'INNZOY — Contemporary Luxury Hospitality Group',
-    description:
-      'Curated boutique sanctuaries, private pavilions, and alpine chalets. Architectural calm, tactile materials, and human warmth.',
-    url: 'https://hotel-innzoy.vercel.app',
-    siteName: 'INNZOY',
-    images: [
-      {
-        url: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=2000&q=85',
-        width: 1200,
-        height: 630,
-        alt: 'INNZOY Hotels & Resorts',
-      },
-    ],
-    locale: 'en_US',
+    title: 'Innzoy — Hotels & Guest Houses in Hyderabad',
+    description: DESCRIPTION,
+    url: SITE_URL,
+    siteName: 'Innzoy',
+    images: [{ url: BRAND.heroImage, width: 1200, height: 630, alt: 'Innzoy Hotels' }],
+    locale: 'en_IN',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'INNZOY — Contemporary Luxury Hospitality Group',
-    description:
-      'Curated boutique sanctuaries and residences. Quiet luxury, human warmth, and architectural calm.',
-    images: [
-      'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=2000&q=85',
-    ],
+    title: 'Innzoy — Hotels & Guest Houses in Hyderabad',
+    description: DESCRIPTION,
+    images: [BRAND.heroImage],
   },
 };
 
@@ -85,19 +74,18 @@ export default function RootLayout({
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'HotelGroup',
-    name: 'INNZOY Hotels & Resorts',
-    url: 'https://hotel-innzoy.vercel.app',
-    logo: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=2000&q=85',
-    description:
-      'Curated boutique sanctuaries, private pavilions, and alpine chalets across Jaipur, Goa, Udaipur, the Himalayas, and Hyderabad.',
-    telephone: '+91 85209 63096',
-    email: 'concierge@innzoy.com',
+    name: 'Innzoy Hotels and Guesthouses',
+    url: SITE_URL,
+    description: DESCRIPTION,
+    telephone: BRAND.contact.phone,
+    email: BRAND.contact.email,
+    sameAs: [BRAND.contact.instagram],
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Jubilee Hills',
+      streetAddress: '4th Floor, Sri Sai Sigma 2, Kondapur',
       addressLocality: 'Hyderabad',
       addressRegion: 'Telangana',
-      postalCode: '500033',
+      postalCode: '500084',
       addressCountry: 'IN',
     },
   };
@@ -111,32 +99,14 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased bg-[#F4F1EA] text-[#171715]">
-        <BookingProvider>
-          <GalleryProvider>
-            <SmoothScroll>
-              {/* Subtle Scroll Progress Indicator */}
-              <ScrollProgress />
-
-              {/* Film grain effect */}
-              <div className="film-grain" aria-hidden="true" />
-
-              {/* Custom interactive desktop cursor */}
-              <CustomCursor />
-
-              {/* Global minimal navigation */}
-              <Navbar />
-
-              {/* Page content */}
-              <main className="min-h-screen">{children}</main>
-
-              {/* Global slide-over reservation drawer */}
-              <BookingModal />
-
-              {/* Global editorial footer */}
-              <Footer />
-            </SmoothScroll>
-          </GalleryProvider>
-        </BookingProvider>
+        <GalleryProvider>
+          <SmoothScroll>
+            <ScrollProgress />
+            <Navbar />
+            <main className="min-h-screen">{children}</main>
+            <Footer />
+          </SmoothScroll>
+        </GalleryProvider>
       </body>
     </html>
   );

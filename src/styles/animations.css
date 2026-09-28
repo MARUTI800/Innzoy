@@ -1,55 +1,5 @@
 /* Subtle Luxury Animations & Interactions */
 
-/* Custom Cursor (Desktop Only) */
-.custom-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 8px;
-  height: 8px;
-  background-color: var(--accent-brass);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: var(--z-cursor);
-  transform: translate(-50%, -50%);
-  transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
-  mix-blend-mode: difference;
-}
-
-.custom-cursor-follower {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 36px;
-  height: 36px;
-  border: 1px solid rgba(195, 160, 107, 0.45);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: calc(var(--z-cursor) - 1);
-  transform: translate(-50%, -50%);
-  transition: transform 0.12s ease-out, width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
-}
-
-.custom-cursor.hovering {
-  width: 48px;
-  height: 48px;
-  background-color: rgba(195, 160, 107, 0.25);
-  backdrop-filter: blur(2px);
-}
-
-.custom-cursor-follower.hovering {
-  width: 64px;
-  height: 64px;
-  border-color: var(--accent-brass);
-}
-
-@media (pointer: coarse) {
-  .custom-cursor,
-  .custom-cursor-follower {
-    display: none !important;
-  }
-}
-
 /* GSAP / ScrollTrigger Ready Classes */
 .gs-reveal-up {
   opacity: 0;
@@ -80,11 +30,6 @@
 
   .hero-bg-image {
     transform: none !important;
-  }
-
-  .custom-cursor,
-  .custom-cursor-follower {
-    display: none !important;
   }
 
   .gs-reveal-up,

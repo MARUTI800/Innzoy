@@ -3,25 +3,27 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useBooking } from '@/context/BookingContext';
-import MagneticButton from '@/components/common/MagneticButton';
+import { BRAND, waLink } from '@/data/innzoyData';
 
 const NAV_LINKS = [
-  { href: '/stays', label: 'STAYS' },
-  { href: '/destinations', label: 'DESTINATIONS' },
-  { href: '/experiences', label: 'EXPERIENCES' },
-  { href: '/journal', label: 'JOURNAL' },
+  { href: '/stays?category=hotel', label: 'HOTELS' },
+  { href: '/stays?category=guesthouse', label: 'GUEST HOUSES' },
   { href: '/about', label: 'ABOUT' },
+  { href: '/contact', label: 'CONTACT' },
 ];
+
+const BOOK_URL = waLink(
+  BRAND.contact.whatsapp,
+  'Hello, I would like to book a stay with Innzoy. Please share availability and rates.'
+);
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { openBooking } = useBooking();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
+    const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
@@ -29,6 +31,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setMenuOpen(false);
+    document.body.style.overflow = '';
   }, [pathname]);
 
   const toggleMenu = useCallback(() => {
@@ -52,113 +55,94 @@ export default function Navbar() {
     return () => window.removeEventListener('keydown', handleEsc);
   }, [menuOpen, closeMenu]);
 
-  // Determine if the current page top has a dark full-bleed image (home and /stays/[slug])
   const isDarkHero = pathname === '/' || (pathname?.startsWith('/stays/') && pathname !== '/stays');
   const isLightText = !scrolled && isDarkHero;
 
   return (
     <>
-      {/* Desktop / Mobile Top Bar */}
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
           scrolled
-            ? 'bg-[#F4F1EA]/90 backdrop-blur-md border-b border-[#171715]/10 shadow-[0_4px_20px_rgba(0,0,0,0.02)]'
+            ? 'bg-[#F4F1EA]/95 backdrop-blur-md border-b border-[#171715]/10'
             : isDarkHero
             ? 'bg-transparent'
-            : 'bg-[#F4F1EA]/80 backdrop-blur-sm'
+            : 'bg-[#F4F1EA]/90 backdrop-blur-sm'
         }`}
         role="banner"
       >
         <nav
-          className="max-w-[1500px] mx-auto px-6 md:px-12 lg:px-16 flex items-center justify-between h-[72px] md:h-[84px]"
+          className="max-w-[1500px] mx-auto px-6 md:px-12 lg:px-16 flex items-center justify-between h-[68px] md:h-[76px]"
           aria-label="Main navigation"
         >
-          {/* Logo */}
           <Link
             href="/"
-            className={`font-serif text-2xl md:text-3xl tracking-[0.08em] uppercase font-light transition-colors duration-300 ${
+            className={`font-serif text-2xl md:text-[1.75rem] tracking-[0.08em] uppercase font-light transition-colors duration-300 ${
               isLightText ? 'text-[#FAF9F6]' : 'text-[#171715]'
             }`}
-            aria-label="INNZOY Home"
+            aria-label="Innzoy home"
           >
             INNZOY
           </Link>
 
-          {/* Desktop Links with Left-to-Right Underline Expansion */}
-          <div className="hidden lg:flex items-center gap-10">
+          <div className="hidden lg:flex items-center gap-9">
             {NAV_LINKS.map((link) => {
-              const isActive = pathname === link.href || pathname?.startsWith(link.href + '/');
+              const path = link.href.split('?')[0];
+              const isActive = pathname === path;
 
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`group relative py-1 font-mono text-[10px] uppercase tracking-[0.28em] transition-colors duration-300 ${
-                    isActive
-                      ? isLightText
+                  className={`font-mono text-[10px] uppercase tracking-[0.24em] transition-colors duration-300 ${
+                    isLightText
+                      ? isActive
                         ? 'text-white'
-                        : 'text-[#171715]'
-                      : isLightText
-                      ? 'text-stone-300 hover:text-white'
+                        : 'text-stone-300 hover:text-white'
+                      : isActive
+                      ? 'text-[#171715]'
                       : 'text-[#5A554D] hover:text-[#171715]'
                   }`}
                 >
-                  <span>{link.label}</span>
-                  {/* Underline expanding from left to right */}
-                  <span
-                    className={`absolute bottom-0 left-0 w-full h-[1px] transition-transform duration-300 origin-left ${
-                      isLightText ? 'bg-white' : 'bg-[#171715]'
-                    } ${
-                      isActive
-                        ? 'scale-x-100'
-                        : 'scale-x-0 group-hover:scale-x-100'
-                    }`}
-                  />
+                  {link.label}
                 </Link>
               );
             })}
           </div>
 
-          {/* Desktop CTA + Mobile Hamburger */}
-          <div className="flex items-center gap-6">
-            <div className="hidden lg:block">
-              <MagneticButton strength={5}>
-                <button
-                  onClick={() => openBooking()}
-                  data-cursor="RESERVE"
-                  className={`px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] transition-all duration-300 border ${
-                    isLightText
-                      ? 'border-white/30 text-white hover:border-white hover:bg-white/10'
-                      : 'border-[#171715]/25 text-[#171715] hover:border-[#171715] hover:bg-[#171715] hover:text-[#FAF9F6]'
-                  }`}
-                  aria-label="Book a stay"
-                >
-                  BOOK A STAY
-                </button>
-              </MagneticButton>
-            </div>
+          <div className="flex items-center gap-5">
+            <a
+              href={BOOK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`hidden lg:inline-block px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] transition-colors duration-300 ${
+                isLightText
+                  ? 'bg-white/15 border border-white/30 text-white hover:bg-white hover:text-[#171715]'
+                  : 'bg-[#171715] text-[#FAF9F6] hover:bg-[#A68A68]'
+              }`}
+            >
+              Book Now
+            </a>
 
-            {/* Mobile hamburger */}
             <button
               onClick={toggleMenu}
               className={`lg:hidden relative w-7 h-5 flex flex-col justify-between transition-colors ${
-                isLightText ? 'text-white' : 'text-[#171715]'
+                isLightText && !menuOpen ? 'text-white' : 'text-[#171715]'
               }`}
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={menuOpen}
             >
               <span
-                className={`block w-full h-[1.5px] bg-current transition-all duration-400 origin-center ${
+                className={`block w-full h-[1.5px] bg-current transition-transform duration-300 origin-center ${
                   menuOpen ? 'rotate-45 translate-y-[9px]' : ''
                 }`}
               />
               <span
-                className={`block w-full h-[1.5px] bg-current transition-opacity duration-300 ${
+                className={`block w-full h-[1.5px] bg-current transition-opacity duration-200 ${
                   menuOpen ? 'opacity-0' : 'opacity-100'
                 }`}
               />
               <span
-                className={`block w-full h-[1.5px] bg-current transition-all duration-400 origin-center ${
+                className={`block w-full h-[1.5px] bg-current transition-transform duration-300 origin-center ${
                   menuOpen ? '-rotate-45 -translate-y-[9px]' : ''
                 }`}
               />
@@ -167,61 +151,35 @@ export default function Navbar() {
         </nav>
       </header>
 
-      {/* Full-screen mobile menu */}
       <div
-        className={`fixed inset-0 z-40 bg-[#121412] text-[#FAF9F6] transition-all duration-500 lg:hidden ${
-          menuOpen
-            ? 'opacity-100 pointer-events-auto'
-            : 'opacity-0 pointer-events-none'
+        className={`fixed inset-0 z-40 bg-[#F4F1EA] transition-opacity duration-300 lg:hidden ${
+          menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         aria-hidden={!menuOpen}
       >
         <div className="flex flex-col justify-center items-start h-full px-8 sm:px-12 max-w-lg mx-auto">
-          {NAV_LINKS.map((link, i) => (
+          {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={closeMenu}
-              className="block font-serif text-3xl sm:text-4xl uppercase tracking-tight mb-6 transition-all duration-500 text-stone-200 hover:text-white"
-              style={{
-                opacity: menuOpen ? 1 : 0,
-                transform: menuOpen ? 'translateY(0)' : 'translateY(20px)',
-                transitionDelay: menuOpen ? `${150 + i * 70}ms` : '0ms',
-              }}
+              className="block font-serif text-3xl uppercase tracking-tight mb-6 text-[#171715] hover:text-[#A68A68] transition-colors"
             >
               {link.label}
             </Link>
           ))}
 
-          <div className="w-full h-[1px] bg-white/10 my-8" />
+          <div className="w-full h-[1px] bg-[#171715]/10 my-6" />
 
-          <button
-            onClick={() => {
-              closeMenu();
-              openBooking();
-            }}
-            className="font-mono text-xs uppercase tracking-[0.24em] text-[#A68A68] hover:text-white transition-all duration-500"
-            style={{
-              opacity: menuOpen ? 1 : 0,
-              transform: menuOpen ? 'translateY(0)' : 'translateY(20px)',
-              transitionDelay: menuOpen ? '480ms' : '0ms',
-            }}
-          >
-            BOOK A STAY →
-          </button>
-
-          <Link
-            href="/contact"
+          <a
+            href={BOOK_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={closeMenu}
-            className="font-mono text-xs uppercase tracking-[0.24em] text-stone-400 hover:text-white mt-4 transition-all duration-500"
-            style={{
-              opacity: menuOpen ? 1 : 0,
-              transform: menuOpen ? 'translateY(0)' : 'translateY(20px)',
-              transitionDelay: menuOpen ? '560ms' : '0ms',
-            }}
+            className="px-6 py-3.5 bg-[#171715] text-[#FAF9F6] font-mono text-[11px] uppercase tracking-[0.2em]"
           >
-            CONTACT DESK
-          </Link>
+            Book Now
+          </a>
         </div>
       </div>
     </>

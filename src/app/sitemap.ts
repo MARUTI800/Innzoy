@@ -1,67 +1,28 @@
 import { MetadataRoute } from 'next';
-import { PROPERTIES, JOURNAL_ARTICLES } from '@/data/innzoyData';
+import { PROPERTIES } from '@/data/innzoyData';
+
+const BASE_URL = 'https://hotel-innzoy.vercel.app';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://hotel-innzoy.vercel.app';
+  const now = new Date();
 
-  const staticPages = [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 1.0,
-    },
-    {
-      url: `${baseUrl}/stays`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/destinations`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/experiences`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/journal`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-  ];
-
-  const propertyPages = PROPERTIES.map((prop) => ({
-    url: `${baseUrl}/stays/${prop.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.9,
-  }));
-
-  const journalPages = JOURNAL_ARTICLES.map((article) => ({
-    url: `${baseUrl}/journal/${article.slug}`,
-    lastModified: new Date(),
+  const staticRoutes = [
+    { url: BASE_URL, priority: 1 },
+    { url: `${BASE_URL}/stays`, priority: 0.9 },
+    { url: `${BASE_URL}/about`, priority: 0.6 },
+    { url: `${BASE_URL}/contact`, priority: 0.6 },
+  ].map((route) => ({
+    ...route,
+    lastModified: now,
     changeFrequency: 'monthly' as const,
-    priority: 0.7,
   }));
 
-  return [...staticPages, ...propertyPages, ...journalPages];
+  const propertyRoutes = PROPERTIES.map((property) => ({
+    url: `${BASE_URL}/stays/${property.slug}`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  }));
+
+  return [...staticRoutes, ...propertyRoutes];
 }

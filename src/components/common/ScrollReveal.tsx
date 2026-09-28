@@ -8,9 +8,9 @@ export default function ScrollReveal({
   children,
   className = '',
   variant = 'fade-up',
-  duration = 800,
+  duration = 500,
   delay = 0,
-  threshold = 0.15,
+  threshold = 0.1,
 }: {
   children: React.ReactNode;
   className?: string;
@@ -22,20 +22,11 @@ export default function ScrollReveal({
   const ref = useRef<HTMLDivElement>(null);
   const [isRevealed, setIsRevealed] = useState(false);
 
-  const handleIntersect = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && !isRevealed) {
-          if (delay > 0) {
-            setTimeout(() => setIsRevealed(true), delay);
-          } else {
-            setIsRevealed(true);
-          }
-        }
-      });
-    },
-    [delay, isRevealed]
-  );
+  const handleIntersect = useCallback((entries: IntersectionObserverEntry[]) => {
+    if (entries.some((entry) => entry.isIntersecting)) {
+      setIsRevealed(true);
+    }
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -66,18 +57,18 @@ export default function ScrollReveal({
       case 'scale-in':
         return {
           opacity: isRevealed ? 1 : 0,
-          transform: isRevealed ? 'scale(1)' : 'scale(0.96)',
+          transform: isRevealed ? 'scale(1)' : 'scale(0.99)',
         };
       case 'clip-up':
         return {
           opacity: isRevealed ? 1 : 0,
-          transform: isRevealed ? 'translateY(0)' : 'translateY(48px)',
+          transform: isRevealed ? 'translateY(0)' : 'translateY(14px)',
         };
       case 'fade-up':
       default:
         return {
           opacity: isRevealed ? 1 : 0,
-          transform: isRevealed ? 'translateY(0)' : 'translateY(36px)',
+          transform: isRevealed ? 'translateY(0)' : 'translateY(10px)',
         };
     }
   };
