@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "booking:check": "node scripts/check-booking-setup.mjs",
+    "test:booking": "node --import ./tests/booking-hooks.mjs --test tests/booking.test.mjs tests/booking-client.test.mjs tests/calendar-preview.test.mjs tests/booking-database-guard.test.mjs tests/booking-readiness.test.mjs"
   },
   "dependencies": {
     "framer-motion": "^13.4.4",

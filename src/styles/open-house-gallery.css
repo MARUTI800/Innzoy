@@ -1,0 +1,16 @@
+/* A photographic editing table: the inspected frame above a horizontal contact sequence. */
+.gallery-lightbox.gallery-lightbox-atlas[open] { grid-template-rows:62px minmax(0,1fr) 72px; padding-inline:28px; }
+.gallery-lightbox-atlas .gallery-lightbox-body { position:relative; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr) 64px; gap:15px; padding-block:18px 10px; }
+.gallery-lightbox-atlas .gallery-lightbox-image { grid-row:1; }
+.gallery-lightbox-atlas .gallery-lightbox-archive { grid-row:2; display:flex; flex-direction:row; align-items:center; justify-content:center; gap:25px; overflow:visible; }
+.gallery-lightbox-atlas .gallery-lightbox-counter { gap:7px; padding:0; }
+.gallery-lightbox-atlas .gallery-lightbox-counter > span { font-size:23px; }
+.gallery-lightbox-atlas .gallery-lightbox-contact-strip { flex-direction:row; gap:12px; padding:3px; max-width:65vw; height:64px; overflow:auto; scrollbar-width:none; }
+.gallery-lightbox-atlas .gallery-lightbox-contact-strip button { position:relative; flex:0 0 62px; display:block; min-height:0; }
+.gallery-lightbox-atlas .gallery-lightbox-thumbnail { height:55px; }
+.gallery-lightbox-atlas .gallery-lightbox-thumbnail-number { position:absolute; right:4px; bottom:5px; background:var(--atelier-ink); padding:3px; color:var(--atelier-paper); }
+.gallery-lightbox-atlas .gallery-lightbox-identity > span { font:500 15px/1 var(--font-functional); letter-spacing:.14em; }
+.gallery-lightbox-atlas .gallery-lightbox-caption > p { font:400 16px/1.35 var(--font-functional); letter-spacing:-.02em; }
+.gallery-lightbox-atlas .gallery-lightbox-caption > span { font-size:9px; }
+.gallery-lightbox-atlas .gallery-lightbox-header,.gallery-lightbox-atlas .gallery-lightbox-footer { border-color:color-mix(in srgb,var(--atelier-paper) 9.4%,transparent); }
+@media(max-width:760px) { .gallery-lightbox.gallery-lightbox-atlas[open] { padding-inline:16px; grid-template-rows:60px minmax(0,1fr) 77px; } .gallery-lightbox-atlas .gallery-lightbox-counter { position:static; } .gallery-lightbox-atlas .gallery-lightbox-archive { gap:12px; } .gallery-lightbox-atlas .gallery-lightbox-contact-strip { max-width:calc(100vw - 106px); gap:7px; } .gallery-lightbox-atlas .gallery-lightbox-contact-strip button { flex-basis:52px; } .gallery-lightbox-atlas .gallery-lightbox-identity { gap:14px; } .gallery-lightbox-atlas .gallery-lightbox-caption > p { font-size:14px; } }

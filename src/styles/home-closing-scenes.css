@@ -1,0 +1,103 @@
+/* Quiet correspondence, an actual room photograph, and the reservation desk. */
+.atlas-closing-shell { width: 100%; max-width: var(--atelier-max, 1600px); margin-inline: auto; padding-inline: var(--atelier-gutter, clamp(22px, 4.5vw, 80px)); }
+.atlas-correspondence { background: #E5E6DF; color: #202923; padding-block: clamp(76px, 8vw, 125px); }
+.atlas-correspondence-layout { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.55fr); gap: clamp(44px, 7vw, 112px); align-items: start; }
+.atlas-correspondence-margin h2 { margin: 0 0 30px; font: 400 clamp(30px, 2.8vw, 40px)/1.12 var(--font-editorial, var(--font-display)); letter-spacing: -.025em; }
+.atlas-correspondence-stats { margin: 0; max-width: 300px; }
+.atlas-correspondence-stats > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: center; padding-block: 11px; }
+.atlas-correspondence-stats dt { font: 400 12px/1.7 var(--font-functional, var(--font-sans)); color: #59635B; }
+.atlas-correspondence-stats dd { margin: 0; font: 500 24px/1.3 var(--font-functional, var(--font-sans)); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.atlas-correspondence-stage { display: grid; min-height: 330px; padding-block: 4px 26px; }
+.atlas-correspondence-entry { display: flex; flex-direction: column; justify-content: space-between; gap: 27px; grid-area: 1 / 1; min-width: 0; margin: 0; visibility: hidden; pointer-events: none; }
+.atlas-correspondence-entry.is-active { visibility: visible; pointer-events: auto; }
+.atlas-correspondence-letter h3 { margin: 0 0 14px; font: 400 11px/1.6 var(--font-functional, var(--font-sans)); color: #59635B; }
+.atlas-correspondence-mask { overflow: hidden; }
+.atlas-correspondence-letter blockquote { margin: 0; font: 400 clamp(26px, 2.35vw, 32px)/1.36 var(--font-editorial, var(--font-display)); letter-spacing: -.02em; color: #202923; max-width: 690px; }
+.atlas-correspondence-entry figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 22px; font: 400 11px/1.6 var(--font-functional, var(--font-sans)); }
+.atlas-correspondence-rating { flex-shrink: 0; font: 400 11px/1.6 var(--font-functional, var(--font-sans)); font-variant-numeric: tabular-nums; color: #59635B; }
+.atlas-correspondence-controls { display: flex; justify-content: space-between; align-items: center; gap: 22px; font: 400 11px/1.6 var(--font-functional, var(--font-sans)); }
+.atlas-correspondence-counter { font-variant-numeric: tabular-nums; color: #59635B; }
+.atlas-correspondence-controls > div { display: flex; gap: 27px; }
+.atlas-correspondence-controls button { display: inline-flex; align-items: center; justify-content: space-between; gap: 13px; min-height: 44px; padding: 8px 0; border: 0; background: transparent; color: #202923; position: relative; font: inherit; }
+.atlas-correspondence-controls button::after { content: ''; height: 1px; position: absolute; inset: auto 0 4px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .22s var(--atelier-ease); }
+.atlas-correspondence-controls button svg { transition: transform .22s var(--atelier-ease); }
+.atlas-correspondence-controls button:is(:hover, :focus-visible)::after { transform: scaleX(1); }
+.atlas-correspondence-controls button:first-child:is(:hover, :focus-visible) svg { transform: translateX(-2px); }
+.atlas-correspondence-controls button:last-child:is(:hover, :focus-visible) svg { transform: translateX(2px); }
+.atlas-correspondence-controls button:focus-visible { outline: 2px solid #202923; outline-offset: 5px; }
+
+.atlas-reservation-scene { background: #E5E6DF; color: #202923; padding-bottom: clamp(50px, 5.5vw, 82px); scroll-margin-top: 80px; }
+.atlas-reservation-scene-impression { margin: 0 0 clamp(32px, 4vw, 60px); }
+.atlas-reservation-scene-impression > a { display: block; }
+.atlas-reservation-scene-image { height: clamp(260px, 29vw, 440px); }
+.atlas-reservation-scene-image img { object-position: center 55%; }
+.atlas-reservation-scene-impression figcaption { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-block: 6px; font: 400 11px/1.6 var(--font-functional, var(--font-sans)); color: #59635B; }
+.atlas-reservation-scene-impression figcaption a { display: inline-flex; align-items: center; gap: 16px; min-height: 44px; text-decoration: none; color: #202923; }
+.atlas-reservation-scene-impression figcaption a svg { transition: transform .25s var(--atelier-ease); }
+.atlas-reservation-scene-impression figcaption a:is(:hover, :focus-visible) svg { transform: translate(2px, -2px); }
+.atlas-reservation-scene-launch { display: flex; align-items: baseline; justify-content: space-between; gap: 25px; padding-bottom: 24px; border-bottom: 1px solid #20292320; }
+.atlas-reservation-scene-launch h2 { margin: 0; font: 400 clamp(34px, 3.4vw, 48px)/1.12 var(--font-editorial, var(--font-display)); letter-spacing: -.025em; }
+.atlas-reservation-action { display: inline-flex; align-items: center; justify-content: space-between; gap: 28px; min-height: 44px; padding: 8px 0; border: 0; border-bottom: 1px solid #202923; background: transparent; color: #202923; font: 500 13px/1.6 var(--font-functional, var(--font-sans)); white-space: nowrap; }
+.atlas-reservation-action svg { flex-shrink: 0; transition: transform .25s var(--atelier-ease); }
+.atlas-reservation-action:is(:hover, :focus-visible) svg { transform: translate(2px, -2px); }
+.atlas-reservation-scene-information { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(35px, 7vw, 105px); padding-block: 30px 35px; }
+.atlas-reservation-scene-explanation h3 { margin: 0 0 11px; font: 400 25px/1.2 var(--font-editorial, var(--font-display)); letter-spacing: -.015em; }
+.atlas-reservation-scene-explanation p { max-width: 620px; margin: 0; font: 400 14px/1.85 var(--font-functional, var(--font-sans)); color: #59635B; }
+.atlas-reservation-scene-head-office { align-self: start; }
+.atlas-reservation-scene-head-office a, .atlas-reservation-scene-corporate { display: flex; align-items: center; justify-content: space-between; gap: 25px; position: relative; width: 100%; min-height: 44px; padding-block: 8px; border: 0; background: transparent; color: #202923; font: 500 13px/1.6 var(--font-functional, var(--font-sans)); text-decoration: none; text-align: left; }
+.atlas-reservation-scene-head-office a::after, .atlas-reservation-scene-corporate::after { content: ''; position: absolute; left: 0; right: 0; bottom: 4px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .25s; }
+.atlas-reservation-scene-head-office a:is(:hover, :focus-visible)::after, .atlas-reservation-scene-corporate:is(:hover, :focus-visible)::after { transform: scaleX(1); }
+.atlas-reservation-scene-head-office svg { flex-shrink: 0; }
+.atlas-reservation-scene-desk-heading, .atlas-reservation-scene-desks li a { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, .6fr); column-gap: 24px; align-items: center; }
+.atlas-reservation-scene-desk-heading { padding-bottom: 12px; font: 400 11px/1.6 var(--font-functional, var(--font-sans)); color: #59635B; }
+.atlas-reservation-scene-desks ol { list-style: none; padding: 0; margin: 0; }
+.atlas-reservation-scene-desks li { border-top: 1px solid #20292320; }
+.atlas-reservation-scene-desks li a { min-height: 68px; padding-block: 14px; color: #202923; text-decoration: none; }
+.atlas-reservation-scene-desk-name { font: 400 25px/1.15 var(--font-editorial, var(--font-display)); letter-spacing: -.02em; transition: transform .25s var(--atelier-ease); }
+.atlas-reservation-scene-desk-phone { font: 400 13px/1.7 var(--font-functional, var(--font-sans)); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.atlas-reservation-scene-desk-action { font: 500 12px/1.6 var(--font-functional, var(--font-sans)); }
+.atlas-reservation-scene-desks a:is(:hover, :focus-visible) .atlas-reservation-scene-desk-name { transform: translateX(3px); }
+.atlas-reservation-scene-desks a:is(:hover, :focus-visible) .atlas-reservation-scene-desk-action { text-decoration: underline; text-underline-offset: 4px; }
+.atlas-reservation-scene :is(a, button):focus-visible { outline: 2px solid #202923; outline-offset: 5px; }
+
+@media (max-width: 1000px) {
+  .atlas-correspondence-layout { gap: 44px; grid-template-columns: minmax(0, .85fr) minmax(0, 1.55fr); }
+  .atlas-reservation-scene-desk-heading, .atlas-reservation-scene-desks li a { gap: 18px; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) 90px; }
+}
+@media (max-width: 760px) {
+  .atlas-correspondence { padding-block: 60px; }
+  .atlas-correspondence-layout { grid-template-columns: 1fr; gap: 36px; }
+  .atlas-correspondence-margin h2 { font-size: 30px; margin-bottom: 23px; }
+  .atlas-correspondence-stats { max-width: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
+  .atlas-correspondence-stats > div { display: flex; flex-direction: column; align-items: flex-start; gap: 9px; padding: 0; }
+  .atlas-correspondence-stats dt { order: 1; font-size: 11px; }
+  .atlas-correspondence-stats dd { font-size: 23px; }
+  .atlas-correspondence-stage { min-height: 360px; padding-bottom: 23px; }
+  .atlas-correspondence-letter blockquote { font-size: 24px; line-height: 1.4; }
+  .atlas-correspondence-entry figcaption { gap: 15px; flex-wrap: wrap; }
+  .atlas-correspondence-controls > div { gap: 24px; }
+  .atlas-correspondence-controls button { gap: 10px; }
+  .atlas-reservation-scene { padding-bottom: 46px; }
+  .atlas-reservation-scene-image { height: clamp(260px, 78vw, 420px); }
+  .atlas-reservation-scene-impression { margin-bottom: 28px; }
+  .atlas-reservation-scene-impression figcaption { gap: 14px; font-size: 10px; }
+  .atlas-reservation-scene-impression figcaption a { gap: 10px; }
+  .atlas-reservation-scene-launch { flex-direction: column; align-items: flex-start; gap: 20px; padding-bottom: 25px; }
+  .atlas-reservation-scene-launch h2 { font-size: 35px; }
+  .atlas-reservation-scene-information { grid-template-columns: 1fr; gap: 20px; padding-block: 26px 30px; }
+  .atlas-reservation-scene-explanation h3 { font-size: 24px; }
+  .atlas-reservation-scene-head-office { max-width: 460px; }
+  .atlas-reservation-scene-desk-heading { display: block; }
+  .atlas-reservation-scene-desk-heading > span:not(:first-child) { display: none; }
+  .atlas-reservation-scene-desks li a { grid-template-columns: minmax(0, 1fr) 78px; gap: 6px 14px; padding-block: 15px; min-height: 79px; }
+  .atlas-reservation-scene-desk-name { grid-column: 1; grid-row: 1; font-size: 24px; }
+  .atlas-reservation-scene-desk-phone { grid-column: 1; grid-row: 2; font-size: 12px; }
+  .atlas-reservation-scene-desk-action { grid-column: 2; grid-row: 1 / 3; font-size: 11px; text-align: right; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .atlas-correspondence *, .atlas-reservation-scene * { transition: none !important; }
+  .atlas-correspondence-controls button:is(:hover, :focus-visible) svg { transform: none; }
+  .atlas-reservation-scene a:is(:hover, :focus-visible) svg,
+  .atlas-reservation-action:is(:hover, :focus-visible) svg,
+  .atlas-reservation-scene-desks a:is(:hover, :focus-visible) .atlas-reservation-scene-desk-name { transform: none; }
+}

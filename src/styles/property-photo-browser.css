@@ -1,0 +1,9 @@
+.hotel-photo-navigation { display:flex; align-items:center; gap:4px; }
+.hotel-photo-navigation > span { min-width:54px; margin-right:8px; font-variant-numeric:tabular-nums; }
+.hotel-photo-navigation button { display:grid; place-items:center; width:44px; height:44px; border:0; background:transparent; color:inherit; cursor:pointer; transition:background .2s; }
+.hotel-photo-navigation button:hover { background:#34332e55; }
+.hotel-photo-open { display:inline-flex; align-items:center; gap:12px; min-height:44px; padding:0; border:0; background:transparent; color:inherit; font:inherit; cursor:pointer; }
+.hotel-photo-open:hover { text-decoration:underline; text-underline-offset:5px; }
+.hotel-photo-navigation button:focus-visible,.hotel-photo-open:focus-visible { outline:2px solid currentColor; outline-offset:-3px; }
+@media (max-width:760px) { .hotel-photo-navigation > span { min-width:40px; margin-right:0; } .hotel-photo-open { gap:7px; } }
+@media (prefers-reduced-motion:reduce) { .hotel-photo-navigation button { transition:none; } }

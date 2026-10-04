@@ -1,97 +1,31 @@
-import Image from 'next/image';
 import Link from 'next/link';
-import { MapPin } from 'lucide-react';
-import { Property } from '@/types';
-import { waLink } from '@/data/innzoyData';
+import Image from 'next/image';
+import { ArrowUpRight } from 'lucide-react';
+import type { Property } from '@/types';
+import StayRate from '@/components/common/StayRate';
 
-export default function PropertyCard({ property }: { property: Property }) {
-  const bookHref =
-    property.bookingUrl ??
-    waLink(
-      property.whatsapp ?? '918520963096',
-      `Hello, I would like to check availability at Innzoy ${property.name}, Hyderabad.`
-    );
+interface PropertyCardProps { property: Property; index?: number; className?: string; journeyQuery?: string; }
 
-  return (
-    <article className="group flex flex-col bg-white border border-[#171715]/10 transition-colors duration-300 hover:border-[#171715]/25">
-      <Link
-        href={`/stays/${property.slug}`}
-        className="relative block aspect-[4/3] overflow-hidden bg-[#ECE8DE]"
-      >
-        <Image
-          src={property.heroImage}
-          alt={`Innzoy ${property.name}`}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-        />
-        {property.comingSoon && (
-          <span className="absolute top-3 left-3 bg-[#171715] text-white font-mono text-[9px] uppercase tracking-[0.2em] px-2.5 py-1.5">
-            Coming Soon
-          </span>
-        )}
-      </Link>
+export default function PropertyCard({ property, index, className = '', journeyQuery = '' }: PropertyCardProps) {
+  const query = property.category === 'hotel' ? new URLSearchParams(journeyQuery).toString() : '';
+  const href = `/stays/${property.slug}${query ? `?${query}` : ''}`;
+  const action = property.category === 'hotel' ? 'View hotel' : 'View stay';
+  const essentials = property.amenities.filter((amenity) => ['24/7 Front Desk', 'Free Wi-Fi', 'Power Backup', 'Fully Equipped Kitchen', 'Washing Machine', 'Workspace'].includes(amenity)).slice(0, 3);
 
-      <div className="flex flex-col flex-1 p-5">
-        <p className="font-mono text-[9px] uppercase tracking-[0.28em] text-[#A68A68] mb-2">
-          {property.label}
-        </p>
-
-        <h3 className="font-serif text-2xl font-normal text-[#171715] mb-2.5">
-          <Link href={`/stays/${property.slug}`} className="hover:text-[#8E7047] transition-colors">
-            {property.name}
-          </Link>
-        </h3>
-
-        <p className="flex items-start gap-1.5 text-[13px] leading-relaxed text-[#5A554D] mb-4">
-          <MapPin className="w-3.5 h-3.5 mt-0.5 shrink-0 text-[#A68A68]" />
-          <span className="line-clamp-2">{property.address}</span>
-        </p>
-
-        <div className="mt-auto pt-4 border-t border-[#171715]/10">
-          {property.weekdayPrice ? (
-            <div className="flex items-baseline gap-2 mb-4">
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#777168]">
-                From
-              </span>
-              <span className="font-serif text-2xl text-[#171715]">{property.weekdayPrice}</span>
-              {property.weekendPrice && (
-                <span className="font-mono text-[10px] text-[#777168]">
-                  / {property.weekendPrice} weekends
-                </span>
-              )}
-            </div>
-          ) : (
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#777168] mb-4">
-              {property.comingSoon ? 'Opening soon' : 'Enquire for rates'}
-            </p>
-          )}
-
-          <div className="flex items-center gap-3">
-            {property.comingSoon ? (
-              <span className="flex-1 text-center px-4 py-2.5 border border-[#171715]/15 font-mono text-[10px] uppercase tracking-[0.2em] text-[#777168]">
-                Coming Soon
-              </span>
-            ) : (
-              <a
-                href={bookHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 text-center px-4 py-2.5 bg-[#171715] hover:bg-[#A68A68] font-mono text-[10px] uppercase tracking-[0.2em] text-white transition-colors duration-300"
-              >
-                {property.bookingUrl ? 'Book on Airbnb' : 'Book Now'}
-              </a>
-            )}
-
-            <Link
-              href={`/stays/${property.slug}`}
-              className="px-4 py-2.5 border border-[#171715]/20 hover:border-[#171715] font-mono text-[10px] uppercase tracking-[0.2em] text-[#171715] transition-colors duration-300"
-            >
-              Details
-            </Link>
-          </div>
-        </div>
-      </div>
-    </article>
-  );
+  return <article className={`open-address discovery-address ${property.comingSoon ? 'is-announcement' : ''} ${className}`}>
+    <Link href={href} className="open-address-photo" aria-label={`${action}: Innzoy ${property.name}`}>
+      <Image src={property.heroImage} alt={`${property.name}, ${property.locality}`} fill sizes="(max-width: 760px) calc(100vw - 40px), 46vw" className={property.comingSoon ? 'open-announcement-photo' : ''} />
+      <span className="open-address-photo-label">{property.comingSoon ? 'Opening soon' : `${property.gallery.length} photographs`} <ArrowUpRight size={18} strokeWidth={1.3} aria-hidden="true" /></span>
+    </Link>
+    <div className="discovery-address-caption">
+      <header><p className="open-eyebrow">{index !== undefined && <span>{String(index + 1).padStart(2, '0')} / </span>}{property.locality}</p><h2><Link href={href}>{property.name}</Link></h2></header>
+      <StayRate property={property} className="discovery-address-rate" showWeekend={false} />
+      <Link href={href} className="discovery-address-action">{action}<ArrowUpRight size={16} strokeWidth={1.3} aria-hidden="true" /></Link>
+      {property.bookingUrl && !property.comingSoon && <a className="discovery-address-airbnb" href={property.bookingUrl} target="_blank" rel="noopener noreferrer">Rates &amp; availability on Airbnb <ArrowUpRight size={13} aria-hidden="true" /></a>}
+      <details className="discovery-address-details">
+        <summary>About this address <span aria-hidden="true">+</span></summary>
+        <div><p>{property.description}</p>{!property.comingSoon && <p className="discovery-address-essentials">{essentials.join(' · ')}</p>}{property.weekendPrice && <StayRate property={property} />}<address>{property.address}</address><a href={property.mapUrl} target="_blank" rel="noopener noreferrer">Open map <ArrowUpRight size={14} aria-hidden="true" /></a></div>
+      </details>
+    </div>
+  </article>;
 }

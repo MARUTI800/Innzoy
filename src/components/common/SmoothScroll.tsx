@@ -1,63 +1,58 @@
 'use client';
 
-import { useEffect, useRef, ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
+import type Lenis from 'lenis';
+import { attachMagneticInteractions, loadMotion, type MotionRuntime } from '@/lib/motion';
 
 export default function SmoothScroll({ children }: { children: ReactNode }) {
-  const lenisRef = useRef<any>(null);
-  const tickerRef = useRef<any>(null);
-
   useEffect(() => {
-    let isCleanedUp = false;
-
-    const init = async () => {
-      const Lenis = (await import('lenis')).default;
-      const { gsap } = await import('gsap');
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-
-      if (isCleanedUp) return;
-
-      gsap.registerPlugin(ScrollTrigger);
-
-      const lenis = new Lenis({
-        duration: 0.6,
-        easing: (t: number) => 1 - Math.pow(1 - t, 3),
-        touchMultiplier: 1,
-      });
-
-      lenisRef.current = lenis;
-
-      // Synchronize Lenis scroll position with GSAP ScrollTrigger
-      lenis.on('scroll', ScrollTrigger.update);
-
-      const tickerFn = (time: number) => {
-        lenis.raf(time * 1000);
-      };
-      tickerRef.current = tickerFn;
-
-      gsap.ticker.add(tickerFn);
-      gsap.ticker.lagSmoothing(0);
-
-      // Trigger initial update once initialized
-      ScrollTrigger.refresh();
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+    let lenis: Lenis | undefined;
+    let runtime: MotionRuntime | undefined;
+    let ticker: ((time: number) => void) | undefined;
+    let removeMagnetic: (() => void) | undefined;
+    let disposed = false;
+    let generation = 0;
+    const stop = () => {
+      if (ticker && runtime) runtime.gsap.ticker.remove(ticker);
+      ticker = undefined;
+      lenis?.destroy();
+      lenis = undefined;
+      removeMagnetic?.();
+      removeMagnetic = undefined;
     };
-
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!prefersReducedMotion) {
-      init();
-    }
-
-    return () => {
-      isCleanedUp = true;
-      if (tickerRef.current) {
-        import('gsap').then(({ gsap }) => {
-          gsap.ticker.remove(tickerRef.current);
+    const update = () => {
+      const current = ++generation;
+      stop();
+      if (reduced.matches || !fine.matches || disposed) return;
+      void Promise.all([import('lenis'), loadMotion()]).then(([{ default: LenisConstructor }, loaded]) => {
+        if (disposed || current !== generation || reduced.matches || !fine.matches) return;
+        runtime = loaded;
+        lenis = new LenisConstructor({
+          duration: 0.8, easing: (value: number) => 1 - Math.pow(1 - value, 3),
+          smoothWheel: true, syncTouch: false, autoRaf: false,
+          prevent: (node) => !!node.closest('[data-lenis-prevent], dialog, [role="dialog"]'),
+          virtualScroll: () => document.body.style.overflow !== 'hidden' && document.documentElement.style.overflow !== 'hidden',
         });
-      }
-      if (lenisRef.current) {
-        lenisRef.current.destroy();
-      }
+        const instance = lenis;
+        lenis.on('scroll', loaded.ScrollTrigger.update);
+        ticker = (time: number) => instance.raf(time * 1000);
+        loaded.gsap.ticker.add(ticker);
+        removeMagnetic = attachMagneticInteractions(loaded.gsap);
+        loaded.ScrollTrigger.refresh();
+      }).catch(() => { if (current === generation) stop(); });
+    };
+    update();
+    reduced.addEventListener('change', update);
+    fine.addEventListener('change', update);
+    return () => {
+      disposed = true;
+      generation += 1;
+      reduced.removeEventListener('change', update);
+      fine.removeEventListener('change', update);
+      stop();
     };
   }, []);
-
   return <>{children}</>;
 }

@@ -1,25 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap');
-
 @import "tailwindcss";
+@import "../styles/atelier.css";
+@import "../styles/navigation.css";
+@import "../styles/inner-pages.css";
 
 @theme {
-  --color-ivory: #F5F2EB;
-  --color-ivory-warm: #F0ECE3;
-  --color-ivory-pure: #FAF8F5;
-  --color-ivory-stone: #E8E3DA;
-  --color-ink: #181816;
-  --color-ink-secondary: #5C5850;
-  --color-ink-muted: #8E8A81;
-  --color-ink-dark: #121412;
-  --color-ink-dark-surface: #181B18;
-  --color-ink-light: #F5F2EB;
-  --color-ink-light-muted: #A3A097;
-  --color-earth: #9E8B76;
-  --color-earth-subtle: #E8DFD3;
+  --color-ivory: var(--atelier-paper);
+  --color-ivory-warm: var(--atelier-paper);
+  --color-ivory-pure: #FFFFFF;
+  --color-ivory-stone: var(--atelier-surface);
+  --color-ink: var(--atelier-ink);
+  --color-ink-secondary: var(--atelier-muted);
+  --color-ink-muted: var(--availability-unavailable-text);
+  --color-ink-dark: var(--atelier-inverse);
+  --color-ink-dark-surface: var(--atelier-inverse);
+  --color-ink-light: var(--atelier-paper);
+  --color-ink-light-muted: var(--atelier-inverse-muted);
+  --color-earth: var(--availability-selected);
+  --color-earth-subtle: var(--atelier-surface);
 
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: 'Space Mono', monospace;
+  --font-serif: var(--font-editorial), Georgia, serif;
+  --font-sans: var(--font-information), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-space-mono), monospace;
 
   --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth: cubic-bezier(0.65, 0, 0.35, 1);
@@ -119,13 +120,13 @@ body {
 /* ---- THIN RULES ---- */
 .rule-light {
   height: 1px;
-  background-color: rgba(24, 24, 22, 0.08);
+  background-color: color-mix(in srgb,var(--atelier-ink) 8%,transparent);
   width: 100%;
 }
 
 .rule-dark {
   height: 1px;
-  background-color: rgba(245, 242, 235, 0.1);
+  background-color: color-mix(in srgb,var(--atelier-paper) 10%,transparent);
   width: 100%;
 }
 
@@ -194,7 +195,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #CDC6BA;
+  background: color-mix(in srgb,var(--atelier-ink) 25%,var(--atelier-paper));
 }
 
 ::-webkit-scrollbar-thumb:hover {

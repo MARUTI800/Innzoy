@@ -1,32 +1,37 @@
 import type { Metadata } from 'next';
-import { Cormorant_Garamond, Plus_Jakarta_Sans, Space_Mono } from 'next/font/google';
+import { Barlow_Condensed, Manrope, Newsreader, Space_Mono } from 'next/font/google';
 import './globals.css';
 import { GalleryProvider } from '@/components/common/GalleryLightbox';
+import { BookingProvider } from '@/components/booking/BookingProvider';
 import Navbar from '@/components/common/Navbar';
 import Footer from '@/components/common/Footer';
-import SmoothScroll from '@/components/common/SmoothScroll';
-import ScrollProgress from '@/components/common/ScrollProgress';
+import PageTransition from '@/components/common/PageTransition';
 import { BRAND } from '@/data/innzoyData';
 
-const cormorant = Cormorant_Garamond({
+const brand = Barlow_Condensed({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600'],
-  style: ['normal', 'italic'],
-  variable: '--font-cormorant',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-brand',
   display: 'swap',
 });
 
-const jakarta = Plus_Jakarta_Sans({
+const editorial = Newsreader({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-sans',
+  variable: '--font-editorial',
+  display: 'swap',
+});
+
+const information = Manrope({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-information',
   display: 'swap',
 });
 
 const spaceMono = Space_Mono({
   subsets: ['latin'],
   weight: ['400', '700'],
-  variable: '--font-mono',
+  variable: '--font-space-mono',
   display: 'swap',
 });
 
@@ -91,22 +96,21 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className={`${cormorant.variable} ${jakarta.variable} ${spaceMono.variable}`}>
+    <html lang="en" className={`${brand.variable} ${editorial.variable} ${information.variable} ${spaceMono.variable}`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="antialiased bg-[#F4F1EA] text-[#171715]">
-        <GalleryProvider>
-          <SmoothScroll>
-            <ScrollProgress />
-            <Navbar />
-            <main className="min-h-screen">{children}</main>
-            <Footer />
-          </SmoothScroll>
-        </GalleryProvider>
+      <body>
+        <BookingProvider>
+          <GalleryProvider>
+              <Navbar />
+              <main className="min-h-screen"><PageTransition>{children}</PageTransition></main>
+              <Footer />
+          </GalleryProvider>
+        </BookingProvider>
       </body>
     </html>
   );

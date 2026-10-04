@@ -1,0 +1,71 @@
+/* The collection is a choice of real places; photography carries the interface. */
+.hotel-discovery-catalog.open-page { max-width:1500px; padding-top:142px; padding-bottom:86px; }
+.hotel-discovery-catalog .discovery-catalog-heading { display:grid; grid-template-columns:1fr minmax(0,.76fr); gap:40px; align-items:end; padding-bottom:37px; }
+.hotel-discovery-catalog .discovery-catalog-heading h1 { font-size:clamp(37px,4vw,54px); margin-top:14px; letter-spacing:-.025em; }
+.hotel-discovery-catalog .discovery-catalog-heading > p { max-width:430px; justify-self:end; color:var(--atelier-muted); font-size:12px; line-height:1.85; padding-bottom:3px; }
+.hotel-discovery-catalog .open-catalog-register { flex-direction:row; justify-content:space-between; margin:0 0 31px; border-block:1px solid var(--atelier-rule); min-height:55px; }
+.hotel-discovery-catalog .open-catalog-register nav { gap:29px; }
+.hotel-discovery-catalog .open-catalog-register a { min-height:55px; font-size:11px; }
+.hotel-discovery-catalog .open-catalog-register a.is-current::after { bottom:-1px; }
+.hotel-discovery-catalog .open-address-book { gap:48px 32px; }
+.hotel-discovery-catalog .discovery-address .open-address-photo { aspect-ratio:1.48; }
+.hotel-discovery-catalog .discovery-address .open-address-photo > img { object-fit:cover; transition:transform .85s cubic-bezier(.2,.65,.3,1); }
+.hotel-discovery-catalog .discovery-address .open-address-photo-label { font-size:10px; }
+.hotel-discovery-catalog .discovery-address.is-announcement .open-address-photo-label { color:var(--atelier-ink); text-shadow:none; }
+.hotel-discovery-catalog .discovery-address-caption { display:grid; grid-template-columns:minmax(0,1fr) auto; column-gap:18px; row-gap:15px; padding-top:18px; }
+.hotel-discovery-catalog .discovery-address-caption h2 { font-size:clamp(26px,2.4vw,33px); margin-top:7px; letter-spacing:-.01em; }
+.hotel-discovery-catalog .discovery-address-caption .open-eyebrow { font-size:10px; }
+.hotel-discovery-catalog .discovery-address-caption .open-eyebrow > span { color:var(--availability-selected); font-size:9px; margin-right:7px; }
+.hotel-discovery-catalog .discovery-address-rate { align-self:end; text-align:right; padding-bottom:2px; }
+.hotel-discovery-catalog .discovery-address-rate .stay-rate-main { justify-content:end; font-size:9px; gap:5px; }
+.hotel-discovery-catalog .discovery-address-rate .stay-rate-main strong { font-size:21px; font-weight:400; letter-spacing:-.03em; }
+.hotel-discovery-catalog .discovery-address-rate .stay-rate-external { color:var(--atelier-muted); font-size:10px; }
+.hotel-discovery-catalog .discovery-address-action { display:flex; align-items:center; justify-content:space-between; grid-column:1/-1; min-height:44px; border-top:1px solid var(--atelier-rule); font-size:11px; }
+.hotel-discovery-catalog .discovery-address-action svg { transition:transform .3s ease; }
+.hotel-discovery-catalog .discovery-address-action:hover { color:var(--availability-selected); }
+.hotel-discovery-catalog .discovery-address-action:hover svg { transform:translate(2px,-2px); }
+.hotel-discovery-catalog .discovery-address-airbnb { display:inline-flex; align-items:center; gap:9px; grid-column:1/-1; justify-self:start; margin-top:-11px; min-height:36px; font-size:9px; color:var(--atelier-muted); }
+.hotel-discovery-catalog .discovery-address-details { grid-column:1/-1; margin-top:-17px; color:var(--atelier-muted); font-size:10px; }
+.hotel-discovery-catalog .discovery-address-details summary { list-style:none; display:flex; align-items:center; justify-content:space-between; min-height:40px; cursor:pointer; }
+.hotel-discovery-catalog .discovery-address-details summary::-webkit-details-marker { display:none; }
+.hotel-discovery-catalog .discovery-address-details summary > span { font-size:15px; }
+.hotel-discovery-catalog .discovery-address-details[open] summary > span { transform:rotate(45deg); }
+.hotel-discovery-catalog .discovery-address-details > div { max-width:500px; padding-top:5px; }
+.hotel-discovery-catalog .discovery-address-details p { font-size:12px; line-height:1.85; margin-bottom:12px; }
+.hotel-discovery-catalog .discovery-address-details .discovery-address-essentials { font-size:10px; }
+.hotel-discovery-catalog .discovery-address-details .stay-rate { margin:15px 0; }
+.hotel-discovery-catalog .discovery-address-details .stay-rate-main { font-size:10px; }
+.hotel-discovery-catalog .discovery-address-details .stay-rate-main strong { font-size:20px; }
+.hotel-discovery-catalog .discovery-address-details address { font-size:11px; line-height:1.9; margin-top:15px; }
+.hotel-discovery-catalog .discovery-address-details > div > a { display:inline-flex; align-items:center; gap:12px; min-height:44px; font-size:10px; color:var(--atelier-ink); }
+.hotel-discovery-catalog .discovery-catalog-note { color:var(--atelier-muted); font-size:9px; line-height:1.7; margin-top:27px; }
+.hotel-discovery-catalog .discovery-stay-summary { display:flex; align-items:center; gap:20px; border-top:1px solid var(--atelier-rule); padding-block:15px; font-size:11px; }
+.hotel-discovery-catalog .discovery-stay-summary > span { font-size:10px; color:var(--atelier-muted); }
+.hotel-discovery-catalog .discovery-stay-summary > span:last-child { margin-left:auto; }
+@media (hover:hover) { .hotel-discovery-catalog .discovery-address .open-address-photo:hover > img { transform:scale(1.025); } }
+@media (max-width:1023px) { .hotel-discovery-catalog.open-page { padding-top:112px; } }
+@media (max-width:760px) {
+  .hotel-discovery-catalog.open-page { padding-top:96px; padding-bottom:54px; }
+  .hotel-discovery-catalog .discovery-catalog-heading { grid-template-columns:1fr; gap:20px; padding-bottom:27px; }
+  .hotel-discovery-catalog .discovery-catalog-heading h1 { font-size:37px; margin-top:12px; }
+  .hotel-discovery-catalog .discovery-catalog-heading > p { justify-self:start; max-width:360px; font-size:11px; }
+  .hotel-discovery-catalog .open-catalog-register { margin-bottom:24px; }
+  .hotel-discovery-catalog .open-catalog-register nav { gap:22px; }
+  .hotel-discovery-catalog .open-catalog-register a { font-size:10px; gap:7px; min-height:49px; }
+  .hotel-discovery-catalog .open-catalog-register > p { display:none; }
+  .hotel-discovery-catalog .open-address-book { gap:33px; }
+  .hotel-discovery-catalog .discovery-address .open-address-photo { aspect-ratio:1.35; }
+  .hotel-discovery-catalog .discovery-address-caption { column-gap:12px; row-gap:13px; padding-top:15px; }
+  .hotel-discovery-catalog .discovery-address-caption h2 { font-size:28px; margin-top:6px; }
+  .hotel-discovery-catalog .discovery-address-caption .open-eyebrow { font-size:9px; }
+  .hotel-discovery-catalog .discovery-address-rate .stay-rate-main { font-size:8px; gap:4px; }
+  .hotel-discovery-catalog .discovery-address-rate .stay-rate-main strong { font-size:19px; }
+  .hotel-discovery-catalog .discovery-stay-summary { flex-wrap:wrap; gap:5px 15px; padding-block:12px; }
+  .hotel-discovery-catalog .discovery-stay-summary > span:last-child { width:100%; margin-left:0; }
+}
+@media (max-width:360px) {
+  .hotel-discovery-catalog .open-catalog-register nav { gap:16px; }
+  .hotel-discovery-catalog .discovery-address-caption h2 { font-size:25px; }
+  .hotel-discovery-catalog .discovery-address-rate .stay-rate-main { max-width:88px; }
+}
+@media (prefers-reduced-motion:reduce) { .hotel-discovery-catalog * { transition:none!important; } }

@@ -1,109 +1,21 @@
 import Link from 'next/link';
-import { BRAND, HOTELS, GUEST_HOUSES, CORPORATE_BOOKING_URL } from '@/data/innzoyData';
+import Image from 'next/image';
+import { ArrowUpRight } from 'lucide-react';
+import { BRAND, HOTELS, GUEST_HOUSES } from '@/data/innzoyData';
+import { BookingTrigger } from '@/components/booking/BookingProvider';
+import HotelJourneyLink from './HotelJourneyLink';
 
 export default function Footer() {
-  return (
-    <footer className="bg-[#121412] text-[#FAF9F6] pt-16 pb-10 border-t border-white/10" role="contentinfo">
-      <div className="max-w-[1500px] mx-auto px-6 md:px-12 lg:px-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-12 gap-10 lg:gap-8 pb-12">
-          <div className="col-span-2 lg:col-span-3">
-            <Link
-              href="/"
-              className="font-serif text-3xl font-light tracking-[0.08em] uppercase hover:text-[#A68A68] transition-colors"
-            >
-              INNZOY
-            </Link>
-            <p className="text-xs text-stone-400 leading-relaxed mt-4 max-w-xs">
-              {BRAND.tagline} Hotels and guest houses across Hyderabad.
-            </p>
-            <a
-              href={BRAND.contact.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block mt-5 font-mono text-[10px] uppercase tracking-[0.2em] text-stone-400 hover:text-white transition-colors"
-            >
-              Instagram · innzoy_hotels
-            </a>
-          </div>
-
-          <div className="lg:col-span-3 space-y-4">
-            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[#A68A68] block">
-              Hotels
-            </span>
-            <ul className="space-y-2.5 text-xs">
-              {HOTELS.map((property) => (
-                <li key={property.id}>
-                  <Link
-                    href={`/stays/${property.slug}`}
-                    className="text-stone-400 hover:text-white transition-colors"
-                  >
-                    {property.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="lg:col-span-3 space-y-4">
-            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[#A68A68] block">
-              Guest Houses
-            </span>
-            <ul className="space-y-2.5 text-xs">
-              {GUEST_HOUSES.map((property) => (
-                <li key={property.id}>
-                  <Link
-                    href={`/stays/${property.slug}`}
-                    className="text-stone-400 hover:text-white transition-colors"
-                  >
-                    {property.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="col-span-2 lg:col-span-3 space-y-4">
-            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[#A68A68] block">
-              Head Office
-            </span>
-            <p className="text-xs text-stone-400 leading-relaxed">{BRAND.contact.headOffice}</p>
-            <div className="space-y-1.5 text-xs">
-              <a
-                href={`tel:${BRAND.contact.phone.replace(/\s/g, '')}`}
-                className="block text-stone-200 hover:text-[#A68A68] transition-colors"
-              >
-                {BRAND.contact.phone}
-              </a>
-              <a
-                href={`mailto:${BRAND.contact.email}`}
-                className="block text-stone-200 hover:text-[#A68A68] transition-colors"
-              >
-                {BRAND.contact.email}
-              </a>
-            </div>
-            <a
-              href={CORPORATE_BOOKING_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block font-mono text-[10px] uppercase tracking-[0.2em] text-[#A68A68] hover:text-white transition-colors"
-            >
-              Corporate Booking →
-            </a>
-          </div>
-        </div>
-
-        <div className="pt-6 border-t border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 font-mono text-[9px] uppercase tracking-[0.22em] text-stone-500">
-          <p>© {new Date().getFullYear()} Innzoy · All rights reserved</p>
-          <div className="flex items-center gap-6">
-            <Link href="/contact" className="hover:text-white transition-colors">
-              Contact
-            </Link>
-            <Link href="/about" className="hover:text-white transition-colors">
-              About
-            </Link>
-          </div>
-        </div>
+  return <footer className="open-footer">
+    <div className="open-footer-spread">
+      <div className="open-footer-intro"><Link href="/" className="open-footer-signature" aria-label="Innzoy home"><Image className="open-footer-company-logo" src="/images/innzoy-logo.png" width={222} height={186} alt="Innzoy" unoptimized /></Link><p>{BRAND.subname}</p><p>{BRAND.tagline}</p><BookingTrigger className="open-footer-book">Book your stay <ArrowUpRight size={16} aria-hidden="true" /></BookingTrigger></div>
+      <div className="open-footer-contact"><a href={`tel:${BRAND.contact.phone.replace(/\s/g, '')}`}>{BRAND.contact.phone}</a><a href={`mailto:${BRAND.contact.email}`}>{BRAND.contact.email}</a><a href={BRAND.contact.instagram} target="_blank" rel="noopener noreferrer">Instagram · innzoy_hotels <ArrowUpRight size={14} aria-hidden="true" /></a></div>
+      <div className="open-footer-office"><h2>Head office</h2><p>{BRAND.contact.headOffice}</p><p>Hotels and guest houses across Hyderabad.</p></div>
+      <div className="open-footer-directory">
+        <nav className="open-footer-addresses" aria-label="Hotels"><h2>Hotels</h2><ul>{HOTELS.map(property => <li key={property.id}><HotelJourneyLink href={`/stays/${property.slug}`}>{property.name}</HotelJourneyLink></li>)}</ul></nav>
+        <nav className="open-footer-addresses" aria-label="Guest houses"><h2>Guest houses</h2><ul>{GUEST_HOUSES.map(property => <li key={property.id}><Link href={`/stays/${property.slug}`}>{property.name}</Link></li>)}</ul></nav>
       </div>
-    </footer>
-  );
+    </div>
+    <div className="open-footer-bottom"><p>© {new Date().getFullYear()} Innzoy · All rights reserved</p><nav aria-label="Company"><Link href="/about">About</Link><Link href="/contact">Contact</Link><BookingTrigger intent="corporate">Corporate booking</BookingTrigger></nav></div>
+  </footer>;
 }

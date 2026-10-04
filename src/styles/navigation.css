@@ -1,0 +1,111 @@
+/* The reference's 30px contact stripe and 70px restrained navigation. */
+.inn-nav { position:fixed; inset:0 0 auto; z-index:100; background:var(--atelier-paper); color:var(--atelier-ink); transition:background-color .2s,color .2s; }
+.inn-nav.is-hero { background:transparent; color:#FFFFFF; }
+.inn-nav-utility { background:var(--atelier-inverse); color:var(--atelier-paper); }
+.inn-nav-utility-inner { display:flex; align-items:center; justify-content:end; gap:27px; width:100%; max-width:1600px; min-height:30px; padding-inline:var(--atelier-gutter,clamp(20px,4vw,64px)); margin-inline:auto; font:400 10px/1.4 var(--font-information),sans-serif; }
+.inn-nav-utility-inner > span { margin-right:auto; letter-spacing:.07em; font-size:8px; }
+.inn-nav-utility-inner a { display:inline-flex; align-items:center; min-height:30px; }
+.inn-nav-utility-inner a:hover { text-decoration:underline; text-underline-offset:3px; }
+.inn-nav-inner { width:100%; max-width:1600px; margin-inline:auto; padding-inline:var(--atelier-gutter,clamp(20px,4vw,64px)); min-height:70px; display:flex; align-items:center; justify-content:space-between; gap:34px; }
+.inn-nav-brand { display:inline-flex; align-items:center; flex-shrink:0; gap:25px; }
+.inn-company-logo { display:block; width:auto; height:56px; max-width:none; object-fit:contain; }
+.inn-nav.is-hero .inn-company-logo { filter:brightness(0) invert(1); }
+.inn-nav-brand > span { font:400 23px/1 var(--font-editorial),serif; letter-spacing:.05em; }
+.inn-nav-brand > small { display:none; font-size:9px; color:var(--atelier-muted); }
+.inn-nav-links { display:flex; gap:clamp(24px,2.8vw,44px); align-items:center; margin-left:auto; }
+.inn-nav-link { position:relative; display:inline-flex; align-items:center; min-height:44px; font:400 13px/1.3 var(--font-editorial),serif; letter-spacing:0; }
+.inn-nav-link.nav-active::after { content:''; height:1px; position:absolute; inset:auto 0 6px; background:var(--availability-selected); }
+.inn-nav-link:hover { color:var(--availability-selected); }
+.inn-nav-actions { display:flex; align-items:center; gap:25px; }
+.inn-nav-book { display:inline-flex; align-items:center; justify-content:center; gap:18px; min-height:44px; border:1px solid var(--availability-selected); padding:0 22px; background:var(--availability-selected); color:var(--atelier-paper); font:400 10px/1.5 var(--font-information),sans-serif; letter-spacing:.06em; }
+.inn-nav-book > span { font-size:16px; font-weight:400; }
+.inn-nav-book:hover { background:var(--atelier-action-hover); border-color:var(--atelier-action-hover); color:var(--atelier-paper); }
+.inn-nav.is-hero .inn-nav-book { background:var(--availability-selected); border-color:var(--availability-selected); color:var(--atelier-paper); }
+.inn-nav.is-hero .inn-nav-book:hover { background:var(--atelier-action-hover); border-color:var(--atelier-action-hover); color:var(--atelier-paper); }
+.inn-nav.is-hero .inn-nav-link:hover { color:#FFFFFF; opacity:.8; }
+.inn-nav.is-hero .inn-nav-link.nav-active::after { background:#FFFFFF; }
+.inn-nav-menu-button,.inn-menu-close { border:0; padding:0; min-height:44px; background:none; color:inherit; font:400 11px/1.5 var(--font-information),sans-serif; }
+.inn-nav-menu-button { display:none; }
+.inn-menu-close { display:inline-flex; align-items:center; gap:19px; }
+.inn-menu-close span { font-size:24px; }
+.inn-menu { position:fixed; inset:0; width:100%; height:100dvh; max-width:none; max-height:none; padding:0; margin:0; border:0; background:var(--atelier-paper); color:var(--atelier-ink); overflow:auto; overscroll-behavior:contain; }
+.inn-menu::backdrop { background:var(--atelier-paper); }
+.inn-menu-inner { padding:0 var(--atelier-gutter,20px) max(22px,env(safe-area-inset-bottom)); min-height:100%; }
+.inn-menu-header { display:flex; align-items:center; justify-content:space-between; min-height:64px; }
+.inn-menu-body { padding-top:20px; }
+.inn-menu-label { margin:0 0 20px; color:var(--atelier-muted); font:400 10px/1.7 var(--font-information),sans-serif; text-align:center; }
+.inn-menu-links { margin:0; padding:0; list-style:none; }
+.inn-menu-links li { border-top:1px solid color-mix(in srgb,var(--atelier-ink) 12.5%,transparent); }
+.inn-menu-links li:last-child { border-bottom:1px solid color-mix(in srgb,var(--atelier-ink) 12.5%,transparent); }
+.inn-menu-links a { display:grid; grid-template-columns:19px minmax(0,1fr) 24px; gap:20px; align-items:center; min-height:72px; font:300 30px/1.2 var(--font-editorial),serif; letter-spacing:0; }
+.inn-menu-links a.nav-active,.inn-menu-links a:hover { color:var(--availability-selected); }
+.inn-menu-links a > small { font:400 9px/1.5 var(--font-information),sans-serif; letter-spacing:0; color:var(--atelier-muted); }
+.inn-menu-links a > svg { width:21px; }
+.inn-menu-link-mask { display:block; overflow:hidden; }
+.inn-menu-link-mask > span { display:block; }
+.inn-menu-secondary { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px; padding-top:20px; }
+.inn-menu-book { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:9px 18px; border:1px solid var(--availability-selected); color:var(--atelier-paper); background:var(--availability-selected); font:400 11px/1.5 var(--font-information),sans-serif; }
+.inn-menu-book:hover { background:var(--atelier-action-hover); border-color:var(--atelier-action-hover); }
+.inn-menu-secondary > a { display:inline-flex; align-items:center; min-height:44px; font-size:12px; }
+.inn-menu-instagram { display:flex; align-items:center; gap:15px; width:fit-content; min-height:44px; font-size:10px; color:var(--atelier-muted); }
+.inn-menu-photo { position:relative; overflow:hidden; height:clamp(110px,22svh,210px); margin:13px 0 0; background:var(--atelier-surface); }
+.inn-menu-photo img { object-fit:cover; object-position:50% 52%; }
+.inn-menu-photo figcaption { position:absolute; bottom:11px; left:13px; color:white; font-size:9px; text-shadow:0 1px 10px #000; }
+.inn-nav :is(a,button):focus-visible,.inn-menu :is(a,button):focus-visible { outline:2px solid var(--availability-selected); outline-offset:4px; }
+.inn-nav.is-hero :is(a,button):focus-visible,.inn-nav-utility :is(a,button):focus-visible { outline-color:#FFFFFF; }
+
+/* A modest centered identity and the complete practical hotel directory. */
+.open-footer { --atelier-muted:var(--atelier-muted-on-surface); background:var(--atelier-surface); color:var(--atelier-ink); font-family:var(--font-information),sans-serif; }
+.open-footer-spread { max-width:1300px; margin-inline:auto; padding:56px var(--atelier-gutter) 30px; text-align:center; }
+.open-footer-intro { display:flex; flex-direction:column; align-items:center; }
+.open-footer-signature { display:inline-flex; min-height:44px; align-items:center; font:300 36px/1.2 var(--font-editorial),serif; letter-spacing:.07em; }
+.open-footer-company-logo { display:block; width:140px; height:auto; object-fit:contain; }
+.bk-loading-company-logo { display:block; width:auto; height:50px; flex-shrink:0; object-fit:contain; }
+.open-footer-intro > p:first-of-type { margin:7px 0 0; font-size:9px; letter-spacing:.08em; color:var(--atelier-muted); }
+.open-footer-intro > p:last-of-type { margin:14px 0 0; font:300 27px/1.3 var(--font-editorial),serif; }
+.open-footer-book { display:inline-flex; align-items:center; justify-content:center; min-height:44px; gap:18px; padding:10px 24px; margin-top:24px; border:1px solid var(--availability-selected); color:var(--atelier-paper); background:var(--availability-selected); font:400 11px/1.5 var(--font-information),sans-serif; }
+.open-footer-book:hover { background:var(--atelier-action-hover); border-color:var(--atelier-action-hover); color:var(--atelier-paper); }
+.open-footer-contact { display:flex; flex-wrap:wrap; justify-content:center; gap:0 34px; margin-top:24px; }
+.open-footer-contact a { display:inline-flex; align-items:center; gap:12px; min-height:44px; font-size:11px; }
+.open-footer-contact a:hover { text-decoration:underline; text-underline-offset:4px; }
+.open-footer-office { max-width:650px; margin:13px auto 30px; }
+.open-footer-office h2 { margin:0 0 10px; font:300 24px/1.3 var(--font-editorial),serif; }
+.open-footer-office p { margin:5px 0 0; font-size:11px; line-height:1.9; color:var(--atelier-muted); }
+.open-footer-directory { border-top:1px solid color-mix(in srgb,var(--atelier-ink) 14.9%,transparent); }
+.open-footer-addresses { display:flex; justify-content:center; align-items:center; gap:28px; padding-block:15px; border-bottom:1px solid color-mix(in srgb,var(--atelier-ink) 14.9%,transparent); }
+.open-footer-addresses h2 { margin:0; font:300 23px/1.3 var(--font-editorial),serif; text-transform:none; min-width:110px; text-align:left; }
+.open-footer-addresses ul { display:flex; flex-wrap:wrap; justify-content:center; gap:0 29px; list-style:none; margin:0; padding:0; }
+.open-footer-addresses li { display:flex; align-items:center; }
+.open-footer-addresses a { display:flex; align-items:center; min-height:44px; font-size:11px; }
+.open-footer-addresses a:hover { text-decoration:underline; text-underline-offset:4px; }
+.open-footer-bottom { display:flex; align-items:center; justify-content:space-between; gap:25px; max-width:1300px; margin-inline:auto; padding:0 var(--atelier-gutter) 17px; }
+.open-footer-bottom p { font-size:9px; color:var(--atelier-muted); margin:0; }
+.open-footer-bottom nav { display:flex; align-items:center; gap:28px; }
+.open-footer-bottom a,.open-footer-bottom button { display:inline-flex; align-items:center; min-height:44px; padding:0; border:0; background:none; color:var(--atelier-ink); font:400 10px/1.5 var(--font-information),sans-serif; }
+.open-footer-bottom [data-booking-trigger] { color:var(--availability-selected); }
+.open-footer :is(a,button):focus-visible { outline:2px solid var(--atelier-ink); outline-offset:5px; }
+@media(max-width:1023px) { .inn-nav-utility { display:none; } .inn-nav-inner { min-height:64px; } .inn-nav-links { display:none; } .inn-nav-menu-button { display:block; } }
+@media(max-width:760px) {
+  .inn-nav-inner { gap:20px; }
+  .inn-nav-brand > span { font-size:22px; }
+  .inn-nav-actions { gap:23px; }
+  .inn-nav-book { gap:12px; font-size:9px; padding-inline:15px; min-height:44px; }
+  .inn-nav-menu-button { font-size:10px; }
+  .inn-menu-links a { min-height:70px; font-size:29px; gap:16px; }
+  .inn-menu-secondary { gap:12px 18px; }
+  .open-footer-spread { padding:42px var(--atelier-gutter) 24px; }
+  .open-footer-signature { font-size:32px; }
+  .open-footer-intro > p:last-of-type { font-size:25px; }
+  .open-footer-contact { flex-direction:column; align-items:center; gap:0; margin-top:20px; }
+  .open-footer-office { margin-bottom:25px; }
+  .open-footer-office p { font-size:10px; }
+  .open-footer-addresses { flex-direction:column; gap:8px; padding-block:20px; }
+  .open-footer-addresses h2 { text-align:center; font-size:25px; }
+  .open-footer-addresses ul { gap:0 22px; }
+  .open-footer-addresses a { font-size:10px; }
+  .open-footer-bottom { flex-direction:column-reverse; justify-content:center; gap:7px; padding-bottom:20px; }
+  .open-footer-bottom nav { gap:25px; }
+  .open-footer-bottom p { font-size:8px; }
+}
+@media(max-width:350px) { .inn-nav-actions { gap:18px; } .inn-nav-brand > span { font-size:20px; } .inn-nav-book { padding-inline:12px; } }
+@media(prefers-reduced-motion:reduce) { .inn-nav *,.inn-menu *,.open-footer * { transition:none !important; } }

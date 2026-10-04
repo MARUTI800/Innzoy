@@ -1,0 +1,76 @@
+.open-house-browser {
+  --address-surface:var(--atelier-paper);
+  --address-ink:var(--atelier-ink);
+  --address-muted:var(--atelier-muted);
+  --address-accent:var(--availability-selected,var(--atelier-earth));
+  background:var(--address-surface);
+  color:var(--address-ink);
+  padding:96px 0 72px;
+  scroll-margin-top:94px;
+}
+.open-house-browser-inner { width:100%; max-width:1500px; margin-inline:auto; padding-inline:var(--atelier-gutter); }
+.open-house-browser button { cursor:pointer; color:inherit; background:none; border:0; border-radius:0; font:inherit; }
+.open-house-browser a { color:inherit; text-decoration:none; }
+.open-house-browser :is(button,a):focus-visible { outline:2px solid var(--address-accent); outline-offset:5px; }
+.open-house-browser-heading { display:flex; align-items:end; justify-content:space-between; gap:24px; padding-bottom:30px; }
+.open-house-eyebrow { display:block; font:400 10px/1.5 var(--font-functional,var(--font-sans)); letter-spacing:.09em; text-transform:uppercase; color:var(--address-muted); }
+.open-house-browser-heading h2 { margin:14px 0 0; font:300 clamp(34px,3.4vw,46px)/1.15 var(--font-display); letter-spacing:-.02em; }
+.open-house-collection-link { display:inline-flex; align-items:center; gap:22px; min-height:44px; padding-bottom:3px; border-bottom:1px solid var(--atelier-rule); font-size:11px; white-space:nowrap; }
+.open-house-collection-register { display:flex; align-items:center; justify-content:space-between; gap:20px; margin-bottom:30px; border-block:1px solid var(--atelier-rule); }
+.open-house-collection-register > p { margin:0; font:400 10px/1.7 var(--font-functional); color:var(--address-muted); }
+.open-house-categories { display:flex; gap:30px; }
+.open-house-categories button { display:flex; align-items:center; gap:10px; min-height:54px; padding:8px 0; position:relative; font-size:12px; color:var(--address-muted); }
+.open-house-categories button span { font-size:9px; }
+.open-house-categories button::after { content:''; height:1px; position:absolute; bottom:-1px; inset-inline:0; background:var(--address-accent); transform:scaleX(0); transform-origin:left; transition:transform .3s ease; }
+.open-house-categories button[aria-pressed=true] { color:var(--address-ink); }
+.open-house-categories button[aria-pressed=true]::after { transform:scaleX(1); }
+.open-house-discovery { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:50px 32px; }
+.open-house-discovery-stay { min-width:0; }
+.open-house-discovery-photo { display:block; position:relative; aspect-ratio:1.48; overflow:hidden; background:var(--atelier-surface); }
+.open-house-discovery-photo > img { object-fit:cover; transition:transform .85s cubic-bezier(.2,.65,.3,1); }
+.open-house-discovery-stay.is-announcement .open-house-discovery-photo > img { object-fit:contain; }
+.open-house-photo-invitation { position:absolute; inset:auto 18px 15px; display:flex; align-items:center; justify-content:space-between; color:#fff; font-size:10px; text-shadow:0 1px 7px #000; }
+.open-house-discovery-stay.is-announcement .open-house-photo-invitation { color:var(--address-ink); text-shadow:none; }
+.open-house-discovery-caption { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:17px 20px; padding-top:18px; }
+.open-house-discovery-locality { display:flex; align-items:baseline; gap:14px; margin:0 0 7px; color:var(--address-muted); font:400 10px/1.6 var(--font-functional); }
+.open-house-discovery-locality > span { font-size:9px; color:var(--address-accent); font-variant-numeric:tabular-nums; }
+.open-house-discovery-identity h3 { margin:0; font:300 clamp(25px,2.45vw,33px)/1.2 var(--font-display); letter-spacing:-.01em; }
+.open-house-discovery-rate { align-self:end; padding-bottom:2px; text-align:right; }
+.open-house-discovery-rate .stay-rate-main { justify-content:end; font-size:9px; gap:5px; }
+.open-house-discovery-rate .stay-rate-main strong { font-size:21px; font-weight:400; letter-spacing:-.03em; }
+.open-house-discovery-rate .stay-rate-external { color:var(--address-muted); font-size:10px; }
+.open-house-view-hotel { grid-column:1/-1; display:flex; align-items:center; justify-content:space-between; min-height:44px; padding:9px 0; border-top:1px solid var(--atelier-rule); font:400 11px/1.5 var(--font-functional); }
+.open-house-view-hotel svg,.open-house-collection-link svg { transition:transform .3s ease; }
+.open-house-view-hotel:hover,.open-house-collection-link:hover { color:var(--address-accent); }
+.open-house-view-hotel:hover svg,.open-house-collection-link:hover svg { transform:translate(2px,-2px); }
+.open-house-airbnb { grid-column:1/-1; display:inline-flex; align-items:center; justify-self:start; gap:9px; min-height:36px; margin-top:-15px; font:400 9px/1.6 var(--font-functional); color:var(--address-muted)!important; }
+.open-house-published-note { font:400 9px/1.7 var(--font-functional); color:var(--address-muted); margin:26px 0 0; }
+@media (hover:hover) { .open-house-discovery-photo:hover > img { transform:scale(1.025); } }
+@media (max-width:767px) {
+  .open-house-browser { padding-block:58px 45px; scroll-margin-top:70px; }
+  .open-house-browser-inner { padding-inline:20px; }
+  .open-house-browser-heading { align-items:start; flex-direction:column; gap:13px; padding-bottom:22px; }
+  .open-house-browser-heading h2 { font-size:34px; margin-top:12px; }
+  .open-house-collection-link { font-size:10px; min-height:36px; gap:18px; }
+  .open-house-collection-register { margin-bottom:23px; }
+  .open-house-collection-register > p { display:none; }
+  .open-house-categories { gap:27px; }
+  .open-house-categories button { min-height:48px; font-size:11px; }
+  .open-house-discovery { grid-template-columns:1fr; gap:34px; }
+  .open-house-discovery-photo { aspect-ratio:1.35; }
+  .open-house-discovery-caption { gap:13px 12px; padding-top:15px; }
+  .open-house-discovery-locality { font-size:9px; gap:10px; margin-bottom:6px; }
+  .open-house-discovery-identity h3 { font-size:28px; }
+  .open-house-discovery-rate .stay-rate-main strong { font-size:19px; }
+  .open-house-discovery-rate .stay-rate-main { font-size:8px; gap:4px; }
+  .open-house-photo-invitation { inset:auto 14px 12px; font-size:9px; }
+  .open-house-published-note { margin-top:20px; }
+}
+@media (max-width:360px) {
+  .open-house-browser-inner { padding-inline:16px; }
+  .open-house-discovery-caption { grid-template-columns:minmax(0,1fr) auto; gap:12px 8px; }
+  .open-house-discovery-identity h3 { font-size:25px; }
+  .open-house-discovery-rate .stay-rate-main { max-width:88px; }
+  .open-house-discovery-rate .stay-rate-main strong { font-size:18px; }
+}
+@media (prefers-reduced-motion:reduce) { .open-house-browser * { transition:none!important; } }

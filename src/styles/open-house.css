@@ -1,0 +1,79 @@
+/* Lasala's direct hotel composition, using Innzoy's real room and reservation. */
+.lp-arrival { position:relative; height:100svh; min-height:590px; overflow:hidden; background:var(--atelier-ink); color:#fff; }
+.lp-room-photograph { position:absolute; inset:0; margin:0; }
+.lp-photo-window { position:absolute; inset:0; display:block; overflow:hidden; }
+.lp-photo-window img { object-fit:cover; object-position:50% 56%; }
+.lp-room-photograph::after { content:''; position:absolute; inset:0; background:color-mix(in srgb,var(--atelier-ink) 18.8%,transparent); pointer-events:none; }
+.lp-identity { position:absolute; left:50%; top:47%; transform:translate(-50%,-50%); width:max-content; max-width:85%; text-align:center; pointer-events:none; text-shadow:0 2px 18px color-mix(in srgb,var(--atelier-ink) 33.3%,transparent); }
+.lp-identity > p { margin:0 0 10px; font:400 9px/1.9 var(--font-functional); letter-spacing:.4em; text-transform:uppercase; }
+.lp-identity > p > span { display:block; }
+.lp-identity-word { margin:0; overflow:visible; line-height:1; }
+.lp-identity-word > span { display:block; }
+.lp-identity-logo { display:block; width:auto; height:clamp(146px,23svh,184px); max-width:100%; margin-inline:auto; object-fit:contain; filter:brightness(0) invert(1); }
+.lp-identity-subname { display:block; width:220px; max-width:100%; height:30px; margin:8px auto 0; overflow:visible; font:400 8px/1.5 var(--font-functional); letter-spacing:.25em; }
+.lp-identity-tagline { display:block; margin-top:12px; font:400 20px/1.3 var(--font-editorial); }
+.lp-reservation { position:fixed; z-index:30; bottom:24px; left:50%; transform:translateX(-50%); width:min(70vw,1040px); }
+.lp-reservation[data-floating=true] .lp-stay-context,.lp-reservation[data-floating=true] .lp-guide { display:none; }
+.lp-reservation[data-floating=true] .lp-booking-dock { box-shadow:0 8px 35px color-mix(in srgb,var(--atelier-ink) 7.1%,transparent); }
+.lp-stay-context { display:flex; justify-content:space-between; align-items:center; gap:20px; margin-bottom:10px; font:400 10px/1.5 var(--font-functional); text-shadow:0 1px 8px var(--atelier-ink); }
+.lp-stay-context a { display:inline-flex; align-items:center; gap:14px; min-height:32px; }
+.lp-stay-context a:hover svg { transform:translate(3px,-1px); }
+.lp-booking-dock { display:grid; grid-template-columns:1fr 1fr 1fr 1.25fr; border:0; border-radius:3px; padding:0; margin:0; overflow:hidden; background:var(--atelier-paper); color:var(--atelier-ink); }
+.lp-date-field,.lp-guest-field { position:relative; display:block; min-width:0; padding:16px 29px 13px; border-right:1px solid color-mix(in srgb,var(--atelier-ink) 8.2%,transparent); }
+.lp-field-label { display:block; font:400 8px/1.5 var(--font-functional); text-transform:uppercase; color:var(--atelier-muted); }
+.lp-date-value { display:block; padding-top:5px; font:400 16px/1.35 var(--font-editorial); white-space:nowrap; }
+.lp-date-field input { position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; }
+.lp-date-field:focus-within { outline:2px solid var(--availability-selected); outline-offset:-3px; }
+.lp-date-field.is-awaiting .lp-date-value { color:var(--atelier-muted); }
+.lp-date-field input:disabled { cursor:default; }
+.lp-guests { display:flex; align-items:center; justify-content:space-between; gap:9px; height:28px; }
+.lp-guests output { font:400 17px/1.3 var(--font-editorial); font-variant-numeric:tabular-nums; }
+.lp-guests > div { display:flex; align-items:center; gap:4px; }
+.lp-guests button { width:36px; min-height:44px; border:0; padding:0; background:none; color:var(--atelier-inverse); font:400 16px/1 var(--font-functional); }
+.lp-guests button:disabled { opacity:.3; cursor:default; }
+.lp-book-action { display:flex; align-items:center; justify-content:center; gap:21px; min-height:72px; padding:16px 20px; border:0; background:var(--availability-selected); color:var(--atelier-paper); font:600 11px/1.5 var(--font-functional); text-transform:uppercase; letter-spacing:.03em; }
+.lp-book-action:hover { background:var(--atelier-action-hover); }
+.lp-book-action svg { transition:transform .2s var(--atelier-ease); }
+.lp-book-action:hover svg { transform:translateX(5px); }
+.lp-guide { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:5px 14px; margin-top:11px; font:400 9px/1.4 var(--font-functional); color:var(--atelier-paper); text-shadow:0 1px 6px var(--atelier-ink); }
+.lp-guide .stay-rate-main { font-size:9px; }
+.lp-guide .stay-rate-main strong { color:inherit; font-size:11px; font-weight:500; }
+.lp-arrival :is(a,button):focus-visible { outline:2px solid white; outline-offset:3px; }
+.lp-arrival .lp-photo-window:focus-visible { outline-offset:-5px; }
+.lp-booking-dock :is(a,button):focus-visible { outline-color:var(--availability-selected); outline-offset:-3px; }
+.lp-book-action:focus-visible { outline-color:white!important; }
+.oh-action { position:relative; display:inline-flex; align-items:center; justify-content:space-between; gap:30px; min-height:44px; padding-block:8px; border-bottom:1px solid currentColor; font:500 12px/1.6 var(--font-functional); color:var(--availability-selected); }
+.oh-action svg { flex-shrink:0; transition:transform .22s var(--atelier-ease); }
+.oh-action:hover { color:var(--atelier-action-hover); }
+.oh-action:hover svg { transform:translate(3px,-3px); }
+@media (max-width:1050px) and (min-width:761px) { .lp-reservation { width:88vw; } .lp-date-field,.lp-guest-field { padding-inline:20px; } }
+@media (max-width:760px) {
+  .lp-arrival { min-height:570px; }
+  .lp-photo-window img { object-position:59% 50%; }
+  .lp-identity { top:37%; left:50%; max-width:calc(100% - 48px); }
+  .lp-identity > p { font-size:8px; letter-spacing:.35em; margin-bottom:6px; }
+  .lp-identity-logo { height:clamp(120px,19svh,150px); }
+  .lp-identity-subname { width:185px; height:25px; font-size:8.3px; letter-spacing:.2em; margin-top:6px; }
+  .lp-identity-tagline { font-size:18px; margin-top:10px; }
+  .lp-reservation { position:absolute; width:calc(100% - 32px); bottom:max(19px,env(safe-area-inset-bottom)); }
+  .lp-reservation[data-floating=true] .lp-stay-context { display:flex; }
+  .lp-reservation[data-floating=true] .lp-guide { display:flex; }
+  .lp-stay-context { font-size:9px; gap:15px; margin-bottom:8px; }
+  .lp-stay-context a { gap:6px; min-height:36px; }
+  .lp-booking-dock { grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
+  .lp-date-field,.lp-guest-field { padding:14px 12px 12px; }
+  .lp-field-label { font-size:8px; }
+  .lp-date-value { font-size:14px; padding-top:8px; }
+  .lp-guests { gap:2px; padding-top:2px; height:31px; }
+  .lp-guests output { font-size:15px; }
+  .lp-guests > div { gap:0; }
+  .lp-guests button { width:44px; min-height:44px; font-size:17px; }
+  .lp-guest-field { display:flex; align-items:center; justify-content:space-between; gap:8px; padding-block:8px; }
+  .lp-guest-field .lp-field-label { position:absolute; left:12px; top:4px; }
+  .lp-guests { width:100%; padding-top:8px; height:44px; }
+  .lp-book-action { grid-column:2; min-height:64px; padding:10px 14px; justify-content:space-between; gap:8px; font-size:10px; }
+  .lp-guide { gap:3px 7px; margin-top:10px; font-size:8px; text-align:center; }
+  .lp-guide > span { display:block; width:100%; }
+}
+@media (max-width:350px) { .lp-reservation { width:calc(100% - 28px); } .lp-date-field,.lp-guest-field { padding-inline:9px; } .lp-date-value { font-size:14px; } .lp-identity-logo { height:120px; } .lp-guests button { width:44px; } .lp-book-action { padding-inline:10px; } }
+@media (prefers-reduced-motion:reduce) { .lp-arrival *,.oh-action { transition:none!important; } .lp-book-action:hover svg { transform:none; } }

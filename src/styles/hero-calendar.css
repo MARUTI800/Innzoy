@@ -1,0 +1,39 @@
+/* The room photograph stays the scene; dates unfold directly from its reservation dock. */
+.lp-date-field.lp-date-button { border: 0; border-right: 1px solid color-mix(in srgb,var(--atelier-ink) 8.2%,transparent); border-radius: 0; background: transparent; color: var(--atelier-ink); text-align: left; cursor: pointer; }
+.lp-date-field.lp-date-button.is-open { background: color-mix(in srgb,var(--atelier-surface) 45%,var(--atelier-paper)); box-shadow: inset 0 -2px var(--availability-selected); }
+.lp-date-field.lp-date-button:disabled { cursor: default; }
+.lp-calendar-popover { --bk-ink: var(--atelier-ink); --bk-muted: var(--atelier-muted); --bk-rule: color-mix(in srgb,var(--atelier-ink) 12.5%,transparent); --bk-selected: var(--availability-selected); --bk-available: var(--availability-available); --bk-request: var(--availability-request); --bk-unavailable: var(--availability-unavailable); --bk-request-text:var(--availability-request-text); --bk-unavailable-text:var(--availability-unavailable-text); position: fixed; z-index: 10005; overflow: auto; overscroll-behavior: contain; padding: 8px 12px 10px; border: 1px solid color-mix(in srgb,var(--atelier-ink) 8.2%,transparent); background: var(--atelier-paper); color: var(--atelier-ink); box-shadow: 0 12px 40px color-mix(in srgb,var(--atelier-ink) 12.5%,transparent); }
+.lp-calendar-popover:focus { outline: none; }
+.lp-calendar-topline { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 38px; border-bottom: 1px solid var(--bk-rule); font: 400 9px/1.5 var(--font-functional); color: var(--bk-muted); }
+.lp-calendar-topline > span > span { margin-inline: 8px; opacity: .6; }
+.lp-calendar-topline button { display: grid; place-items: center; width: 44px; height: 44px; margin-right: -12px; padding: 0; border: 0; background: transparent; color: var(--bk-ink); }
+.lp-calendar-popover .bk-calendar { margin-block: 10px; }
+.lp-calendar-popover .bk-calendar-month { font-size: 28px; }
+.lp-calendar-popover .bk-calendar-month-rail { gap: 8px; }
+.lp-calendar-popover .bk-calendar-year { font-size: 8px; }
+.lp-calendar-popover .bk-calendar-year span { margin-inline: 5px; }
+.lp-calendar-popover .bk-calendar-heading { gap: 8px; margin-bottom: 4px; }
+.lp-calendar-popover .bk-calendar-selection-rail { margin-bottom: 8px; font-size: 10px; }
+.lp-calendar-popover .bk-calendar-day { height: 44px; font-size: 16px; }
+.lp-calendar-popover .bk-calendar-footer { gap: 12px; margin-top: 9px; }
+.lp-calendar-popover .bk-calendar-status-title { font-size: 10px; }
+.lp-calendar-popover .bk-calendar-status-detail { font-size: 9px; }
+.lp-calendar-popover .bk-calendar-retry { font-size: 9px; background: transparent; }
+.lp-calendar-popover .bk-calendar-legend { flex-direction: row; flex-wrap: wrap; gap: 12px; }
+.lp-calendar-popover .bk-calendar-day.is-selected .bk-calendar-number { animation-duration:.35s; }
+.lp-calendar-popover .has-range :is(.is-in-range,.is-range-start,.is-range-end)::after { animation-duration:.45s; }
+.lp-calendar-popover .has-range .is-in-range::before { animation-duration:.45s; }
+.lp-calendar-bottomline { display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 44px; border-top: 1px solid var(--bk-rule); font: 400 9px/1.5 var(--font-functional); color: var(--bk-muted); }
+.lp-calendar-bottomline button { min-height: 44px; padding: 0; border: 0; background: transparent; color: var(--bk-ink); font: inherit; }
+.lp-calendar-error { margin: 8px 0; font: 400 10px/1.6 var(--font-functional); color: var(--availability-request-text); }
+.lp-calendar-popover button:focus-visible { outline: 2px solid var(--bk-selected); outline-offset: -3px; }
+.lp-calendar-popover .bk-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+@media (max-width: 760px) {
+  .lp-calendar-popover { padding: 6px 15px 8px; }
+  .lp-calendar-popover .bk-calendar { margin-top: 8px; }
+  .lp-calendar-popover .bk-calendar-footer { grid-template-columns: minmax(0, 1fr) auto; gap: 10px; }
+  .lp-calendar-popover .bk-calendar-month-rail { gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .lp-calendar-popover *, .lp-calendar-popover *::before, .lp-calendar-popover *::after { transition: none !important; animation: none !important; } }
+
+@media (min-width: 761px) and (pointer: fine) { .lp-calendar-popover .bk-calendar-day { height: 34px; font-size: 15px; } .lp-calendar-popover .bk-calendar-nav button { width: 32px; height: 32px; border: 1px solid var(--bk-rule); color: var(--bk-selected); } .lp-calendar-topline { min-height: 32px; } .lp-calendar-topline button { height: 32px; width: 32px; margin-right: -4px; } .lp-calendar-bottomline { min-height: 32px; } .lp-calendar-bottomline button { min-height: 32px; } .lp-calendar-popover .bk-calendar-selection-rail { margin-bottom: 4px; } .lp-calendar-popover .bk-calendar-month { font-size: 26px; } .lp-calendar-popover .bk-calendar-nav button:hover:not(:disabled) { background: var(--atelier-surface); border-color: var(--bk-selected); } }
